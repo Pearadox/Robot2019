@@ -7,22 +7,24 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.IMU;
+import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.command.*;
+import edu.wpi.first.wpilibj.smartdashboard.*;
+import frc.robot.subsystems.*;
+import frc.robot.commands.*;
+
 
 
 public class Robot extends TimedRobot {
   public static Drivetrain drivetrain;
   public static IMU gyro;
-  public static OI m_oi;
+  public static OI oi;
   public static Follower follower;
+  public static Preferences prefs;
+  public static PDP pdp;
+  public static Limelight limelight;
 
-  Command m_autonomousCommand;
+  Command autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   /**
@@ -31,10 +33,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_oi = new OI();
-    drivetrain = new Drivetrain();
-    gyro = new IMU();
     follower = new Follower();
+    oi = new OI();
+    drivetrain = new Drivetrain();
+        gyro = new IMU();
+    prefs = Preferences.getInstance();
+    pdp = new PDP();
+    limelight = new Limelight();
   }
 
   /**
@@ -47,6 +52,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    drivetrain.updateTrajectory();
+    SmartDashboard.putNumber("Left Feet Encoder", drivetrain.getLeftEncoderFeet());
+    SmartDashboard.putNumber("Right Feet Encoder", drivetrain.getRightEncoderFeet());
+    SmartDashboard.putNumber("Voltage", pdp.getVoltage());
+    SmartDashboard.putNumber("tx", limelight.getX());
+    SmartDashboard.putNumber("ty", limelight.getY());
+    SmartDashboard.putBoolean("tv", limelight.targetExists());
+    SmartDashboard.putNumber("Limelight Distance", limelight.getDistance());
   }
 
   /**
@@ -76,18 +89,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected();
+    autonomousCommand = new AutoLeftGroup();
 
-    /*
-     * String autoSelected = SmartDashboard.getString("Auto Selector",
-     * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-     * = new MyAutoCommand(); break; case "Default Auto": default:
-     * autonomousCommand = new ExampleCommand(); break; }
-     */
-
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.start();
+    if (autonomousCommand != null) {
+      autonomousCommand.start();
     }
   }
 
@@ -105,8 +110,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+    if (autonomousCommand != null) {
+      autonomousCommand.cancel();
     }
   }
 
@@ -116,6 +121,12 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+    double forwardJoystick = oi.joystick.getRawAxis(1);
+		double rotateJoystick = oi.joystick.getRawAxis(2);
+		if(Math.abs(forwardJoystick)<.15) {
+			forwardJoystick = 0;
+		}
+    drivetrain.driveWithJoystick(forwardJoystick, rotateJoystick/3.);
   }
 
   /**

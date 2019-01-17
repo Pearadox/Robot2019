@@ -11,13 +11,20 @@ public class Follower{
     LtoML: Starts from left side, goes to mid-left hatch
     */
 
-    final double dt = 0.01;
+    public double maxVelocity = 15.5;
+    public double kv = 1/maxVelocity;
+    public double ka = 0;
+    public double kp = 0;
+    public double kd = 0;
+
+    public final double dt = 0.01;
     final String folder = "/home/lvuser/paths/";
 
-    TreeMap<String, ArrayList<ArrayList<TPoint>>> paths = new TreeMap<>(); // 0: left, 1:right
+    public TreeMap<String, ArrayList<ArrayList<TPoint>>> paths = new TreeMap<>(); // 0: left, 1:right
 
     ArrayList<TPoint> LtoML_l = new ArrayList<>();
     ArrayList<TPoint> LtoML_r = new ArrayList<>();
+
 
     public Follower() {
         try {
@@ -29,8 +36,8 @@ public class Follower{
     }   
 
     public void readPath(String path) throws IOException{
-        Scanner L_scanner = new Scanner(new File(folder + path + "_Left.csv"));
-        Scanner R_scanner = new Scanner(new File(folder + path + "_Right.csv"));
+        Scanner L_scanner = new Scanner(new File(folder + path + "_left.csv"));
+        Scanner R_scanner = new Scanner(new File(folder + path + "_right.csv"));
 
         ArrayList<TPoint> list_l = new ArrayList<>();
         ArrayList<TPoint> list_r = new ArrayList<>();
@@ -50,5 +57,14 @@ public class Follower{
         pathArray.add(list_r);
 
         paths.put(path, pathArray);
+    }
+
+    public void updateMaxVelocity() {
+        double v = Robot.pdp.getVoltage();
+        double a = 0;
+        double b = 0;
+        double c = 0;
+        maxVelocity = a*v*v + b*v + c;
+        //scrap this idea
     }
 }

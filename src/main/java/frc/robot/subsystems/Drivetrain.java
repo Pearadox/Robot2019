@@ -2,32 +2,37 @@ package frc.robot.subsystems;
 
 import frc.robot.TPoint;
 import frc.robot.Robot;
-
+// /*
 import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/**
- *
- */
+
 public class Drivetrain extends Subsystem {
+	// /*
 	VictorSPX leftSlave1 = new VictorSPX(11);
 	VictorSPX leftSlave2 = new VictorSPX(10);
 	VictorSPX rightSlave1 = new VictorSPX(12);
 	VictorSPX rightSlave2 = new VictorSPX(13);
 	TalonSRX leftMaster = new TalonSRX(14);
 	TalonSRX rightMaster = new TalonSRX(16);
-	
+
 	Encoder leftEncoder = new Encoder(6,7);
 	Encoder rightEncoder = new Encoder(8,9);
-
+	// */
+/*
+	Victor left1 = new Victor(0);
+	Victor left2 = new Victor(1);
+	Victor left3 = new Victor(2);
+	Victor right1 = new Victor(3);
+	Victor right2 = new Victor(4);
+	Victor right3 = new Victor(5);
+ */
 	double lastFeet_r = 0;
 	double lastTime = 0;
 	double lastVelocity_r = 0;
@@ -35,10 +40,12 @@ public class Drivetrain extends Subsystem {
 	double lastFeet_l = 0;
 	double lastVelocity_l = 0;
 	double lastAcceleration_l = 0;
-	TPoint currentLeftTrajectoryPoint;
-	TPoint currentRightTrajectoryPoint;
+	
+	public TPoint currentLeftTrajectoryPoint;
+	public TPoint currentRightTrajectoryPoint;
 	
 	public Drivetrain() {
+		
 		rightSlave1.setInverted(true);
 		rightSlave2.setInverted(true);
 		rightMaster.setInverted(true);
@@ -47,6 +54,7 @@ public class Drivetrain extends Subsystem {
 		rightSlave1.follow(rightMaster);
 		rightSlave2.follow(rightMaster);
 		leftEncoder.setReverseDirection(true);
+		
 	}
 	
 	public void driveWithJoystick(double forward, double rotate ) {
@@ -59,27 +67,39 @@ public class Drivetrain extends Subsystem {
 	}
 	
 	public void setSpeedLeft(double leftSpeed) {
-		leftMaster.set(ControlMode.PercentOutput, leftSpeed);
+		 leftMaster.set(ControlMode.PercentOutput, leftSpeed);
+		// left1.set(leftSpeed);
+		// left2.set(leftSpeed);
+		// left3.set(leftSpeed);
 	}
 	
 	public void setSpeedRight(double rightSpeed) {
-		rightMaster.set(ControlMode.PercentOutput, rightSpeed);
+		 rightMaster.set(ControlMode.PercentOutput, rightSpeed);
+		// right1.set(-rightSpeed);
+		// right2.set(-rightSpeed);
+		// right3.set(-rightSpeed);
+	}
+
+	public void stop() {
+		setSpeed(0, 0);
 	}
 	
 	public long getLeftEncoder() {
 		return leftEncoder.get();
+		// return 0;
 	}
 	
 	public long getRightEncoder() {
 		return rightEncoder.get();
+		// return 0;
 	}
 	
 	public double getLeftEncoderInches() {
-		return leftEncoder.get()/ 128.0 * 2 * Math.PI * 3; //256 on practice
+		return getLeftEncoder()/ 128.0 * 2 * Math.PI * 3; //256 on practice
 	}
 	
 	public double getRightEncoderInches() {
-		return rightEncoder.get()/ 128.0 * 2 * Math.PI * 3; //256 on practice
+		return getRightEncoder()/ 128.0 * 2 * Math.PI * 3; //256 on practice
 	}
 
 	public double getRightEncoderFeet() {
@@ -90,6 +110,11 @@ public class Drivetrain extends Subsystem {
 		return getLeftEncoderInches()/12;
 	}
 	
+	public void zeroEncoders() {
+		 leftEncoder.reset();
+		 rightEncoder.reset();
+	}
+
 	public double getYawEncoder() {
 		double initialDifference = Robot.drivetrain.getLeftEncoder() - Robot.drivetrain.getRightEncoder();
 		return initialDifference * 360 / 1024;
@@ -113,7 +138,7 @@ public class Drivetrain extends Subsystem {
 		lastAcceleration_r = acceleration_r;
 		SmartDashboard.putNumber("Jerk_r", jerk_r);
 
-		double heading_rad = Robot.gyro.getYaw() * Math.PI/180;
+		double heading_rad = Math.toRadians(Robot.gyro.getYaw());
 		SmartDashboard.putNumber("Heading_rad", heading_rad); 
 
 		currentRightTrajectoryPoint = new TPoint(getRightEncoderFeet(), velocity_r, acceleration_r, heading_rad);

@@ -7,15 +7,29 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
  */
-public class ExampleSubsystem extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+public class PDP extends Subsystem {
 
+  PowerDistributionPanel pdp = new PowerDistributionPanel(0);
+
+  public double getVoltage(){
+    return pdp.getVoltage();
+  }
+
+public String WhatisAllen(){
+    String Allen = "bad at everything";
+    return Allen;
+  }
+
+public String WhatisJayden(){
+    String Jayden = "good";
+    return Jayden;
+  }
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.

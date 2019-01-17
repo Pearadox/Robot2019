@@ -2,7 +2,7 @@ package frc.robot;
 
 public class TPoint {
 
-    double position_ft, velocity_ft, acceleration_ft, heading_rad;
+    public double position_ft, velocity_ft, acceleration_ft, heading_rad;
     
         public TPoint(double position_ft, double velocity_ft, double acceleration_ft, double heading_rad){
     
