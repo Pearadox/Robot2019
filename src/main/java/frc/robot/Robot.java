@@ -34,12 +34,15 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     follower = new Follower();
-    oi = new OI();
     drivetrain = new Drivetrain();
-        gyro = new IMU();
+    gyro = new IMU();
     prefs = Preferences.getInstance();
     pdp = new PDP();
     limelight = new Limelight();
+
+    CameraServer.getInstance().startAutomaticCapture();
+
+    oi = new OI();
   }
 
   /**
@@ -90,6 +93,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     autonomousCommand = new AutoLeftGroup();
+    // autonomousCommand = new DriveForwardCommand(1);
 
     if (autonomousCommand != null) {
       autonomousCommand.start();
@@ -121,12 +125,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    double forwardJoystick = oi.joystick.getRawAxis(1);
-		double rotateJoystick = oi.joystick.getRawAxis(2);
-		if(Math.abs(forwardJoystick)<.15) {
-			forwardJoystick = 0;
-		}
-    drivetrain.driveWithJoystick(forwardJoystick, rotateJoystick/3.);
   }
 
   /**

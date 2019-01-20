@@ -1,8 +1,8 @@
 package frc.robot.subsystems;
 
 import frc.robot.TPoint;
-import frc.robot.Robot;
-// /*
+import frc.robot.*;
+import frc.robot.commands.*;
 import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -21,6 +21,8 @@ public class Drivetrain extends Subsystem {
 	VictorSPX rightSlave2 = new VictorSPX(13);
 	TalonSRX leftMaster = new TalonSRX(14);
 	TalonSRX rightMaster = new TalonSRX(16);
+
+	
 
 	Encoder leftEncoder = new Encoder(6,7);
 	Encoder rightEncoder = new Encoder(8,9);
@@ -45,7 +47,7 @@ public class Drivetrain extends Subsystem {
 	public TPoint currentRightTrajectoryPoint;
 	
 	public Drivetrain() {
-		
+	// /*	
 		rightSlave1.setInverted(true);
 		rightSlave2.setInverted(true);
 		rightMaster.setInverted(true);
@@ -54,7 +56,7 @@ public class Drivetrain extends Subsystem {
 		rightSlave1.follow(rightMaster);
 		rightSlave2.follow(rightMaster);
 		leftEncoder.setReverseDirection(true);
-		
+	// */	
 	}
 	
 	public void driveWithJoystick(double forward, double rotate ) {
@@ -165,8 +167,7 @@ public class Drivetrain extends Subsystem {
 	}
 	
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new DriveWithJoystick());
     }
 }
 

@@ -15,10 +15,11 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class PDP extends Subsystem {
 
-  PowerDistributionPanel pdp = new PowerDistributionPanel(0);
+  // PowerDistributionPanel pdp = new PowerDistributionPanel(0);
 
   public double getVoltage(){
-    return pdp.getVoltage();
+    // return pdp.getVoltage();
+    return 0;
   }
 
 public String WhatisAllen(){

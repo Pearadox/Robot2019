@@ -11,11 +11,12 @@ import frc.robot.TPoint;
 
 public class Follow extends Command {
 
-  double ka = 0.0;
-  double kp = 0.0;
+  double ka = 0.04;
+  double kp = 0.03;
   double kd = 0.0;
-  double kh = 0.0;
+  double kh = 0.15;
 
+  boolean reverse;
   String pathName;
   ArrayList<TPoint> pathL, pathR;
   double startTime;
@@ -24,9 +25,10 @@ public class Follow extends Command {
   double lastError_l = 0;
   double startHeading =0;
 
-  public Follow(String pathName) {
+  public Follow(String pathName, boolean reverse) {
     requires(Robot.drivetrain);
     this.pathName = pathName;
+    this.reverse = reverse;
 
     // check if follow ka, follow kp, follow kd exist and put them in if they don't
     if (!Preferences.getInstance().containsKey("MP ka")){
@@ -59,6 +61,8 @@ public class Follow extends Command {
     kp = Robot.prefs.getDouble("MP kp", kp);
     kd = Robot.prefs.getDouble("MP kd", kd);
     kh = Robot.prefs.getDouble("MP kh", kh);
+
+    if(reverse) kh = 0;
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -75,9 +79,13 @@ public class Follow extends Command {
     TPoint currentR = Robot.drivetrain.currentRightTrajectoryPoint;
 
     // Calculate the differences
-    double pos_error_l = targetL.position_ft-currentL.position_ft;
-    double pos_error_r = targetR.position_ft-currentR.position_ft;
-    double head_error = targetL.heading_rad-currentL.heading_rad - startHeading;
+    double start_head_target = pathL.get(0).position_ft;
+    double pos_error_l = targetL.position_ft - currentL.position_ft;
+    double pos_error_r = targetR.position_ft - currentR.position_ft;
+    double head_error = ((targetL.heading_rad - start_head_target) - (currentL.heading_rad - startHeading) % (2*Math.PI));
+    if(reverse) head_error += Math.PI;
+    if(head_error > Math.PI) head_error -= 2 * Math.PI;
+    if(reverse) kh = 0;
 
     double leftOutput = Robot.follower.kv * targetL.velocity_ft +
                         ka * targetL.acceleration_ft +
@@ -94,11 +102,11 @@ public class Follow extends Command {
     Robot.drivetrain.setSpeed(rightOutput, leftOutput);
 
     SmartDashboard.putNumber("V", Robot.follower.kv * targetL.velocity_ft);
-    SmartDashboard.putNumber("A", ka*targetL.acceleration_ft);
+    SmartDashboard.putNumber("A"  , ka*targetL.acceleration_ft);
     SmartDashboard.putNumber("P",  kp * pos_error_l);
     SmartDashboard.putNumber("D", kd * ((pos_error_l - lastError_l) / 
     (currentTime - lastTime) - targetL.velocity_ft));
-    SmartDashboard.putNumber("H", -kh * head_error);
+    SmartDashboard.putNumber("H", kh * head_error);
 
     lastTime = currentTime;
     lastError_r = pos_error_r;

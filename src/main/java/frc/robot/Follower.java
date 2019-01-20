@@ -11,10 +11,10 @@ public class Follower{
     LtoML: Starts from left side, goes to mid-left hatch
     */
 
-    public double maxVelocity = 15.5;
+    public double maxVelocity = 13;
     public double kv = 1/maxVelocity;
-    public double ka = 0;
-    public double kp = 0;
+    public double ka = 0.025;
+    public double kp = 0.003;
     public double kd = 0;
 
     public final double dt = 0.01;
@@ -29,6 +29,7 @@ public class Follower{
     public Follower() {
         try {
             readPath("LtoML");
+            readPath("BackUp");
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -46,9 +47,9 @@ public class Follower{
             String[] delimited_l = L_scanner.nextLine().split(",");
             String[] delimited_r = R_scanner.nextLine().split(",");
             TPoint left = new TPoint(Double.parseDouble(delimited_l[0]), Double.parseDouble(delimited_l[1]), 
-                                     Double.parseDouble(delimited_l[2]), Double.parseDouble(delimited_l[3]));
+                                     Double.parseDouble(delimited_l[2]), Math.toRadians(Double.parseDouble(delimited_l[3])));
             TPoint right = new TPoint(Double.parseDouble(delimited_r[0]), Double.parseDouble(delimited_r[1]), 
-                                     Double.parseDouble(delimited_r[2]), Double.parseDouble(delimited_r[3]));
+                                     Double.parseDouble(delimited_r[2]), Math.toRadians(Double.parseDouble(delimited_r[3])));
             list_l.add(left);
             list_r.add(right);                         
         }

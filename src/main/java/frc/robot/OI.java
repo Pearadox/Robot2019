@@ -8,8 +8,9 @@
 package frc.robot;
 
 
+import javax.swing.JToggleButton;
+import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
@@ -18,10 +19,11 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  */
 public class OI {
 	
-	Joystick joystick = new Joystick(0);
+	public Joystick joystick = new Joystick(0);
+	JoystickButton btn12 = new JoystickButton(joystick, 12);
 	
 	public OI() {
-		
+		btn12.whenPressed(new VisionTurnToTarget());
 	}
 	
 	

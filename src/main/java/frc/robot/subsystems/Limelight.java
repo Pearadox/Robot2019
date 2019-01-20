@@ -43,7 +43,7 @@ public class Limelight extends Subsystem {
   }
 
   public double getDistance() {
-    return (37.25-28.5) / Math.tan(Math.toRadians(-17+getY()));
+    return (28.5-37.25) / Math.tan(Math.toRadians(-17+getY()));
   }
 
 }
