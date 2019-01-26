@@ -43,7 +43,20 @@ public class Limelight extends Subsystem {
   }
 
   public double getDistance() {
-    return (28.5-37.25) / Math.tan(Math.toRadians(-17+getY()));
+    return (28.5-32.375) / Math.tan(Math.toRadians(-13.23 +getY()));
   }
 
+  public double getAngle() {
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    NetworkTableEntry thor = table.getEntry("thor");
+    NetworkTableEntry tvert = table.getEntry("tvert");
+    double currentRatio = thor.getDouble(0.0) / tvert.getDouble(0.0);
+    double originalRatio = 15.27 / 6.125;
+
+    return Math.toDegrees(Math.acos(currentRatio / originalRatio));
+
+    
+
+    
+  }
 }

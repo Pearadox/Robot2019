@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class Drivetrain extends Subsystem {
-	// /*
+ 	// /*
 	VictorSPX leftSlave1 = new VictorSPX(11);
 	VictorSPX leftSlave2 = new VictorSPX(10);
 	VictorSPX rightSlave1 = new VictorSPX(12);
@@ -34,7 +34,7 @@ public class Drivetrain extends Subsystem {
 	Victor right1 = new Victor(3);
 	Victor right2 = new Victor(4);
 	Victor right3 = new Victor(5);
- */
+//  */
 	double lastFeet_r = 0;
 	double lastTime = 0;
 	double lastVelocity_r = 0;
@@ -69,7 +69,7 @@ public class Drivetrain extends Subsystem {
 	}
 	
 	public void setSpeedLeft(double leftSpeed) {
-		 leftMaster.set(ControlMode.PercentOutput, leftSpeed);
+		leftMaster.set(ControlMode.PercentOutput, leftSpeed);
 		// left1.set(leftSpeed);
 		// left2.set(leftSpeed);
 		// left3.set(leftSpeed);
@@ -129,7 +129,6 @@ public class Drivetrain extends Subsystem {
 		lastTime = Timer.getFPGATimestamp();
 		double velocity_r = changeFeet_r/changeSeconds;
 		SmartDashboard.putNumber("Velocity_r", velocity_r);
-		
 		double changeVelocity_r = lastVelocity_r - lastVelocity_r; 
 		double acceleration_r = changeVelocity_r / changeSeconds;
 		SmartDashboard.putNumber("Acceleration_r", acceleration_r);

@@ -12,9 +12,12 @@ import frc.robot.TPoint;
 public class Follow extends Command {
 
   double ka = 0.04;
+  double ka_reverse = 0.05;
   double kp = 0.03;
+  double kp_reverse = 0.055;  //FIX THIS
   double kd = 0.0;
-  double kh = 0.15;
+  double kh = 0.1;
+  double kh_reverse = 0.02;  //FIX THIS
 
   boolean reverse;
   String pathName;
@@ -54,15 +57,14 @@ public class Follow extends Command {
     pathL = pathPair.get(0);
     pathR = pathPair.get(1);
     startTime = Timer.getFPGATimestamp();
+    
     startHeading = Math.toRadians(Robot.gyro.getYaw());
 
     Robot.prefs = Preferences.getInstance();
-    ka = Robot.prefs.getDouble("MP ka", ka);
+
     kp = Robot.prefs.getDouble("MP kp", kp);
     kd = Robot.prefs.getDouble("MP kd", kd);
     kh = Robot.prefs.getDouble("MP kh", kh);
-
-    if(reverse) kh = 0;
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -78,14 +80,23 @@ public class Follow extends Command {
     TPoint currentL = Robot.drivetrain.currentLeftTrajectoryPoint;
     TPoint currentR = Robot.drivetrain.currentRightTrajectoryPoint;
 
+    double targetHeading_rad = targetL.heading_rad;
+    if(reverse) targetHeading_rad = (targetL.heading_rad + 3 * Math.PI) % (2*Math.PI);
+    if(targetHeading_rad > Math.PI) targetHeading_rad-=2*Math.PI;
+
     // Calculate the differences
     double start_head_target = pathL.get(0).position_ft;
+
+    if(reverse) start_head_target = (start_head_target + 3 * Math.PI) % (2*Math.PI);
+    if(start_head_target > Math.PI) start_head_target-=2*Math.PI;
+
     double pos_error_l = targetL.position_ft - currentL.position_ft;
     double pos_error_r = targetR.position_ft - currentR.position_ft;
-    double head_error = ((targetL.heading_rad - start_head_target) - (currentL.heading_rad - startHeading) % (2*Math.PI));
-    if(reverse) head_error += Math.PI;
-    if(head_error > Math.PI) head_error -= 2 * Math.PI;
-    if(reverse) kh = 0;
+    double head_error = ((targetHeading_rad - start_head_target) - (currentL.heading_rad - startHeading) % (2*Math.PI));
+
+    double ka = reverse ? this.ka_reverse : this.ka;
+    double kp = reverse ? this.kp_reverse : this.kp;
+    double kh = reverse ? this.kh_reverse : this.kh;
 
     double leftOutput = Robot.follower.kv * targetL.velocity_ft +
                         ka * targetL.acceleration_ft +
@@ -106,7 +117,7 @@ public class Follow extends Command {
     SmartDashboard.putNumber("P",  kp * pos_error_l);
     SmartDashboard.putNumber("D", kd * ((pos_error_l - lastError_l) / 
     (currentTime - lastTime) - targetL.velocity_ft));
-    SmartDashboard.putNumber("H", kh * head_error);
+    SmartDashboard.putNumber("H", kh * targetHeading_rad);
 
     lastTime = currentTime;
     lastError_r = pos_error_r;

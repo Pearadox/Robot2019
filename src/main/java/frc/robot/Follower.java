@@ -29,7 +29,8 @@ public class Follower{
     public Follower() {
         try {
             readPath("LtoML");
-            readPath("BackUp");
+            readPath("reverseM");
+            readPath("MtoLoad");
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -37,8 +38,13 @@ public class Follower{
     }   
 
     public void readPath(String path) throws IOException{
-        Scanner L_scanner = new Scanner(new File(folder + path + "_left.csv"));
-        Scanner R_scanner = new Scanner(new File(folder + path + "_right.csv"));
+        File leftFile = new File(folder + path + "_left.csv");
+        File rightFile = new File(folder + path + "_right.csv");
+
+        if(!leftFile.exists() || !rightFile.exists()) return;
+
+        Scanner L_scanner = new Scanner(leftFile);
+        Scanner R_scanner = new Scanner(rightFile);
 
         ArrayList<TPoint> list_l = new ArrayList<>();
         ArrayList<TPoint> list_r = new ArrayList<>();
