@@ -29,33 +29,38 @@ public class Follow extends Command {
   double lastError_l = 0;
   double startHeading =0;
 
+  public Follow() {
+    requires(Robot.drivetrain);
+
+    // check if follow ka, follow kp, follow kd exist and put them in if they don't
+    if (!Preferences.getInstance().containsKey("MP ka")){
+      Preferences.getInstance().putDouble("MP ka", ka);
+      }
+      if (!Preferences.getInstance().containsKey("MP kp")){
+        Preferences.getInstance().putDouble("MP kp", kp);
+      }
+      if (!Preferences.getInstance().containsKey("MP kd")){
+        Preferences.getInstance().putDouble("MP kd", kd);
+      }
+      if (!Preferences.getInstance().containsKey("MP kh")){
+        Preferences.getInstance().putDouble("MP kh", kh);
+      }
+  }
+
   public Follow(ArrayList<ArrayList<TPoint>> list) {
+    this();
     pathL = list.get(0);
     pathR = list.get(1);
   }
 
   public Follow(String pathName, boolean reverse) {
-    requires(Robot.drivetrain);
+    this();
     this.pathName = pathName;
     this.reverse = reverse;
 
     ArrayList<ArrayList<TPoint>> pathPair = Robot.follower.paths.get(this.pathName);
     pathL = pathPair.get(0);
     pathR = pathPair.get(1);
-
-    // check if follow ka, follow kp, follow kd exist and put them in if they don't
-    if (!Preferences.getInstance().containsKey("MP ka")){
-    Preferences.getInstance().putDouble("MP ka", ka);
-    }
-    if (!Preferences.getInstance().containsKey("MP kp")){
-      Preferences.getInstance().putDouble("MP kp", kp);
-    }
-    if (!Preferences.getInstance().containsKey("MP kd")){
-      Preferences.getInstance().putDouble("MP kd", kd);
-    }
-    if (!Preferences.getInstance().containsKey("MP kh")){
-      Preferences.getInstance().putDouble("MP kh", kh);
-    }
   }
 
   @Override
