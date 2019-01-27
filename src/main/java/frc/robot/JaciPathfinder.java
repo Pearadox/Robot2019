@@ -7,6 +7,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
@@ -20,45 +21,40 @@ public class JaciPathfinder {
     double max_jerk = 200;
     double WHEEL_BASE_WIDTH = 2.3;
 
-    public void createShortPath(double x, double y, double headingCorrection) {
+    public ArrayList<ArrayList<TPoint>> createShortPath(double x, double y, double headingCorrection) {
         Waypoint[] points = new Waypoint[] {
             new Waypoint(-x, -y, -headingCorrection),
             new Waypoint(0, 0, 0)
         };
-
+        SmartDashboard.putNumber("part", 1);
         Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 
                                                             Robot.follower.dt, MAX_VELOCITY, acceleration, max_jerk);
         Trajectory trajectory = Pathfinder.generate(points, config);
         TankModifier modifier = new TankModifier(trajectory).modify(WHEEL_BASE_WIDTH);
-
+        SmartDashboard.putNumber("part", 2);
         Segment[] leftSegments = modifier.getLeftTrajectory().segments;
         Segment[] rightSegments = modifier.getRightTrajectory().segments;
 
         ArrayList<ArrayList<TPoint>> lists = new ArrayList<>();
-        lists.add(new ArrayList<>());
-        lists.add(new ArrayList<>());
-
-        try{
-            PrintWriter pw = new PrintWriter(new FileWriter(new File(Robot.file)));
+        ArrayList<TPoint> left = new ArrayList<>();
+        ArrayList<TPoint> right = new ArrayList<>();
 
         for(int i = 0; i < leftSegments.length; i++) {
+            SmartDashboard.putNumber("part", i);
             Segment lSeg = leftSegments[i];
             Segment rSeg = rightSegments[i];
             TPoint l = new TPoint(lSeg.position, lSeg.velocity, lSeg.acceleration, lSeg.heading);
             TPoint r = new TPoint(rSeg.position, rSeg.velocity, rSeg.acceleration, rSeg.heading);
 
-            pw.println(r.position_ft);
-
-            lists.get(0).add(r);
-            lists.get(1).add(l);
+            left.add(l);
+            right.add(r);
         }
+
+        SmartDashboard.putNumber("Size", left.size());
+
+        lists.add(right);
+        lists.add(left);
         
-
-
-        pw.close();
-
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+        return lists;
     }
 }

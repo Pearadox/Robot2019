@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.*;
 import java.util.*;
 
-import com.sun.java.util.jar.pack;
+//import com.sun.java.util.jar.pack;
 
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.JaciPathfinder;
 import frc.robot.Robot;
+import frc.robot.TPoint;
 import frc.robot.subsystems.Limelight;
 import jaci.pathfinder.Pathfinder;
 
@@ -32,8 +33,6 @@ public class VisionTurnToTarget extends Command {
   double kp = 0.021;
   double ki = 0.0;
   double kd = 0.15;
-  double startingWayPointx;
-  double startingWayPointy;
 
   boolean reachedTarget;
 
@@ -75,41 +74,12 @@ public class VisionTurnToTarget extends Command {
       lastError = Robot.limelight.getX();
       double output = P + I - D;
 
-      // if(output > 0) output += 0.1;
-      // else output -= 0.1;
+      if(output > 0) output += 0.1;
+      else output -= 0.1;
 
-      // Robot.drivetrain.setSpeed(output, -output);
-
-      SmartDashboard.putNumber("I", ki * error_sum);
-      
-      // getAngle
-      double getAngle = Robot.limelight.getAngle();
-      // getStartingWayPointx
-      double startingWayPointx = Robot.limelight.getDistance() * Math.cos(Robot.limelight.getAngle());
-      // getStartingWayPointy
-      double startingWayPointy = Robot.limelight.getDistance() * Math.sin(Robot.limelight.getAngle()); 
-      // createShortPath
-      Robot.pathfinder.createShortPath(startingWayPointx, startingWayPointy, Robot.limelight.getAngle());
-      // check temp.txt file
-      try {
-        trajectoryReadPath("temp.txt");
-      }
-      catch(Exception e) {
-        e.printStackTrace();
-      }
-      
-      // driveToTarget
-
+      Robot.drivetrain.setSpeed(output, -output);
   }
   
-  
-  public void trajectoryReadPath(String path) throws IOException{
-    File visionFile = new File(Robot.folder + path + "temp.txt");
-
-    if( !visionFile.exists()) return;
-
-    Scanner vision_scanner = new Scanner(rightFile);
-  }
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
@@ -119,14 +89,14 @@ public class VisionTurnToTarget extends Command {
       setTimeout(0.5);
       reachedTarget = true;
       return false;
-    
     }
     else if(reachedTarget && isTimedOut()) {
-      double distance = Robot.limelight.getDistance()/12.;
-      Scheduler.getInstance().add(new DriveForwardCommand(-distance));
+      ArrayList<ArrayList<TPoint>> trajectory = Robot.limelight.getTrajectory();
+      Scheduler.getInstance().add(new Follow(trajectory));
       return true;
     }
-    return isTimedOut();
+    return false;
+    // return isTimedOut();
   }
 
   // Called once after isFinished returns true

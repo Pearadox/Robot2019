@@ -1,6 +1,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -28,10 +29,19 @@ public class Follow extends Command {
   double lastError_l = 0;
   double startHeading =0;
 
+  public Follow(ArrayList<ArrayList<TPoint>> list) {
+    pathL = list.get(0);
+    pathR = list.get(1);
+  }
+
   public Follow(String pathName, boolean reverse) {
     requires(Robot.drivetrain);
     this.pathName = pathName;
     this.reverse = reverse;
+
+    ArrayList<ArrayList<TPoint>> pathPair = Robot.follower.paths.get(this.pathName);
+    pathL = pathPair.get(0);
+    pathR = pathPair.get(1);
 
     // check if follow ka, follow kp, follow kd exist and put them in if they don't
     if (!Preferences.getInstance().containsKey("MP ka")){
@@ -53,9 +63,6 @@ public class Follow extends Command {
     Robot.follower.updateMaxVelocity();
     Robot.drivetrain.zeroEncoders();
     // Get paths and put them in the TPoint lists
-    ArrayList<ArrayList<TPoint>> pathPair = Robot.follower.paths.get(pathName);
-    pathL = pathPair.get(0);
-    pathR = pathPair.get(1);
     startTime = Timer.getFPGATimestamp();
     
     startHeading = Math.toRadians(Robot.gyro.getYaw());
@@ -128,13 +135,14 @@ public class Follow extends Command {
   @Override
   protected boolean isFinished() {
     double runTime = Timer.getFPGATimestamp() - startTime;
-    double totalRunTime = Robot.follower.paths.get(pathName).get(0).size() * Robot.follower.dt;
+    double totalRunTime = pathL.size() * Robot.follower.dt;
     return runTime >= totalRunTime;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    DriverStation.reportWarning("" + pathL.size(), true);
     Robot.drivetrain.stop();
   }
 

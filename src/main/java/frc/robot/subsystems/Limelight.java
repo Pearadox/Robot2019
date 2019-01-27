@@ -3,7 +3,10 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.*;
+import java.util.*;
+import frc.robot.*;
 
 
 public class Limelight extends Subsystem {
@@ -43,7 +46,7 @@ public class Limelight extends Subsystem {
   }
 
   public double getDistance() {
-    return (28.5-32.375) / Math.tan(Math.toRadians(-13.23 +getY()));
+    return (32.06125-28.5) / Math.tan(Math.toRadians(16.9 - getY()));
   }
 
   public double getAngle() {
@@ -51,12 +54,21 @@ public class Limelight extends Subsystem {
     NetworkTableEntry thor = table.getEntry("thor");
     NetworkTableEntry tvert = table.getEntry("tvert");
     double currentRatio = thor.getDouble(0.0) / tvert.getDouble(0.0);
-    double originalRatio = 15.27 / 6.125;
+    // double originalRatio = 15.27 / 6.125;
+    double originalRatio = 77./34;
 
     return Math.toDegrees(Math.acos(currentRatio / originalRatio));
-
-    
-
-    
   }
+
+  public ArrayList<ArrayList<TPoint>> getTrajectory() {
+    double theta = Math.toRadians(90 - getAngle());
+    double headingCorrection = Math.toRadians(90-getAngle()-getX());
+    double forward = getDistance() * Math.sin(theta);
+    double sideways = getDistance() * Math.cos(theta);
+    SmartDashboard.putNumber("forward", forward);
+    SmartDashboard.putNumber("sideways", sideways);
+
+    return Robot.pathfinder.createShortPath(forward, sideways, headingCorrection);
+  }
+
 }
