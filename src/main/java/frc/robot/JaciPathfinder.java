@@ -66,8 +66,8 @@ public class JaciPathfinder {
             pw.close();
         } catch(Exception e) {}
 
-        lists.add(right);
         lists.add(left);
+        lists.add(right);
         
         return lists;
     }

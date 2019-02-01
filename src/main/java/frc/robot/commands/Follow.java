@@ -13,12 +13,11 @@ import frc.robot.TPoint;
 public class Follow extends Command {
 
   double ka = 0.04;
-  double ka_reverse = 0.05;
-  double kp = 0.03;
-  double kp_reverse = 0.055;  //FIX THIS
+  double kp = 0.15;
+  double kp_reverse = 0.07;
   double kd = 0.0;
-  double kh = 0.1;
-  double kh_reverse = 0.02;  //FIX THIS
+  double kh = -.08;
+  double kh_reverse = 0.017;  //FIX THIS
 
   boolean reverse;
   String pathName;
@@ -27,7 +26,7 @@ public class Follow extends Command {
   double lastTime = 0;
   double lastError_r = 0;
   double lastError_l = 0;
-  double startHeading =0;
+  double startHeading = 0;
 
   public Follow() {
     requires(Robot.drivetrain);
@@ -35,16 +34,19 @@ public class Follow extends Command {
     // check if follow ka, follow kp, follow kd exist and put them in if they don't
     if (!Preferences.getInstance().containsKey("MP ka")){
       Preferences.getInstance().putDouble("MP ka", ka);
-      }
-      if (!Preferences.getInstance().containsKey("MP kp")){
-        Preferences.getInstance().putDouble("MP kp", kp);
-      }
-      if (!Preferences.getInstance().containsKey("MP kd")){
-        Preferences.getInstance().putDouble("MP kd", kd);
-      }
-      if (!Preferences.getInstance().containsKey("MP kh")){
-        Preferences.getInstance().putDouble("MP kh", kh);
-      }
+    }
+    if (!Preferences.getInstance().containsKey("MP kp")){
+      Preferences.getInstance().putDouble("MP kp", kp);
+    }
+    if (!Preferences.getInstance().containsKey("MP kd")){
+      Preferences.getInstance().putDouble("MP kd", kd);
+    }
+    if (!Preferences.getInstance().containsKey("MP kh_reverse")){
+      Preferences.getInstance().putDouble("MP kh_reverse", kh_reverse);
+    }
+    if (!Preferences.getInstance().containsKey("MP kp_reverse")){
+      Preferences.getInstance().putDouble("MP kp_reverse", kp_reverse);
+    }
   }
 
   public Follow(ArrayList<ArrayList<TPoint>> list) {
@@ -65,7 +67,6 @@ public class Follow extends Command {
 
   @Override
   protected void initialize() {
-    Robot.follower.updateMaxVelocity();
     Robot.drivetrain.zeroEncoders();
     // Get paths and put them in the TPoint lists
     startTime = Timer.getFPGATimestamp();
@@ -75,8 +76,11 @@ public class Follow extends Command {
     Robot.prefs = Preferences.getInstance();
 
     kp = Robot.prefs.getDouble("MP kp", kp);
-    kd = Robot.prefs.getDouble("MP kd", kd);
+    ka = Robot.prefs.getDouble("MP ka", ka);
     kh = Robot.prefs.getDouble("MP kh", kh);
+
+    kp_reverse = Robot.prefs.getDouble("MP kp_reverse", kp_reverse);
+    kh_reverse = Robot.prefs.getDouble("MP kh_reverse", kh_reverse);
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -93,20 +97,20 @@ public class Follow extends Command {
     TPoint currentR = Robot.drivetrain.currentRightTrajectoryPoint;
 
     double targetHeading_rad = targetL.heading_rad;
-    if(reverse) targetHeading_rad = (targetL.heading_rad + 3 * Math.PI) % (2*Math.PI);
+    if(reverse) targetHeading_rad = (targetL.heading_rad + Math.PI);
     if(targetHeading_rad > Math.PI) targetHeading_rad-=2*Math.PI;
 
     // Calculate the differences
     double start_head_target = pathL.get(0).position_ft;
 
-    if(reverse) start_head_target = (start_head_target + 3 * Math.PI) % (2*Math.PI);
-    if(start_head_target > Math.PI) start_head_target-=2*Math.PI;
-
     double pos_error_l = targetL.position_ft - currentL.position_ft;
     double pos_error_r = targetR.position_ft - currentR.position_ft;
     double head_error = ((targetHeading_rad - start_head_target) - (currentL.heading_rad - startHeading) % (2*Math.PI));
 
-    double ka = reverse ? this.ka_reverse : this.ka;
+    head_error %= (2*Math.PI);
+    if(head_error > Math.PI) head_error-=2*Math.PI;
+    if(head_error < -Math.PI) head_error+=2*Math.PI;
+
     double kp = reverse ? this.kp_reverse : this.kp;
     double kh = reverse ? this.kh_reverse : this.kh;
 
@@ -122,7 +126,7 @@ public class Follow extends Command {
                         kd * ((pos_error_r - lastError_r) / 
                           (currentTime - lastTime) - targetR.velocity_ft) +
                         kh * head_error;
-    Robot.drivetrain.setSpeed(rightOutput, leftOutput);
+    Robot.drivetrain.setSpeed(leftOutput, rightOutput);
 
     SmartDashboard.putNumber("V", Robot.follower.kv * targetL.velocity_ft);
     SmartDashboard.putNumber("A"  , ka*targetL.acceleration_ft);
@@ -147,7 +151,6 @@ public class Follow extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    DriverStation.reportWarning("" + pathL.size(), true);
     Robot.drivetrain.stop();
   }
 
