@@ -46,11 +46,9 @@ public class Robot extends TimedRobot {
     limelight = new Limelight();
     pneumatics = new Pneumatics();
 
-    CameraServer.getInstance().startAutomaticCapture();
+    // CameraServer.getInstance().startAutomaticCapture();
 
-    oi = new OI();
-
-    // pathfinder.createShortPath(10, 3, 0);
+    oi = new OI();;
   }
 
   /**

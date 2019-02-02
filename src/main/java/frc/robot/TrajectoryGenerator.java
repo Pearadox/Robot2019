@@ -9,7 +9,8 @@ public class TrajectoryGenerator {
 	static double CRUISE_VELOCITY = 12.5;
 	static double ACCELERATION = 6;
 
-	public static ArrayList<TPoint> getTrajectory(double distance, double interval, double cruiseVelocity, double acceleration) //meters, seconds, m/s, m/s/s
+    public static ArrayList<TPoint> getTrajectory(double distance, double interval, 
+        double cruiseVelocity, double acceleration) //meters, seconds, m/s, m/s/s
     {
 		CRUISE_VELOCITY = cruiseVelocity;
 		ACCELERATION = acceleration;
@@ -33,7 +34,7 @@ public class TrajectoryGenerator {
                     double s = ACCELERATION * time * Math.copySign(1, distance);
                     double a = ACCELERATION * Math.copySign(1, distance);
                     double d = .5 * s * time;
-                    list.add(new TPoint(s, d, a, Robot.gyro.getYaw()));
+                    list.add(new TPoint(s, d, a, 0));
                 }
                 //section 2: cruising along at CRUISE_VELOCITY
                 else if(time < cruiseTime + accelTime)
@@ -42,7 +43,7 @@ public class TrajectoryGenerator {
                 	double s = CRUISE_VELOCITY * Math.copySign(1, distance);
                 	double a = 0;
                 	double d = (accelDistance + currentCruiseTime * s);
-                	list.add(new TPoint(s, d, a, Robot.gyro.getYaw()));
+                	list.add(new TPoint(s, d, a, 0));
                 }
                 //section 3: decelerating from cruise velocity to 0
                 else if(time < cruiseTime + 2*accelTime)
@@ -55,7 +56,7 @@ public class TrajectoryGenerator {
                     double a = -ACCELERATION * Math.copySign(1, distance);
                     if(s == 0) a = 0;
                     double d = accelDistance + rectangleDistance + timeAfterDecelerationStarted * CRUISE_VELOCITY / 2 * Math.copySign(1, distance);
-                    list.add(new TPoint(s, d, a, Robot.gyro.getYaw()));
+                    list.add(new TPoint(s, d, a, 0));
                 }
                 else break;
             }
@@ -76,7 +77,7 @@ public class TrajectoryGenerator {
 	                double s = ACCELERATION * time * Math.copySign(1, distance);
 	                double a = ACCELERATION * Math.copySign(1, distance);
 	                double d = .5 * s * time;
-	                list.add(new TPoint(s, d, a, Robot.gyro.getYaw()));
+	                list.add(new TPoint(s, d, a, 0));
 	            }
 	            //section 2: decelerate from peak velocity to 0
 	            else if(time <= 2 * accelTime)
@@ -88,7 +89,7 @@ public class TrajectoryGenerator {
 	                double a = -ACCELERATION * Math.copySign(1, distance);
 	                if(decelVelocity == 0) a = 0;
 	                double d = distance - (accelTime * 2 - time) * s / 2;
-	                list.add(new TPoint(s, d, a, Robot.gyro.getYaw()));
+	                list.add(new TPoint(s, d, a, 0));
 	            }
 	            else break;
         	}

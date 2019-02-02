@@ -7,8 +7,6 @@
 
 package frc.robot;
 
-
-import javax.swing.JToggleButton;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -20,10 +18,24 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 public class OI {
 	
 	public Joystick joystick = new Joystick(0);
+	JoystickButton btn1 = new JoystickButton(joystick, 1);
+	JoystickButton btn2 = new JoystickButton(joystick, 2);
+	JoystickButton btn3 = new JoystickButton(joystick, 3);
+	JoystickButton btn4 = new JoystickButton(joystick, 4);
+	JoystickButton btn5 = new JoystickButton(joystick, 5);
+	JoystickButton btn6 = new JoystickButton(joystick, 6);
+	JoystickButton btn7 = new JoystickButton(joystick, 7);
+	JoystickButton btn8 = new JoystickButton(joystick, 8);
+	JoystickButton btn9 = new JoystickButton(joystick, 9);
+	JoystickButton btn10 = new JoystickButton(joystick, 10);
+	JoystickButton btn11 = new JoystickButton(joystick, 11);
 	JoystickButton btn12 = new JoystickButton(joystick, 12);
 	
 	public OI() {
+
+		btn9.whenPressed(new TurnRight(90));
 		btn12.whenPressed(new VisionTurnToTarget());
+
 	}
 	
 	

@@ -17,7 +17,7 @@ public class Follower{
     public double kp = 0.003;
     public double kd = 0;
 
-    public final double dt = 0.01;
+    public static final double dt = 0.01;
     final String folder = "/home/lvuser/paths/";
 
     public TreeMap<String, ArrayList<ArrayList<TPoint>>> paths = new TreeMap<>(); // 0: left, 1:right

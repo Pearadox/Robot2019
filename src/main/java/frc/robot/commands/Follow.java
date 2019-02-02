@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
+
 import java.util.*;
 import frc.robot.TPoint;
 
@@ -20,6 +22,7 @@ public class Follow extends Command {
   double kh_reverse = 0.017;  //FIX THIS
 
   boolean reverse;
+  boolean ignoreHeading = false;
   String pathName;
   ArrayList<TPoint> pathL, pathR;
   double startTime;
@@ -49,10 +52,11 @@ public class Follow extends Command {
     }
   }
 
-  public Follow(ArrayList<ArrayList<TPoint>> list) {
+  public Follow(ArrayList<ArrayList<TPoint>> list, boolean ignoreHeading) {
     this();
     pathL = list.get(0);
     pathR = list.get(1);
+    this.ignoreHeading = ignoreHeading;
   }
 
   public Follow(String pathName, boolean reverse) {
@@ -95,10 +99,14 @@ public class Follow extends Command {
     TPoint targetR = pathR.get(index);
     TPoint currentL = Robot.drivetrain.currentLeftTrajectoryPoint;
     TPoint currentR = Robot.drivetrain.currentRightTrajectoryPoint;
-
+    
     double targetHeading_rad = targetL.heading_rad;
+    if(ignoreHeading) {
+      double difference = targetL.position_ft-targetR.position_ft;
+      double halfTurnFeet = RobotMap.halfTurn * RobotMap.feetPerTick;
+      targetHeading_rad = difference/halfTurnFeet * Math.PI;
+    }
     if(reverse) targetHeading_rad = (targetL.heading_rad + Math.PI);
-    if(targetHeading_rad > Math.PI) targetHeading_rad-=2*Math.PI;
 
     // Calculate the differences
     double start_head_target = pathL.get(0).position_ft;

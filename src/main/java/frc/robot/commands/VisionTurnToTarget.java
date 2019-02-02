@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.io.*;
 import java.util.*;
 
-//import com.sun.java.util.jar.pack;
-
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
