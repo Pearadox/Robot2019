@@ -27,12 +27,9 @@ public class JaciPathfinder {
             new Waypoint(-x, -y, -headingCorrection),
             new Waypoint(0, 0, 0)
         };
-// /*
+        
         Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_FAST, 
-                                                            Robot.follower.dt, MAX_VELOCITY, acceleration, max_jerk);
-                                                            // */
-
-        // Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, 1.7, 2.0, 60.0);                                        
+                                                            Robot.follower.dt, MAX_VELOCITY, acceleration, max_jerk);                                    
         Trajectory trajectory = Pathfinder.generate(points, config);
         TankModifier modifier = new TankModifier(trajectory).modify(WHEEL_BASE_WIDTH);
         Segment[] leftSegments = modifier.getLeftTrajectory().segments;
@@ -42,13 +39,8 @@ public class JaciPathfinder {
         ArrayList<TPoint> left = new ArrayList<>();
         ArrayList<TPoint> right = new ArrayList<>();
 
-        
-        try {
-            PrintWriter pw = new PrintWriter(new FileWriter("/home/lvuser/aweo.txt"));
-            pw.println("path");
           
         for(int i = 0; i < leftSegments.length; i++) {
-            SmartDashboard.putNumber("part", i);
             Segment lSeg = leftSegments[i];
             Segment rSeg = rightSegments[i];
             // TPoint l = new TPoint(lSeg.position, lSeg.velocity, lSeg.acceleration, lSeg.heading);
@@ -59,16 +51,37 @@ public class JaciPathfinder {
 
             left.add(l);
             right.add(r);
-
-            pw.println(lSeg.position + "," + rSeg.position + " " + lSeg.heading);
         }
-        
-            pw.close();
-        } catch(Exception e) {}
 
         lists.add(left);
         lists.add(right);
         
         return lists;
+    }
+
+    public double[][] createPositionalPath(double x, double y, double headingCorrection, double dt)
+    {
+        Waypoint[] points = new Waypoint[] {
+            new Waypoint(-x, -y, -headingCorrection),
+            new Waypoint(0, 0, 0)
+        };
+        
+        Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_FAST, 
+                                                            dt, MAX_VELOCITY, acceleration, max_jerk);                                    
+        Trajectory trajectory = Pathfinder.generate(points, config);
+        Segment[] segments = trajectory.segments;
+        double[][] path = new double[segments.length][2];
+        double totalX = 0;
+        double totalY = 0;
+        double lastPosition = 0;
+        for(int i = 0; i < segments.length; i++) {
+            Segment seg = segments[i];
+            path[i][0] = totalX;
+            path[i][1] = totalY;
+            totalX += (seg.position-lastPosition) * Math.cos(seg.heading);
+            totalY += (seg.position-lastPosition) * Math.sin(seg.heading);
+            lastPosition = seg.position;
+        }
+        return path;
     }
 }
