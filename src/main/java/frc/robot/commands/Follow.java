@@ -1,6 +1,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Timer;
@@ -21,7 +22,7 @@ public class Follow extends Command {
   double kh = -.08;
   double kh_reverse = 0.017;  //FIX THIS
 
-  boolean reverse;
+  boolean reverse, mirror;
   boolean ignoreHeading = false;
   String pathName;
   ArrayList<TPoint> pathL, pathR;
@@ -31,8 +32,12 @@ public class Follow extends Command {
   double lastError_l = 0;
   double startHeading = 0;
 
-  public Follow() {
+  public Follow(boolean ignoreHeading, boolean reverse, boolean mirror) {
     requires(Robot.drivetrain);
+
+    this.ignoreHeading = ignoreHeading;
+    this.reverse = reverse;
+    this.mirror = mirror;
 
     // check if follow ka, follow kp, follow kd exist and put them in if they don't
     if (!Preferences.getInstance().containsKey("MP ka")){
@@ -53,16 +58,14 @@ public class Follow extends Command {
   }
 
   public Follow(ArrayList<ArrayList<TPoint>> list, boolean ignoreHeading) {
-    this();
+    this(ignoreHeading, false, false);
     pathL = list.get(0);
     pathR = list.get(1);
-    this.ignoreHeading = ignoreHeading;
   }
 
-  public Follow(String pathName, boolean reverse) {
-    this();
+  public Follow(String pathName, boolean reverse, boolean mirror) {
+    this(false, reverse, mirror);
     this.pathName = pathName;
-    this.reverse = reverse;
 
     ArrayList<ArrayList<TPoint>> pathPair = Robot.follower.paths.get(this.pathName);
     pathL = pathPair.get(0);
@@ -95,6 +98,7 @@ public class Follow extends Command {
     double runTime = currentTime - startTime;
     int index = (int)Math.round(runTime / Robot.follower.dt);
     if(index >= pathL.size()) return;
+
     TPoint targetL = pathL.get(index);
     TPoint targetR = pathR.get(index);
     TPoint currentL = Robot.drivetrain.currentLeftTrajectoryPoint;
@@ -106,21 +110,38 @@ public class Follow extends Command {
       double halfTurnFeet = RobotMap.halfTurn * RobotMap.feetPerTick;
       targetHeading_rad = difference/halfTurnFeet * Math.PI;
     }
-    if(reverse) targetHeading_rad = (targetL.heading_rad + Math.PI);
+
+    double pos_targetL = (reverse^mirror) ? targetR.position_ft : targetL.velocity_ft;
+    double vel_targetL = (reverse^mirror) ? targetR.position_ft : targetL.velocity_ft;
+    double accel_targetL = (reverse^mirror) ? targetR.position_ft : targetL.acceleration_ft;
+    double pos_targetR = (reverse^mirror) ? targetL.position_ft : targetR.position_ft;
+    double vel_targetR = (reverse^mirror) ? targetL.position_ft : targetR.velocity_ft;
+    double accel_targetR = (reverse^mirror) ? targetL.position_ft : targetR.acceleration_ft;
+
+    if(reverse) {
+      pos_targetL *= -1;
+      vel_targetL *= -1;
+      accel_targetL *= -1;
+      pos_targetR *= -1;
+      vel_targetR *= -1;
+      accel_targetR *= -1;
+    }
 
     // Calculate the differences
     double start_head_target = pathL.get(0).position_ft;
 
     double pos_error_l = targetL.position_ft - currentL.position_ft;
     double pos_error_r = targetR.position_ft - currentR.position_ft;
-    double head_error = ((targetHeading_rad - start_head_target) - (currentL.heading_rad - startHeading) % (2*Math.PI));
+    double head_error = (targetHeading_rad - start_head_target) - (currentL.heading_rad - startHeading);
+
+    if(mirror) head_error *= -1;
 
     head_error %= (2*Math.PI);
     if(head_error > Math.PI) head_error-=2*Math.PI;
     if(head_error < -Math.PI) head_error+=2*Math.PI;
 
     double kp = reverse ? this.kp_reverse : this.kp;
-    double kh = reverse ? this.kh_reverse : this.kh;
+    double kh = reverse ? this.kh_reverse  : this.kh;
 
     double leftOutput = Robot.follower.kv * targetL.velocity_ft +
                         ka * targetL.acceleration_ft +

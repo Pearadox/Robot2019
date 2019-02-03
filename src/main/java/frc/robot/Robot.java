@@ -7,6 +7,11 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoMode;
+import edu.wpi.cscore.VideoSink;
+import edu.wpi.cscore.VideoMode.PixelFormat;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.*;
 import edu.wpi.first.wpilibj.smartdashboard.*;
@@ -27,9 +32,16 @@ public class Robot extends TimedRobot {
   public static Pneumatics pneumatics;
 
   public static String folder = "/home/lvuser/paths/";
+  public static boolean reverseDrivetrain = false;
 
+  UsbCamera camera1, camera2;
+  VideoSink server;
+  CvSink cvsink1 = new CvSink("cam1cv");
+  CvSink cvsink2 = new CvSink("cam2cv");
+  boolean prevReverse = false;
 
   Command autonomousCommand;
+
 
   /**
    * This function is run when the robot is first started up and should be
@@ -46,9 +58,23 @@ public class Robot extends TimedRobot {
     limelight = new Limelight();
     pneumatics = new Pneumatics();
 
-    // CameraServer.getInstance().startAutomaticCapture();
+    oi = new OI();
 
-    oi = new OI();;
+    camera1 = CameraServer.getInstance().startAutomaticCapture(0);
+    camera2 = CameraServer.getInstance().startAutomaticCapture(1);
+    server = CameraServer.getInstance().getServer();
+
+    camera1.setResolution(320, 240);
+    camera2.setResolution(320, 240);
+
+    camera1.setPixelFormat(PixelFormat.kMJPEG);
+    camera2.setPixelFormat(PixelFormat.kMJPEG);
+    
+    cvsink1.setSource(camera1);
+    cvsink1.setEnabled(true);
+    
+    cvsink2.setSource(camera2);
+    cvsink2.setEnabled(true);
   }
 
   /**
@@ -70,6 +96,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("tv", limelight.targetExists());
     SmartDashboard.putNumber("Limelight Distance", limelight.getDistance());
     SmartDashboard.putNumber("Angle", limelight.getAngle());
+
+    if(!reverseDrivetrain) {
+      server.setSource(camera2);
+    } else {
+      server.setSource(camera1);
+    }
   }
 
   /**
@@ -125,6 +157,8 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
+
+    reverseDrivetrain = false;
   }
 
   /**
@@ -147,9 +181,14 @@ public class Robot extends TimedRobot {
     }
     else if(oi.joystick.getRawButton(8)) {
       pneumatics.setReverse07();
-      pneumatics.setReverse16();
-      
+      pneumatics.setReverse16(); 
     }
+
+    boolean reverseBtn = oi.joystick.getRawButton(2);
+    if(reverseBtn && !prevReverse) {
+      reverseDrivetrain = !reverseDrivetrain;
+    }
+    prevReverse = reverseBtn;
 
   }
 

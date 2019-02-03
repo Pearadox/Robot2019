@@ -14,6 +14,7 @@ import frc.robot.Robot;
  * An example command.  You can replace me with your own command.
  */
 public class DriveWithJoystick extends Command {
+
   public DriveWithJoystick() {
     requires(Robot.drivetrain);
   }
@@ -26,12 +27,24 @@ public class DriveWithJoystick extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+
     double forwardJoystick = Robot.oi.joystick.getRawAxis(1);
-		double rotateJoystick = Robot.oi.joystick.getRawAxis(2);
-		if(Math.abs(forwardJoystick)<.15) {
+    double rotateJoystick = Robot.oi.joystick.getRawAxis(2);
+    boolean reverse = Robot.reverseDrivetrain;
+    boolean reduce = Robot.oi.joystick.getRawButton(1);
+
+    if(Math.abs(forwardJoystick)<.15) {
 			forwardJoystick = 0;
 		}
-    Robot.drivetrain.driveWithJoystick(forwardJoystick, rotateJoystick/3.);
+    if(reverse) {
+      forwardJoystick *= -1;
+    }
+    if(reduce) {
+      forwardJoystick *= 0.5;
+      rotateJoystick *= 0.3;
+    }
+
+    Robot.drivetrain.driveWithJoystick(forwardJoystick, rotateJoystick);
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -14,7 +14,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class Drivetrain extends Subsystem {
- 	// /*
+	 // /*
+	 
+	//victorspx is motor controller, but talon is better and costs more and is more loved
+	//to save money, two talons are used as masters and victors are chained to follow
+	//master motors controls slave motors
+	//numbers represent ports on roborio
+	//this is all on CAN bus (bus is connection to different devices)
+
 	VictorSPX leftSlave1 = new VictorSPX(11);
 	VictorSPX leftSlave2 = new VictorSPX(10);
 	VictorSPX rightSlave1 = new VictorSPX(12);
@@ -22,7 +29,9 @@ public class Drivetrain extends Subsystem {
 	TalonSRX leftMaster = new TalonSRX(14);
 	TalonSRX rightMaster = new TalonSRX(16);
 
-	
+	//encoders track wheel rotations (track ticks)
+	//two ports are used because they have two channels because idk
+	//encoders are digital
 
 	Encoder leftEncoder = new Encoder(6,7);
 	Encoder rightEncoder = new Encoder(8,9);
@@ -34,7 +43,16 @@ public class Drivetrain extends Subsystem {
 	Victor right1 = new Victor(3);
 	Victor right2 = new Victor(4);
 	Victor right3 = new Victor(5);
-//  */
+ */
+
+
+ /*
+
+
+
+
+
+ */
 	double lastFeet_r = 0;
 	double lastTime = 0;
 	double lastVelocity_r = 0;
