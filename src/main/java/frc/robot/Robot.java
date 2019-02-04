@@ -30,6 +30,7 @@ public class Robot extends TimedRobot {
   public static PDP pdp;
   public static Limelight limelight;
   public static Pneumatics pneumatics;
+  public static PurePursuit pp;
 
   public static String folder = "/home/lvuser/paths/";
   public static boolean reverseDrivetrain = false;
