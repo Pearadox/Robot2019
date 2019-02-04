@@ -11,8 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.*;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
-import frc.robot.TPoint;
-import frc.robot.TrajectoryGenerator;
+import frc.robot.pathfollowing.*;
 import java.util.*;
 
 

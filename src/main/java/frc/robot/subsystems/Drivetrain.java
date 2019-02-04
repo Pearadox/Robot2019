@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 
-import frc.robot.TPoint;
+import frc.robot.pathfollowing.*;
 import frc.robot.*;
 import frc.robot.commands.*;
 import com.ctre.phoenix.motion.TrajectoryPoint;

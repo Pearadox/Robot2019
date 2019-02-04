@@ -15,9 +15,8 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.JaciPathfinder;
-import frc.robot.Robot;
-import frc.robot.TPoint;
+import frc.robot.pathfollowing.*;
+import frc.robot.*;
 import frc.robot.subsystems.Limelight;
 import jaci.pathfinder.Pathfinder;
 

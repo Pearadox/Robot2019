@@ -10,13 +10,17 @@ package frc.robot.commands;
 import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.PPPoint;
+import frc.robot.pathfollowing.*;
+import frc.robot.utilities.Vector;
 import frc.robot.Robot;
 
 public class PPFollow extends Command {
 
+  final double lookaheadDistance = 1.5;  // feet, smaller is better for curvy
+
   double currentX = 0, currentY = 0, startingHeading = 0, lastLeft = 0, lastRight = 0;
   int lastClosestPointIndex = 0;
+  int lookaheadIndex = 0;
 
   ArrayList<PPPoint> trajectory = new ArrayList<>();
 
@@ -54,6 +58,22 @@ public class PPFollow extends Command {
       }
     }
     PPPoint closestPoint = trajectory.get(closestPointIndex);
+
+    // find furthest lookahead point
+    for(int i = lookaheadIndex; i < trajectory.size()-1; i++) {
+
+      Vector C = new Vector(currentX, currentY);  // center of circle, robot location
+      PPPoint segStart = trajectory.get(i);
+      PPPoint segEnd = trajectory.get(i+1);
+      Vector E = new Vector(segStart.x, segStart.y);
+      Vector L = new Vector(segEnd.x, segEnd.y);
+      
+      Vector d = L.subtract(E);  // direction vector of ray, from start to end
+      Vector f = E.subtract(C);  // vector from center sphere to ray start
+
+      
+    }
+    
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -11,7 +11,7 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 import java.util.*;
-import frc.robot.TPoint;
+import frc.robot.pathfollowing.*;
 
 public class Follow extends Command {
 

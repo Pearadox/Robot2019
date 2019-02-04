@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.smartdashboard.*;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.*;
+import frc.robot.pathfollowing.*;
+import frc.robot.pathfollowing.TrajectoryGenerator;
 import java.util.*;
 
 public class DriveForwardCommand extends Command {

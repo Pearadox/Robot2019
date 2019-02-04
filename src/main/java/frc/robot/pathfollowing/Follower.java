@@ -1,8 +1,9 @@
 
-package frc.robot;
+package frc.robot.pathfollowing;
 
 import java.io.*;
 import java.util.*;
+import frc.robot.*;
 
 public class Follower{
 

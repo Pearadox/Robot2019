@@ -1,5 +1,6 @@
-package frc.robot;
+package frc.robot.pathfollowing;
 
+import frc.robot.*;
 import java.util.*;
 
 public class PurePursuit {

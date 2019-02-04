@@ -1,6 +1,6 @@
 // pure pursuit trajectory point
 
-package frc.robot;
+package frc.robot.pathfollowing;
 
 public class PPPoint {
 
