@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import java.util.ArrayList;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.pathfollowing.*;
 import frc.robot.utilities.Vector;
@@ -17,8 +18,11 @@ import frc.robot.Robot;
 public class PPFollow extends Command {
 
   final double lookaheadDistance = 1.5;  // feet, smaller is better for curvy
+  double ka = 0.04;
+  double kp = 0.15;
 
   double currentX = 0, currentY = 0, startingHeading = 0, lastLeft = 0, lastRight = 0;
+  double lastVelocity_l = 0, lastVelocity_r, lastTime = 0;
   int lastClosestPointIndex = 0;
   int lookaheadIndex = 0;
   Vector lookaheadPoint = new Vector(0, 0);
@@ -36,6 +40,7 @@ public class PPFollow extends Command {
     startingHeading = Robot.gyro.getYaw();
     lastLeft = Robot.drivetrain.getLeftEncoderFeet();
     lastRight = Robot.drivetrain.getRightEncoderFeet();
+    lastTime = Timer.getFPGATimestamp();
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -59,7 +64,6 @@ public class PPFollow extends Command {
       }
     }
     PPPoint closestPoint = trajectory.get(closestPointIndex);
-
     // find furthest lookahead point
     for(int i = lookaheadIndex; i < trajectory.size()-1; i++) {
 
@@ -93,6 +97,7 @@ public class PPFollow extends Command {
           lookaheadPoint = E.add(d.multiply(t2));
         }
         // otherwise, no intersection
+        continue;
       }
     }
 
@@ -116,6 +121,34 @@ public class PPFollow extends Command {
     // add sign to curvature
     curvature *= side;
     
+    // calculate wheel velocities
+    double V = closestPoint.velocity;  // target velocity
+    double C = curvature;  // curvature of arc
+    double T = Robot.follower.WHEEL_BASE_WIDTH;  // track width
+
+    double left = V * (2 + C*T) / 2.;
+    double right = V * (2 - C*T) / 2.;
+
+    // calculate acceleration, take derivative of velocity
+    double dt = Timer.getFPGATimestamp() - lastTime;
+    double dV_l = left - lastVelocity_l;
+    double dV_r = right - lastVelocity_r;
+    lastVelocity_l = left;
+    lastVelocity_r = right;
+    lastTime = Timer.getFPGATimestamp();
+    double A_l = dV_l / dt;
+    double A_r = dV_r / dt;
+
+    calculate feedforward and feedback terms
+    double FF_l = Robot.follower.kv * left + ka * A_l;
+    double FF_r = Roobt.follower.kv * right + ka * A_r;
+    double measured_l = Robot.drivetrain.currentLeftTrajectoryPoint.velocity_ft;
+    double measured_r = Robot.drivetrain.currentRightTrajectoryPoint.velocity_ft;
+    double FB_l = kp * (left - measured_l);
+    double FB_r = kp * (right - measured_r);
+
+    double leftOutput = FF_l + FB_l;
+    double rightOutput = FF_r + FB_r;
   }
 
   // Make this return true when this Command no longer needs to run execute()

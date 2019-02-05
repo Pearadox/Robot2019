@@ -19,7 +19,7 @@ public class JaciPathfinder {
     double MAX_VELOCITY = 8;
     double acceleration = 3;
     double max_jerk = 50;
-    double WHEEL_BASE_WIDTH = 2.3;
+    
 
     public ArrayList<ArrayList<TPoint>> createShortPath(double x, double y, double headingCorrection) {
         
@@ -31,7 +31,7 @@ public class JaciPathfinder {
         Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_LOW, 
                                                             Robot.follower.dt, MAX_VELOCITY, acceleration, max_jerk);                                    
         Trajectory trajectory = Pathfinder.generate(points, config);
-        TankModifier modifier = new TankModifier(trajectory).modify(WHEEL_BASE_WIDTH);
+        TankModifier modifier = new TankModifier(trajectory).modify(Robot.follower.WHEEL_BASE_WIDTH);
         Segment[] leftSegments = modifier.getLeftTrajectory().segments;
         Segment[] rightSegments = modifier.getRightTrajectory().segments;
 

@@ -14,9 +14,8 @@ public class Follower{
 
     public double maxVelocity = 13;
     public double kv = 1/maxVelocity;
-    public double ka = 0.025;
-    public double kp = 0.003;
-    public double kd = 0;
+
+    public double WHEEL_BASE_WIDTH = 2.3;
 
     public static final double dt = 0.01;
     final String folder = "/home/lvuser/paths/";
