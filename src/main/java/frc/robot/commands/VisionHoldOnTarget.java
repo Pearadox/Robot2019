@@ -23,7 +23,7 @@ import jaci.pathfinder.Pathfinder;
 /**
  * An example command.  You can replace me with your own command.
  */
-public class VisionTurnToTarget extends Command {
+public class VisionHoldOnTarget extends Command {
   
   double lastError = 0;
   double error_sum = 0;
@@ -33,16 +33,16 @@ public class VisionTurnToTarget extends Command {
 
   boolean reachedTarget;
 
-  public VisionTurnToTarget() {
+  public VisionHoldOnTarget() {
     requires(Robot.drivetrain);
-    if (!Preferences.getInstance().containsKey("Vision kp")){
-      Preferences.getInstance().putDouble("Vision kp", kp);
+    if (!Preferences.getInstance().containsKey("VisionHold kp")){
+      Preferences.getInstance().putDouble("VisionHold kp", kp);
     }
-    if (!Preferences.getInstance().containsKey("Vision ki")){
-      Preferences.getInstance().putDouble("Vision ki", ki);
+    if (!Preferences.getInstance().containsKey("VisionHold ki")){
+      Preferences.getInstance().putDouble("VisionHold ki", ki);
     }
-    if (!Preferences.getInstance().containsKey("Vision kd")){
-      Preferences.getInstance().putDouble("Vision kd", kd);
+    if (!Preferences.getInstance().containsKey("VisionHold kd")){
+      Preferences.getInstance().putDouble("VisionHold kd", kd);
     }
   }
 
@@ -50,9 +50,9 @@ public class VisionTurnToTarget extends Command {
   protected void initialize() {
     setTimeout(1.5);
     error_sum = 0;
-    kp = Robot.prefs.getDouble("Vision kp", kp);
-    ki = Robot.prefs.getDouble("Vision ki", ki);
-    kd = Robot.prefs.getDouble("Vision kd", kd);
+    kp = Robot.prefs.getDouble("VisionHold kp", kp);
+    ki = Robot.prefs.getDouble("VisionHold ki", ki);
+    kd = Robot.prefs.getDouble("VisionHold kd", kd);
 
     reachedTarget = false;
   }
@@ -61,6 +61,8 @@ public class VisionTurnToTarget extends Command {
   @Override
   protected void execute() {
       if(!Robot.limelight.targetExists()) return;
+
+      double getX = Robot.limelight.getX();
 
       double changeInError = lastError - Robot.limelight.getX();
       error_sum += Robot.limelight.getX();
@@ -74,26 +76,15 @@ public class VisionTurnToTarget extends Command {
       if(output > 0) output += 0.1;
       else output -= 0.1;
 
-      Robot.drivetrain.setSpeed(output, -output);
+      double joystickOutput = -Robot.oi.joystick.getRawAxis(1);
+
+      Robot.drivetrain.setSpeed(output+joystickOutput, -output+joystickOutput);
   }
   
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if(!Robot.limelight.targetExists()) return true;
-
-    if(Math.abs(Robot.limelight.getX()) < 1 && !reachedTarget) {
-      setTimeout(0.5);
-      reachedTarget = true;
-      return false;
-    }
-    else if(reachedTarget && isTimedOut()) {
-      Robot.drivetrain.stop();
-      ArrayList<ArrayList<TPoint>> trajectory = Robot.limelight.getTrajectory();
-      Scheduler.getInstance().add(new Follow(trajectory, false));
-      return true;
-    }
-    return isTimedOut();
+    return false;
   }
 
   // Called once after isFinished returns true
@@ -106,6 +97,6 @@ public class VisionTurnToTarget extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.drivetrain.stop();
+    end();
   }
 }

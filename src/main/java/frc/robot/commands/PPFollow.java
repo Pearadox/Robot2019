@@ -21,6 +21,7 @@ public class PPFollow extends Command {
   double currentX = 0, currentY = 0, startingHeading = 0, lastLeft = 0, lastRight = 0;
   int lastClosestPointIndex = 0;
   int lookaheadIndex = 0;
+  Vector lookaheadPoint = new Vector(0, 0);
 
   ArrayList<PPPoint> trajectory = new ArrayList<>();
 
@@ -67,12 +68,53 @@ public class PPFollow extends Command {
       PPPoint segEnd = trajectory.get(i+1);
       Vector E = new Vector(segStart.x, segStart.y);
       Vector L = new Vector(segEnd.x, segEnd.y);
+      double r = lookaheadDistance;
       
       Vector d = L.subtract(E);  // direction vector of ray, from start to end
       Vector f = E.subtract(C);  // vector from center sphere to ray start
 
-      
+      double a = d.dp(d);
+      double b = 2 * f.dp(d);
+      double c = f.dp(f) - r*r;
+      double discriminant = b*b - 4*a*c;
+
+      if(discriminant < 0) continue;  // no intersection
+      else {
+        discriminant = Math.sqrt(discriminant);
+        double t1 = (-b - discriminant) / (2*a);
+        double t2 = (-b + discriminant) / (2*a);
+        
+        if(t1 >= 0 && t2 <= 1) {
+          // return t1 intersection
+          lookaheadPoint = E.add(d.multiply(t1));
+        }
+        if(t2 >= 0 && t2 <= 1) {
+          // return t2 intersection
+          lookaheadPoint = E.add(d.multiply(t2));
+        }
+        // otherwise, no intersection
+      }
     }
+
+    // calculate curvature
+
+    // get coefficients of ax+by+c=0, formula of equation of robot line
+    double a = -Math.tan(Math.toRadians(relativeHeading));
+    double b = 1;
+    double c = Math.tan(Math.toRadians(relativeHeading)) * currentX - currentY;
+
+    double x = Math.abs(a*lookaheadPoint.i + b*lookaheadPoint.j + c) / Math.sqrt(a*a + b*b);
+
+    // use x to calculate curvature of path
+    double curvature = 2 * x / (lookaheadDistance * lookaheadDistance);
+
+    //determine if lookahead point is on the left or right side of the robot
+    Vector R = new Vector(currentX, currentY);  // robot location
+    Vector L = lookaheadPoint;  // lookahead point
+    double side = Math.signum(Math.sin(relativeHeading) * (L.i-R.i) - Math.cos(relativeHeading) * (L.j-R.j));
+
+    // add sign to curvature
+    curvature *= side;
     
   }
 

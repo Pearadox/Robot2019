@@ -18,9 +18,9 @@ public class Follow extends Command {
   double ka = 0.04;
   double kp = 0.15;
   double kp_reverse = 0.07;
-  double kd = 0.0;
-  double kh = -.08;
-  double kh_reverse = 0.017;  //FIX THIS
+  double kd = 0.0;  
+  double kh = .5;
+  double kh_reverse = 0.14;
 
   boolean reverse, mirror;
   boolean ignoreHeading = false;
@@ -104,19 +104,19 @@ public class Follow extends Command {
     TPoint currentL = Robot.drivetrain.currentLeftTrajectoryPoint;
     TPoint currentR = Robot.drivetrain.currentRightTrajectoryPoint;
     
-    double targetHeading_rad = targetL.heading_rad;
+    double targetHeading_rad = mirror ? -targetL.heading_rad : targetL.heading_rad;
     if(ignoreHeading) {
       double difference = targetL.position_ft-targetR.position_ft;
       double halfTurnFeet = RobotMap.halfTurn * RobotMap.feetPerTick;
       targetHeading_rad = difference/halfTurnFeet * Math.PI;
     }
 
-    double pos_targetL = (reverse^mirror) ? targetR.position_ft : targetL.velocity_ft;
-    double vel_targetL = (reverse^mirror) ? targetR.position_ft : targetL.velocity_ft;
-    double accel_targetL = (reverse^mirror) ? targetR.position_ft : targetL.acceleration_ft;
+    double pos_targetL = (reverse^mirror) ? targetR.position_ft : targetL.position_ft;
+    double vel_targetL = (reverse^mirror) ? targetR.velocity_ft : targetL.velocity_ft;
+    double accel_targetL = (reverse^mirror) ? targetR.acceleration_ft : targetL.acceleration_ft;
     double pos_targetR = (reverse^mirror) ? targetL.position_ft : targetR.position_ft;
-    double vel_targetR = (reverse^mirror) ? targetL.position_ft : targetR.velocity_ft;
-    double accel_targetR = (reverse^mirror) ? targetL.position_ft : targetR.acceleration_ft;
+    double vel_targetR = (reverse^mirror) ? targetL.velocity_ft : targetR.velocity_ft;
+    double accel_targetR = (reverse^mirror) ? targetL.acceleration_ft : targetR.acceleration_ft;
 
     if(reverse) {
       pos_targetL *= -1;
@@ -130,38 +130,36 @@ public class Follow extends Command {
     // Calculate the differences
     double start_head_target = pathL.get(0).position_ft;
 
-    double pos_error_l = targetL.position_ft - currentL.position_ft;
-    double pos_error_r = targetR.position_ft - currentR.position_ft;
+    double pos_error_l = pos_targetL - currentL.position_ft;
+    double pos_error_r = pos_targetR - currentR.position_ft;
     double head_error = (targetHeading_rad - start_head_target) - (currentL.heading_rad - startHeading);
-
-    if(mirror) head_error *= -1;
 
     head_error %= (2*Math.PI);
     if(head_error > Math.PI) head_error-=2*Math.PI;
-    if(head_error < -Math.PI) head_error+=2*Math.PI;
+    if(head_error < -Math.PI) head_error+=2*Math.PI; 
 
     double kp = reverse ? this.kp_reverse : this.kp;
     double kh = reverse ? this.kh_reverse  : this.kh;
 
-    double leftOutput = Robot.follower.kv * targetL.velocity_ft +
-                        ka * targetL.acceleration_ft +
+    double leftOutput = Robot.follower.kv * vel_targetL +
+                        ka * accel_targetL +
                         kp * pos_error_l +
                         kd * ((pos_error_l - lastError_l) / 
-                          (currentTime - lastTime) - targetL.velocity_ft) -
+                          (currentTime - lastTime) - vel_targetL) +
                         kh * head_error;
-    double rightOutput = Robot.follower.kv*targetR.velocity_ft +
-                        ka * targetR.acceleration_ft +
+    double rightOutput = Robot.follower.kv * vel_targetR +
+                        ka * accel_targetR +
                         kp * pos_error_r +
                         kd * ((pos_error_r - lastError_r) / 
-                          (currentTime - lastTime) - targetR.velocity_ft) +
+                          (currentTime - lastTime) - vel_targetL) -
                         kh * head_error;
     Robot.drivetrain.setSpeed(leftOutput, rightOutput);
 
-    SmartDashboard.putNumber("V", Robot.follower.kv * targetL.velocity_ft);
-    SmartDashboard.putNumber("A"  , ka*targetL.acceleration_ft);
+    SmartDashboard.putNumber("V", vel_targetL);
+    SmartDashboard.putNumber("A"  , accel_targetL);
     SmartDashboard.putNumber("P",  kp * pos_error_l);
     SmartDashboard.putNumber("D", kd * ((pos_error_l - lastError_l) / 
-    (currentTime - lastTime) - targetL.velocity_ft));
+    (currentTime - lastTime) - vel_targetL));
     SmartDashboard.putNumber("H", kh * targetHeading_rad);
 
     lastTime = currentTime;

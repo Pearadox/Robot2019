@@ -5,7 +5,9 @@ import frc.robot.*;
 import frc.robot.commands.*;
 import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.*;
@@ -74,6 +76,13 @@ public class Drivetrain extends Subsystem {
 		rightSlave1.follow(rightMaster);
 		rightSlave2.follow(rightMaster);
 		leftEncoder.setReverseDirection(true);
+
+		rightMaster.setNeutralMode(NeutralMode.Brake);
+		rightSlave1.setNeutralMode(NeutralMode.Brake);
+		rightSlave2.setNeutralMode(NeutralMode.Brake);
+		leftMaster.setNeutralMode(NeutralMode.Brake);
+		leftSlave1.setNeutralMode(NeutralMode.Brake);
+		leftSlave2.setNeutralMode(NeutralMode.Brake);
 	// */	
 	}
 	

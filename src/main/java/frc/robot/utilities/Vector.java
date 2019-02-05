@@ -24,6 +24,11 @@ public class Vector {
         return new Vector(i+v.i, j+v.j);
     }
 
+    //  returns vector multiplied by a constant
+    public Vector multiply(double c) {
+        return new Vector(i*c, j*c);
+    }
+
     //  magnitude
     public double mag() {
         return Math.sqrt(i*i + j*j);

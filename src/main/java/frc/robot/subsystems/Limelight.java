@@ -71,8 +71,6 @@ public class Limelight extends Subsystem {
     double y = getDistance() * Math.cos(Math.toRadians(theta));
     double relativeHeading = 90 - theta - getX();
 
-    
-
     return Robot.pathfinder.createShortPath(x/12., y/12., Math.toRadians(relativeHeading));
   }
 

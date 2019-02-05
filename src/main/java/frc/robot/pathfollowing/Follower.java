@@ -30,9 +30,6 @@ public class Follower{
     public Follower() {
         try {
             readPath("LtoML");
-            readPath("reverseM");
-            readPath("MtoLoad");
-            readPath("CMRtoLS");
         }
         catch(Exception e) {
             e.printStackTrace();

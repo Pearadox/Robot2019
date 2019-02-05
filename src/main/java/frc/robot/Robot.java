@@ -134,7 +134,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    autonomousCommand = new AutoLeftGroup();
+    autonomousCommand = new AutonomousDefault();
     // autonomousCommand = new DriveForwardCommand(1);
 
     if (autonomousCommand != null) {
