@@ -9,8 +9,10 @@ package frc.robot.commands;
 
 import java.util.ArrayList;
 
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.pathfollowing.*;
 import frc.robot.utilities.Vector;
 import frc.robot.Robot;
@@ -32,6 +34,13 @@ public class PPFollow extends Command {
   public PPFollow(double x, double y, double headingCorrection) {
     requires(Robot.drivetrain);
     trajectory = Robot.pp.generatePath(x, y, headingCorrection);
+
+    if (!Preferences.getInstance().containsKey("PP ka")){
+      Preferences.getInstance().putDouble("PP ka", ka);
+    }
+    if (!Preferences.getInstance().containsKey("PP kp")){
+      Preferences.getInstance().putDouble("PP kp", kp);
+    }
   }
 
   // Called just before this Command runs the first time
@@ -41,6 +50,9 @@ public class PPFollow extends Command {
     lastLeft = Robot.drivetrain.getLeftEncoderFeet();
     lastRight = Robot.drivetrain.getRightEncoderFeet();
     lastTime = Timer.getFPGATimestamp();
+
+    kp = Robot.prefs.getDouble("PP kp", kp);
+    ka = Robot.prefs.getDouble("PP ka", ka);
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -91,10 +103,14 @@ public class PPFollow extends Command {
         if(t1 >= 0 && t2 <= 1) {
           // return t1 intersection
           lookaheadPoint = E.add(d.multiply(t1));
+          lookaheadIndex = i;
+          continue;
         }
         if(t2 >= 0 && t2 <= 1) {
           // return t2 intersection
           lookaheadPoint = E.add(d.multiply(t2));
+          lookaheadIndex = i;
+          continue;
         }
         // otherwise, no intersection
         continue;
@@ -139,9 +155,9 @@ public class PPFollow extends Command {
     double A_l = dV_l / dt;
     double A_r = dV_r / dt;
 
-    calculate feedforward and feedback terms
+    // calculate feedforward and feedback terms
     double FF_l = Robot.follower.kv * left + ka * A_l;
-    double FF_r = Roobt.follower.kv * right + ka * A_r;
+    double FF_r = Robot.follower.kv * right + ka * A_r;
     double measured_l = Robot.drivetrain.currentLeftTrajectoryPoint.velocity_ft;
     double measured_r = Robot.drivetrain.currentRightTrajectoryPoint.velocity_ft;
     double FB_l = kp * (left - measured_l);
@@ -149,22 +165,24 @@ public class PPFollow extends Command {
 
     double leftOutput = FF_l + FB_l;
     double rightOutput = FF_r + FB_r;
+
+    SmartDashboard.putNumber("PP FeedForward", FF_l);
+    SmartDashboard.putNumber("PP FeedBack", FB_l);
   }
 
-  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    // finishes once lookahead point is the last point on the trajectory
+    return lookaheadIndex+1 == trajectory.size();
   }
 
-  // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.drivetrain.stop();
   }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }
