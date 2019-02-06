@@ -5,17 +5,23 @@ import frc.robot.*;
 import frc.robot.commands.*;
 import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
+import com.ctre.phoenix.motorcontrol.SensorTerm;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.sensors.PigeonIMU;
+import com.team319.follower.FollowsArc;
 
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
-public class Drivetrain extends Subsystem {
+public class Drivetrain extends Subsystem implements FollowsArc{
 	 // /*
 	 
 	//victorspx is motor controller, but talon is better and costs more and is more loved
@@ -23,6 +29,8 @@ public class Drivetrain extends Subsystem {
 	//master motors controls slave motors
 	//numbers represent ports on roborio
 	//this is all on CAN bus (bus is connection to different devices)
+
+	PigeonIMU pigeon = new PigeonIMU(9);  // BOB
 
 	VictorSPX leftSlave1 = new VictorSPX(11);
 	VictorSPX leftSlave2 = new VictorSPX(10);
@@ -47,7 +55,6 @@ public class Drivetrain extends Subsystem {
 	Victor right3 = new Victor(5);
  */
 
-
  /*
 
 
@@ -67,7 +74,7 @@ public class Drivetrain extends Subsystem {
 	public TPoint currentRightTrajectoryPoint;
 	
 	public Drivetrain() {
-	// /*	
+		// /*
 		rightSlave1.setInverted(true);
 		rightSlave2.setInverted(true);
 		rightMaster.setInverted(true);
@@ -83,7 +90,23 @@ public class Drivetrain extends Subsystem {
 		leftMaster.setNeutralMode(NeutralMode.Brake);
 		leftSlave1.setNeutralMode(NeutralMode.Brake);
 		leftSlave2.setNeutralMode(NeutralMode.Brake);
-	// */	
+		// */
+
+		// /*
+		// bobtrajectory talon configurations BOB
+		leftMaster.setSensorPhase(false);
+		rightMaster.setSensorPhase(false);
+		leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+		leftMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, 0);
+		rightMaster.configRemoteFeedbackFilter(leftMaster.getDeviceID(), RemoteSensorSource.TalonSRX_SelectedSensor, 0, 0);
+		rightMaster.configRemoteFeedbackFilter(pigeon.getDeviceID(), RemoteSensorSource.GadgeteerPigeon_Yaw, 1, 0);
+		rightMaster.configSensorTerm(SensorTerm.Sum0, FeedbackDevice.RemoteSensor0, 0);
+		rightMaster.configSensorTerm(SensorTerm.Sum1, FeedbackDevice.QuadEncoder, 0);
+		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.SensorSum, 0, 0);
+		rightMaster.configSelectedFeedbackCoefficient(0.5, 0, 0);
+		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor1, 1, 0);
+		rightMaster.configSelectedFeedbackCoefficient((3600.0 / 8192.0), 1, 0);
+		// */
 	}
 	
 	public void driveWithJoystick(double forward, double rotate ) {
@@ -194,6 +217,31 @@ public class Drivetrain extends Subsystem {
 	
     public void initDefaultCommand() {
         setDefaultCommand(new DriveWithJoystick());
-    }
+	}
+	
+	  // This should return your left talon object
+	  @Override
+	  public TalonSRX getLeft() {
+		return leftMaster; 
+	  }
+	
+	  // This should return your right talon object
+	  @Override
+	  public TalonSRX getRight() {
+		return rightMaster; 
+	  }
+	
+	  // This should return the current value of your sum sensor that will be configured in a future step
+	  @Override
+	  public double getDistance() {
+		return rightMaster.getSelectedSensorPosition(0);
+	  }
+	  
+	  // This should return the instance of your drive train
+	  @Override
+	  public Subsystem getRequiredSubsystem() {
+		return Robot.drivetrain;
+	  }
+
 }
 
