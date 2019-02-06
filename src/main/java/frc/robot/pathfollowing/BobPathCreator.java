@@ -21,7 +21,7 @@ public class BobPathCreator extends AbstractBobPathCreator {
 	private static Waypoint startingPoint = new Waypoint(robotLengthInFeet / 2.0, 45.5 / 12.0, 0, 0, 0);
 
 	private static Waypoint L2R = new Waypoint(robotLengthInFeet/2.0 + 1.1, 10.1, 0, 0, 0);
-	private static Waypoint CMR = new Waypoint(robotLengthInFeet/2.0 + 15.6, 12.6, Math.toRadians(-180), 0, 0);  // only use for reverse
+	private static Waypoint CMR = new Waypoint(robotLengthInFeet/2.0 + 15.6, 12.6, Math.toRadians(180), 0, 0);  // only use for reverse
 	
 	
 	private SrxTranslatorConfig config = new SrxTranslatorConfig();
@@ -61,7 +61,7 @@ public class BobPathCreator extends AbstractBobPathCreator {
 
 		BobPath CMRtoLSR = new BobPath(config, "CMRtoLSR", true);  // Cargo middle right to loading station right
 		CMRtoLSR.addWaypoint(CMR);
-		CMRtoLSR.addWaypointRelative(2, 1, Math.toRadians(0));
+		CMRtoLSR.addWaypointRelative(-15.5, -10, Math.toRadians(180));
 		 
 		return asList(exampleArc, R2toCMR, CMRtoLSR); // return asList(path1, path2, path3, ...);
 	}
