@@ -136,7 +136,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     autonomousCommand = new AutonomousDefault();
-    // autonomousCommand = new DriveForwardCommand(1);
 
     if (autonomousCommand != null) {
       autonomousCommand.start();
@@ -170,12 +169,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    
-    // if(oi.joystick.getRawButton(7)) pneumatics.setForward07();
-    // else if(oi.joystick.getRawButton(8)) pneumatics.setReverse07();
-
-    // if(oi.joystick.getRawButton(9)) pneumatics.setForward16();
-    // else if(oi.joystick.getRawButton(10)) pneumatics.setReverse16();
 
     if(oi.joystick.getRawButton(7)) {
       pneumatics.setForward07();

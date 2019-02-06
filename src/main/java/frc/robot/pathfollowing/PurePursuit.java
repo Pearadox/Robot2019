@@ -8,7 +8,7 @@ public class PurePursuit {
     double spacing = 6/12.; //feet
     double dt = 0.1;
 
-    double acceleration = 5;
+    double acceleration = 7;
     double max_velocity = 10;
 
     double kCurvature = 3; // 1-5, higher = faster turning

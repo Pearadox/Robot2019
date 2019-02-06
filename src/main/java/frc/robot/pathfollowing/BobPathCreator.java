@@ -20,9 +20,9 @@ public class BobPathCreator extends AbstractBobPathCreator {
 	// Remember that paths should be generated from the center point of the robot
 	private static Waypoint startingPoint = new Waypoint(robotLengthInFeet / 2.0, 45.5 / 12.0, 0, 0, 0);
 
-	private static Waypoint L2R = new Waypoint(robotLengthInFeet/2.0 + 1.1, 10.1, 0, 0, 0);
-	private static Waypoint CMR = new Waypoint(robotLengthInFeet/2.0 + 15.6, 12.6, Math.toRadians(180), 0, 0);  // only use for reverse
-	
+	private static Waypoint L2R = new Waypoint(robotLengthInFeet/2.0 + 1.1, 10.1, Math.toRadians(180), 0, 0);
+	private static Waypoint CMR = new Waypoint(robotLengthInFeet/2.0 + 15.3, 12.6, Math.toRadians(180), 0, 0); 
+	private static Waypoint LSR = new Waypoint(robotLengthInFeet/2.0 + 0.3, 2.3, Math.toRadians(0), 0, 0);
 	
 	private SrxTranslatorConfig config = new SrxTranslatorConfig();
 
@@ -55,15 +55,25 @@ public class BobPathCreator extends AbstractBobPathCreator {
 		// it  will arrive at this locaton going 0 FPS 
 		exampleArc.addWaypointRelative(5, 5, 0, 0, 2);
 
-		BobPath R2toCMR = new BobPath(config, "R2toCMR");  // L2 Right to cargo middle right
+		BobPath R2toCMR = new BobPath(config, "R2toCMR", true);  // L2 Right to cargo middle right
 		R2toCMR.addWaypoint(L2R);
-		R2toCMR.addWaypointRelative(14.5, 2.5, 0);
+		R2toCMR.addWaypointRelative(14.2, 2.5, 0);
 
-		BobPath CMRtoLSR = new BobPath(config, "CMRtoLSR", true);  // Cargo middle right to loading station right
-		CMRtoLSR.addWaypoint(CMR);
-		CMRtoLSR.addWaypointRelative(-15.5, -10, Math.toRadians(180));
+		BobPath CMRtoLSR_1of2 = new BobPath(config, "CMRtoLSR_1of2");  // Turns around, Cargo middle right to loading station right
+		BobPath CMRtoLSR_2of2 = new BobPath(config, "CMRtoLSR_2of2", true);  // Goes to LSR, Cargo middle right to loading station right
+		CMRtoLSR_1of2.addWaypoint(CMR);
+		CMRtoLSR_1of2.addWaypointRelative(-4, -4, -89.9999);
+		CMRtoLSR_1of2.addWaypointRelative(4, -4, -89.9999);
+		CMRtoLSR_2of2.addWaypoint(CMR.x-4+4., CMR.y-4-4, CMR.theta+Math.toRadians(-89.9999-89.9999));
+		CMRtoLSR_2of2.addWaypointRelative(-15, -2.3, 0);
+
+		BobPath LSRtoCML_1of2 = new BobPath(config, "LSRtoCML_1of2");
+		BobPath LSRtoCML_2of2 = new BobPath(config, "LSRtoCML_2of2");
+		LSRtoCML_1of2.addWaypoint(LSR);
+		LSRtoCML_1of2.addWaypointRelative(15., 2., 45);
+		// LSRtoCML_1of2.addWaypointRelative(11., 2., 45);
 		 
-		return asList(exampleArc, R2toCMR, CMRtoLSR); // return asList(path1, path2, path3, ...);
+		return asList(exampleArc, R2toCMR, CMRtoLSR_1of2, CMRtoLSR_2of2, LSRtoCML_1of2); // return asList(path1, path2, path3, ...);
 	}
     
 	public static void main(String[] args) {
