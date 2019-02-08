@@ -27,9 +27,9 @@ public class VisionHoldOnTarget extends Command {
   
   double lastError = 0;
   double error_sum = 0;
-  double kp = 0.021;
+  double kp = 0.01;
   double ki = 0.0;
-  double kd = 0.15;
+  double kd = 0.1;
 
   boolean reachedTarget;
 
@@ -73,8 +73,8 @@ public class VisionHoldOnTarget extends Command {
       lastError = Robot.limelight.getX();
       double output = P + I - D;
 
-      if(output > 0) output += 0.1;
-      else output -= 0.1;
+      if(output > 0) output += 0.0;
+      else output -= 0.0;
 
       double joystickOutput = -Robot.oi.joystick.getRawAxis(1);
 

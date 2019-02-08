@@ -78,6 +78,8 @@ public class JaciPathfinder {
             Segment seg = segments[i];
             path[i][0] = totalX;
             path[i][1] = totalY;
+            // path[i][0] = -totalY;
+            // path[i][1] = -totalX;
             totalX += (seg.position-lastPosition) * Math.cos(seg.heading);
             totalY += (seg.position-lastPosition) * Math.sin(seg.heading);
             lastPosition = seg.position;

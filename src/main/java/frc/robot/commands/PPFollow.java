@@ -14,7 +14,7 @@ import frc.robot.Robot;
 public class PPFollow extends Command {
 
   final double lookaheadDistance = 1.5;  // feet, smaller is better for curvy
-  double ka = 0.04;
+  double ka = 0.001;
   double kp = 0.15;
 
   double currentX = 0, currentY = 0, startingHeading = 0, lastLeft = 0, lastRight = 0;
@@ -59,6 +59,8 @@ public class PPFollow extends Command {
     double distance = (deltaLeft + deltaRight) / 2;
     currentX += distance * Math.cos(Math.toRadians(relativeHeading));
     currentY += distance * Math.sin(Math.toRadians(relativeHeading));
+    lastLeft = Robot.drivetrain.getLeftEncoderFeet();
+    lastRight = Robot.drivetrain.getRightEncoderFeet();
 
     // calculate closest point
     double smallestDistance = Double.MAX_VALUE;
@@ -80,7 +82,7 @@ public class PPFollow extends Command {
       Vector E = new Vector(segStart.x, segStart.y);
       Vector L = new Vector(segEnd.x, segEnd.y);
       double r = lookaheadDistance;
-      
+
       Vector d = L.subtract(E);  // direction vector of ray, from start to end
       Vector f = E.subtract(C);  // vector from center sphere to ray start
 
@@ -95,7 +97,7 @@ public class PPFollow extends Command {
         double t1 = (-b - discriminant) / (2*a);
         double t2 = (-b + discriminant) / (2*a);
         
-        if(t1 >= 0 && t2 <= 1) {
+        if(t1 >= 0 && t1 <= 1) {
           // return t1 intersection
           lookaheadPoint = E.add(d.multiply(t1));
           lookaheadIndex = i;
@@ -158,11 +160,22 @@ public class PPFollow extends Command {
     double FB_l = kp * (left - measured_l);
     double FB_r = kp * (right - measured_r);
 
-    double leftOutput = FF_l + FB_l;
-    double rightOutput = FF_r + FB_r;
+    // double leftOutput = FF_l + FB_l;
+    // double rightOutput = FF_r + FB_r;
 
+    double leftOutput = FF_l;
+    double rightOutput = FF_r;
+
+    Robot.drivetrain.setSpeed(leftOutput, rightOutput);
+
+    SmartDashboard.putNumber("PP VelocityL", left);
+    SmartDashboard.putNumber("PP VelocityR", right);
     SmartDashboard.putNumber("PP FeedForward", FF_l);
     SmartDashboard.putNumber("PP FeedBack", FB_l);
+    SmartDashboard.putNumber("PP Current X", currentX);
+    SmartDashboard.putNumber("PP Current Y", currentY);
+    SmartDashboard.putNumber("PP Lookahead Index", lookaheadIndex);
+    SmartDashboard.putString("PP point", trajectory.get(1).x + " " + trajectory.get(1).y);
   }
 
   @Override

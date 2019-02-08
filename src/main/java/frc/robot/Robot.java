@@ -54,6 +54,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     follower = new Follower();
     pathfinder = new JaciPathfinder();
+    pp = new PurePursuit();
     drivetrain = new Drivetrain();
     gyro = new IMU();
     prefs = Preferences.getInstance();
@@ -63,21 +64,23 @@ public class Robot extends TimedRobot {
 
     oi = new OI();
 
-    camera1 = CameraServer.getInstance().startAutomaticCapture(0);
-    camera2 = CameraServer.getInstance().startAutomaticCapture(1);
-    server = CameraServer.getInstance().getServer();
+    if(RobotMap.enableCameras) {
+      camera1 = CameraServer.getInstance().startAutomaticCapture(0);
+      camera2 = CameraServer.getInstance().startAutomaticCapture(1);
+      server = CameraServer.getInstance().getServer();
 
-    camera1.setResolution(320, 240);
-    camera2.setResolution(320, 240);
+      camera1.setResolution(320, 240);
+      camera2.setResolution(320, 240);
 
-    camera1.setPixelFormat(PixelFormat.kMJPEG);
-    camera2.setPixelFormat(PixelFormat.kMJPEG);
-    
-    cvsink1.setSource(camera1);
-    cvsink1.setEnabled(true);
-    
-    cvsink2.setSource(camera2);
-    cvsink2.setEnabled(true);
+      camera1.setPixelFormat(PixelFormat.kMJPEG);
+      camera2.setPixelFormat(PixelFormat.kMJPEG);
+      
+      cvsink1.setSource(camera1);
+      cvsink1.setEnabled(true);
+      
+      cvsink2.setSource(camera2);
+      cvsink2.setEnabled(true);
+    }
   }
 
   /**
@@ -100,10 +103,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Limelight Distance", limelight.getDistance());
     SmartDashboard.putNumber("Angle", limelight.getAngle());
 
-    if(!reverseDrivetrain) {
-      server.setSource(camera2);
-    } else {
-      server.setSource(camera1);
+    if(RobotMap.enableCameras) {
+      if(!reverseDrivetrain) {
+        server.setSource(camera2);
+      } else {
+        server.setSource(camera1);
+      }
     }
   }
 
@@ -135,7 +140,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    autonomousCommand = new AutonomousDefault();
+
+    // autonomousCommand = new AutonomousDefault();
+    // autonomousCommand = new PPFollow(5, 5, 0);
 
     if (autonomousCommand != null) {
       autonomousCommand.start();
@@ -179,6 +186,9 @@ public class Robot extends TimedRobot {
       pneumatics.setReverse07();
       pneumatics.setReverse16(); 
     }
+    
+    if(oi.joystick.getRawButton(9))
+      drivetrain.setMotionMagic(10);
 
     boolean reverseBtn = oi.joystick.getRawButton(2);
     if(reverseBtn && !prevReverse) {

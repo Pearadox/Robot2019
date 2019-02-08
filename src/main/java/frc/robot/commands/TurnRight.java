@@ -17,7 +17,7 @@ import java.util.*;
 
 public class TurnRight extends Command {
 
-  double acceleration = 8;
+  double acceleration = 5;
 
   double desired_ticks;
   ArrayList<ArrayList<TPoint>> trajectory = new ArrayList();

@@ -44,7 +44,7 @@ public class DriveWithJoystick extends Command {
       rotateJoystick *= 0.3;
     }
 
-    Robot.drivetrain.driveWithJoystick(forwardJoystick, rotateJoystick);
+    // Robot.drivetrain.driveWithJoystick(forwardJoystick, rotateJoystick);
   }
 
   // Make this return true when this Command no longer needs to run execute()

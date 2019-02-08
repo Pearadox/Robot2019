@@ -99,18 +99,23 @@ public class Drivetrain extends Subsystem implements FollowsArc{
 		leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 		leftMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, 0);
 		rightMaster.configRemoteFeedbackFilter(leftMaster.getDeviceID(), RemoteSensorSource.TalonSRX_SelectedSensor, 0, 0);
-		rightMaster.configRemoteFeedbackFilter(pigeon.getDeviceID(), RemoteSensorSource.GadgeteerPigeon_Yaw, 1, 0);
+		// rightMaster.configRemoteFeedbackFilter(pigeon.getDeviceID(), RemoteSensorSource.GadgeteerPigeon_Yaw, 1, 0);
 		rightMaster.configSensorTerm(SensorTerm.Sum0, FeedbackDevice.RemoteSensor0, 0);
 		rightMaster.configSensorTerm(SensorTerm.Sum1, FeedbackDevice.QuadEncoder, 0);
 		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.SensorSum, 0, 0);
 		rightMaster.configSelectedFeedbackCoefficient(0.5, 0, 0);
-		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor1, 1, 0);
-		rightMaster.configSelectedFeedbackCoefficient((3600.0 / 8192.0), 1, 0);
+		// rightMaster.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor1, 1, 0);
+		// rightMaster.configSelectedFeedbackCoefficient((3600.0 / 8192.0), 1, 0);
 		// */
 	}
 	
 	public void driveWithJoystick(double forward, double rotate ) {
 		setSpeed(-forward+rotate, -forward-rotate);
+	}
+
+	public void setMotionMagic(double rotations) {
+		double target = rotations * 128;
+		leftMaster.set(ControlMode.MotionMagic, target);
 	}
 	
 	public void setSpeed(double leftSpeed, double rightSpeed) {

@@ -6,9 +6,9 @@ import java.util.*;
 public class PurePursuit {
 
     double spacing = 6/12.; //feet
-    double dt = 0.1;
+    double dt = 1;
 
-    double acceleration = 7;
+    double acceleration = 5;
     double max_velocity = 10;
 
     double kCurvature = 3; // 1-5, higher = faster turning
@@ -20,7 +20,8 @@ public class PurePursuit {
     
     public ArrayList<PPPoint> generatePath(double x, double y, double headingCorrection) {
         // get rough path of points
-        double[][] rawPath = Robot.pathfinder.createPositionalPath(x, y, headingCorrection, dt);
+        // double[][] rawPath = Robot.pathfinder.createPositionalPath(x, y, headingCorrection, dt);
+        double[][] rawPath = new double[][] {{0,0},{2,2}, {5,5}};
 
         // inject additional points
         ArrayList<double[]> injectedPath_list = new ArrayList<>();
@@ -41,11 +42,10 @@ public class PurePursuit {
         }
         injectedPath_list.add(rawPath[rawPath.length-1]);
 
-        Double[][] injectedPath_arr = injectedPath_list.toArray(new Double[injectedPath_list.size()][2]);
-        double[][] injectedPath = new double[injectedPath_arr.length][2];
-        for(int i = 0; i < injectedPath_arr.length; i++) {
-            injectedPath[i][0] = injectedPath_arr[i][0];
-            injectedPath[i][1] = injectedPath_arr[i][1];
+        double[][] injectedPath = new double[injectedPath_list.size()][2];
+        for(int i = 0; i < injectedPath.length; i++) {
+            injectedPath[i][0] = injectedPath_list.get(i)[0];
+            injectedPath[i][1] = injectedPath_list.get(i)[1];
         }
 
         // smooth path
@@ -72,8 +72,6 @@ public class PurePursuit {
             double r = Math.sqrt((x1-a)*(x1-a) + (y1-b)*(y1-b));
             double curvature = 1/r;
             if(Double.isNaN(curvature)) curvature = 0;
-
-            double velocity = Math.min(max_velocity, kCurvature / curvature);
 
             trajectory.add(new PPPoint(x2,y2,distance,curvature));
         }
