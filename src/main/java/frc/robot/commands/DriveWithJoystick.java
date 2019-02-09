@@ -7,7 +7,10 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 /**
@@ -15,13 +18,32 @@ import frc.robot.Robot;
  */
 public class DriveWithJoystick extends Command {
 
+  double turnRate = 210;  // deg per sec
+  double targetHeading, lastTime, lastError;
+
+  double kp = 0.01;
+  double kd = 0.1;
+
   public DriveWithJoystick() {
     requires(Robot.drivetrain);
+
+    if (!Preferences.getInstance().containsKey("GyroDrive kp")){
+      Preferences.getInstance().putDouble("GyroDrive kp", kp);
+    }
+    if (!Preferences.getInstance().containsKey("GyroDrive kd")){
+      Preferences.getInstance().putDouble("GyroDrive kd", kd);
+    }
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    targetHeading = Robot.gyro.getYaw();
+    lastTime = Timer.getFPGATimestamp();
+    lastError = 0;
+    
+    kp = Robot.prefs.getDouble("GyroDrive kp", kp);
+    kd = Robot.prefs.getDouble("GyroDrive kd", kd);
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -41,10 +63,24 @@ public class DriveWithJoystick extends Command {
     }
     if(reduce) {
       forwardJoystick *= 0.5;
-      rotateJoystick *= 0.3;
+      rotateJoystick *= 0.2;
     }
 
+    double dt = Timer.getFPGATimestamp() - lastTime;
+    lastTime = Timer.getFPGATimestamp();
+    double currentHeading = Robot.gyro.getYaw();
+    targetHeading += rotateJoystick * turnRate * dt;
+
+    double error = targetHeading - currentHeading;
+
+    double P = kp * error;
+    double D = kd * (error - lastError);
+    lastError = error;
+
+    double output = P + D;
+
     // Robot.drivetrain.driveWithJoystick(forwardJoystick, rotateJoystick);
+    Robot.drivetrain.driveWithJoystick(forwardJoystick, output);
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -13,7 +13,7 @@ import com.team319.trajectory.SrxTranslatorConfig;
 
 public class BobPathCreator extends AbstractBobPathCreator {
 
-	private static double robotWidthInFeet = 27.6 / 12.0;
+	private static double robotWidthInFeet = 26 / 12.0;
 	private static double robotLengthInFeet = 33.6 / 12.0;
 
 	// This point and points like it can be used when there are common starting locatons for the robot
@@ -30,7 +30,7 @@ public class BobPathCreator extends AbstractBobPathCreator {
 		config.max_acc = 8.0; // Maximum acceleration in FPS
 		config.max_vel = 12.0; // Maximum velocity in FPS
 		config.wheel_dia_inches = 6.0;
-		config.scale_factor = 1.0; // Used to adjust for a gear ratio and or distance tuning
+		config.scale_factor = 3.2; // Used to adjust for a gear ratio and or distance tuning
 		config.encoder_ticks_per_rev = 128; // Count of ticks on your encoder
 		config.robotLength = 33.6; // Robot length in inches, used for drawing the robot
 		config.robotWidth = 27.6; // Robot width in inches, used for drawing the robot
@@ -101,7 +101,7 @@ public class BobPathCreator extends AbstractBobPathCreator {
 	private List<BobPath> getConfigArcs() {
 		BobPath distanceScaling = new BobPath(config, "DistanceScaling");
 		distanceScaling.addWaypoint(new Waypoint(2, 13.5, 0, 0, 0));
-		distanceScaling.addWaypointRelative(3, 0, 0, 0, 3);
+		distanceScaling.addWaypointRelative(10, 0, 0, 0, 3);
 
 		BobPath turnScaling = new BobPath(config, "TurnScaling");
 		turnScaling.addWaypoint(new Waypoint(2, 13.5, 0, 0, 0));

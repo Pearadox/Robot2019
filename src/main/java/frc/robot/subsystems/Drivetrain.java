@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class Drivetrain extends Subsystem implements FollowsArc{
-	 // /*
+	//  /*
 	 
 	//victorspx is motor controller, but talon is better and costs more and is more loved
 	//to save money, two talons are used as masters and victors are chained to follow
@@ -30,13 +30,13 @@ public class Drivetrain extends Subsystem implements FollowsArc{
 	//numbers represent ports on roborio
 	//this is all on CAN bus (bus is connection to different devices)
 
-	PigeonIMU pigeon = new PigeonIMU(9);  // BOB
+	// PigeonIMU pigeon = new PigeonIMU(9);  // BOB
 
 	VictorSPX leftSlave1 = new VictorSPX(11);
 	VictorSPX leftSlave2 = new VictorSPX(10);
 	VictorSPX rightSlave1 = new VictorSPX(12);
 	VictorSPX rightSlave2 = new VictorSPX(13);
-	TalonSRX leftMaster = new TalonSRX(14);
+    TalonSRX leftMaster = new TalonSRX(14);
 	TalonSRX rightMaster = new TalonSRX(16);
 
 	//encoders track wheel rotations (track ticks)
@@ -92,10 +92,10 @@ public class Drivetrain extends Subsystem implements FollowsArc{
 		leftSlave2.setNeutralMode(NeutralMode.Brake);
 		// */
 
-		// /*
+		/*
 		// bobtrajectory talon configurations BOB
-		leftMaster.setSensorPhase(false);
-		rightMaster.setSensorPhase(false);
+		leftMaster.setSensorPhase(true);
+		rightMaster.setSensorPhase(true);
 		leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 		leftMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, 0);
 		rightMaster.configRemoteFeedbackFilter(leftMaster.getDeviceID(), RemoteSensorSource.TalonSRX_SelectedSensor, 0, 0);
@@ -106,6 +106,20 @@ public class Drivetrain extends Subsystem implements FollowsArc{
 		rightMaster.configSelectedFeedbackCoefficient(0.5, 0, 0);
 		// rightMaster.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor1, 1, 0);
 		// rightMaster.configSelectedFeedbackCoefficient((3600.0 / 8192.0), 1, 0);
+
+		double kf = 4;
+		double kp = 1.6;
+		double ki = 0.00;
+		double kd = 4;
+
+		leftMaster.config_kF(0, kf, 0);
+		leftMaster.config_kP(0, kp, 0);
+		leftMaster.config_kI(0, ki, 0);
+		leftMaster.config_kD(0, kd, 0);
+		rightMaster.config_kF(0, kf, 0);
+		rightMaster.config_kP(0, kp, 0);
+		rightMaster.config_kI(0, ki, 0);
+		rightMaster.config_kD(0, kd, 0);
 		// */
 	}
 	
@@ -113,9 +127,15 @@ public class Drivetrain extends Subsystem implements FollowsArc{
 		setSpeed(-forward+rotate, -forward-rotate);
 	}
 
+	public void stopMotionMagic() {
+		// leftMaster.set(ControlMode.PercentOutput, 0);
+		// rightMaster.set(ControlMode.PercentOutput, 0);
+	}
+
 	public void setMotionMagic(double rotations) {
-		double target = rotations * 128;
-		leftMaster.set(ControlMode.MotionMagic, target);
+		// double target = rotations * 128;
+		// leftMaster.set(ControlMode.MotionMagic, 1280);
+		// rightMaster.set(ControlMode.MotionMagic, 1280);
 	}
 	
 	public void setSpeed(double leftSpeed, double rightSpeed) {
@@ -227,19 +247,23 @@ public class Drivetrain extends Subsystem implements FollowsArc{
 	  // This should return your left talon object
 	  @Override
 	  public TalonSRX getLeft() {
-		return leftMaster; 
+		// return leftMaster; 
+		return null;
 	  }
 	
 	  // This should return your right talon object
 	  @Override
+	  
 	  public TalonSRX getRight() {
-		return rightMaster; 
+		// return rightMaster; 
+		return null;
 	  }
 	
 	  // This should return the current value of your sum sensor that will be configured in a future step
 	  @Override
 	  public double getDistance() {
-		return rightMaster.getSelectedSensorPosition(0);
+		// return rightMaster.getSelectedSensorPosition(0);
+		return 0;
 	  }
 	  
 	  // This should return the instance of your drive train

@@ -10,14 +10,15 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.Solenoid;
 
 public class Pneumatics extends Subsystem {
   
   Compressor compressor = new Compressor();
-  DoubleSolenoid sol07 = new DoubleSolenoid(0, 7);
-  DoubleSolenoid sol16 = new DoubleSolenoid(1, 6); 
-  DoubleSolenoid sol25 = new DoubleSolenoid(2, 5);
-  DoubleSolenoid sol34 = new DoubleSolenoid(3, 4);
+   DoubleSolenoid sol07 = new DoubleSolenoid(0, 7);
+   DoubleSolenoid sol16 = new DoubleSolenoid(1, 6); 
+   DoubleSolenoid sol25 = new DoubleSolenoid(2, 5);
+   DoubleSolenoid sol34 = new DoubleSolenoid(3, 4);
 
   public Pneumatics() {
     compressor.start();

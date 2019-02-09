@@ -1,6 +1,5 @@
 package frc.robot.pathfollowing;
 
-import frc.robot.*;
 import java.util.*;
 
 public class PurePursuit {
@@ -21,7 +20,7 @@ public class PurePursuit {
     public ArrayList<PPPoint> generatePath(double x, double y, double headingCorrection) {
         // get rough path of points
         // double[][] rawPath = Robot.pathfinder.createPositionalPath(x, y, headingCorrection, dt);
-        double[][] rawPath = new double[][] {{0,0},{2,2}, {5,5}};
+        double[][] rawPath = new double[][] {{0,0},{3,5}, {5,5}};
 
         // inject additional points
         ArrayList<double[]> injectedPath_list = new ArrayList<>();
@@ -36,7 +35,7 @@ public class PurePursuit {
             int fittablePoints = (int) (vector_magnitude/spacing);
 
             for(int j = 0; j < fittablePoints; j++) {
-                double[] newVector = {start[0]+vector_normalized[0]*spacing*i, start[1]+vector_normalized[1]*spacing*i};
+                double[] newVector = {start[0]+vector_normalized[0]*spacing*j, start[1]+vector_normalized[1]*spacing*j};
                 injectedPath_list.add(newVector);
             }
         }

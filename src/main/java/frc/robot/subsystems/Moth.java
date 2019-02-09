@@ -1,3 +1,4 @@
+
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -6,42 +7,37 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.subsystems;
-
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.Solenoid;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-
 
 /**
  * Add your docs here.
  */
+public class Moth extends Subsystem {
+  DoubleSolenoid allensol07;
 
-public class Intake extends Subsystem {
- 
-  VictorSPX wheels;
-  Solenoid allenSolenoid;
-
-  public Intake(){
-    wheels = new VictorSPX(-1);
-    allenSolenoid = new Solenoid(-1);
+  public Moth(){
+    allensol07 = new DoubleSolenoid(0,7);
   }
 
-
-  public void lower(){
-    allenSolenoid.set(true);
-  }
-
-  public void raise(){
-    allenSolenoid.set(false);
-  }
-
-  public void toggleRaise(){
-    allenSolenoid.set(!allenSolenoid.get());
-  }
   
-  public void setSpeed(double setSpeed){
-    wheels.set(ControlMode.PercentOutput, setSpeed);
+
+  public void open(){
+    allensol07.set(DoubleSolenoid.Value.kForward);
+    
+  }
+
+  public void close(){
+    allensol07.set(DoubleSolenoid.Value.kReverse);
+    
+  }
+  public void toggle(){
+    if (allensol07.get()== Value.kForward ){
+      allensol07.set(Value.kReverse);
+    }
+    else allensol07.set(Value.kForward);
   }
 
   
@@ -52,7 +48,5 @@ public class Intake extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-
-
   }
 }

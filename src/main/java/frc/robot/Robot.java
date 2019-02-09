@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.*;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.Intake;
 import frc.robot.pathfollowing.*;
 import frc.robot.autonomous.*;
 import frc.robot.commands.*;
@@ -33,6 +34,10 @@ public class Robot extends TimedRobot {
   public static Limelight limelight;
   public static Pneumatics pneumatics;
   public static PurePursuit pp;
+  public static Intake intake;
+  public static Moth moth;
+  public static Climber climber;
+  public static Arm arm;
 
   public static String folder = "/home/lvuser/paths/";
   public static boolean reverseDrivetrain = false;
@@ -61,6 +66,10 @@ public class Robot extends TimedRobot {
     pdp = new PDP();
     limelight = new Limelight();
     pneumatics = new Pneumatics();
+    // intake = new Intake();
+    moth = new Moth();
+    // climber = new Climber();
+    // arm = new Arm();
 
     oi = new OI();
 
@@ -143,6 +152,7 @@ public class Robot extends TimedRobot {
 
     // autonomousCommand = new AutonomousDefault();
     // autonomousCommand = new PPFollow(5, 5, 0);
+    autonomousCommand = new AutonomousTest();
 
     if (autonomousCommand != null) {
       autonomousCommand.start();
@@ -178,17 +188,20 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
 
     if(oi.joystick.getRawButton(7)) {
-      pneumatics.setForward07();
+      // pneumatics.setForward07();
       pneumatics.setForward16();
       
     }
     else if(oi.joystick.getRawButton(8)) {
-      pneumatics.setReverse07();
+      // pneumatics.setReverse07();
       pneumatics.setReverse16(); 
     }
-    
-    if(oi.joystick.getRawButton(9))
-      drivetrain.setMotionMagic(10);
+    else if(oi.joystick.getRawButton(3)) {
+      pneumatics.setForward07();
+    }
+    else if(oi.joystick.getRawButton(4)) {
+      pneumatics.setReverse07();
+    }
 
     boolean reverseBtn = oi.joystick.getRawButton(2);
     if(reverseBtn && !prevReverse) {

@@ -15,7 +15,7 @@ package frc.robot;
  */
 public class RobotMap {
   
-  public static boolean enableCameras = false;
+  public static boolean enableCameras = true;
 
   public static double ticksPerRev = 128;  //ticks
   public static double wheelDiameter = 6./12.;  //ft

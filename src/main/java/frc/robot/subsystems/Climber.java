@@ -8,7 +8,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.Solenoid;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
@@ -16,35 +15,18 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 /**
  * Add your docs here.
  */
+public class Climber extends Subsystem {
+  VictorSPX climber;
 
-public class Intake extends Subsystem {
- 
-  VictorSPX wheels;
-  Solenoid allenSolenoid;
-
-  public Intake(){
-    wheels = new VictorSPX(-1);
-    allenSolenoid = new Solenoid(-1);
-  }
-
-
-  public void lower(){
-    allenSolenoid.set(true);
-  }
-
-  public void raise(){
-    allenSolenoid.set(false);
-  }
-
-  public void toggleRaise(){
-    allenSolenoid.set(!allenSolenoid.get());
-  }
+public Climber(){
+  climber = new VictorSPX(-1);
   
+}
+
   public void setSpeed(double setSpeed){
-    wheels.set(ControlMode.PercentOutput, setSpeed);
+    climber.set(ControlMode.PercentOutput, setSpeed);
   }
 
-  
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
@@ -52,7 +34,5 @@ public class Intake extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-
-
   }
 }
