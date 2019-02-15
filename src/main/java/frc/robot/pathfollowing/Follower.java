@@ -28,7 +28,14 @@ public class Follower{
 
     public Follower() {
         try {
-            readPath("LtoML");
+            readPath("M1toCMR");
+            readPath("LSRtoCML");
+            readPath("CMRtoLSR");
+            readPath("R1toCMR");
+            readPath("LSRtoCR1");
+
+            readPath("distanceCalibration");
+            readPath("turnCalibration");
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -57,11 +64,15 @@ public class Follower{
             list_l.add(left);
             list_r.add(right);                         
         }
+        
         ArrayList<ArrayList<TPoint>> pathArray = new ArrayList<ArrayList<TPoint>>();
         pathArray.add(list_l);
         pathArray.add(list_r);
 
         paths.put(path, pathArray);
+
+        L_scanner.close();
+        R_scanner.close();
     }
 
     public void updateMaxVelocity() {

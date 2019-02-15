@@ -22,6 +22,10 @@ public class IMU extends Subsystem {
 	public double getYaw() {
 		return navx.getAngle() - yawOffset;
 	}
+
+	public double getRate() {
+		return navx.getRate();
+	}
 	
 	public void zero() {
 		yawOffset += getYaw();

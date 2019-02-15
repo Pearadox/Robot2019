@@ -32,8 +32,14 @@ public class OI {
 	JoystickButton btn12 = new JoystickButton(joystick, 12);
 	
 	public OI() {
-
-		// btn9.whenPressed(new TurnRight(90));
+		
+		// btn3.whenPressed(new );
+		// btn4.whenPressed(new );
+		// btn5.whenPressed(new );
+		// btn6.whenPressed(new );
+		btn7.whenPressed(new MothToggle());
+		btn9.whenPressed(new DriveForward(1));
+		// btn9.whenPressed(new TurnLeft(135));
 		btn11.whileHeld(new VisionHoldOnTarget());
 		btn12.whenPressed(new VisionTurnToTarget());
 

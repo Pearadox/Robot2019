@@ -16,15 +16,21 @@ import frc.robot.pathfollowing.*;
 public class Follow extends Command {
 
   double ka = 0.04;
-  double kp = 0.15;
-  double kp_reverse = 0.07;
+  double ka_rotate = 0.0;
+  double kp = 2.0;
+  double kp_forward = 0.125;
+  double kp_rotate = 0.125;
+  double kp_reverse = 0.15;
   double kd = 0.0;  
-  double kh = .5;
-  double kh_reverse = 0.14;
+  double kh = .8;
+  double kh_reverse = 0.4;
+  double kh_rotate = 0.0;
 
   boolean reverse, mirror;
-  boolean ignoreHeading = false;
+  boolean followRotation;
+  boolean followForward;
   String pathName;
+  boolean nonexistentPath;
   ArrayList<TPoint> pathL, pathR;
   double startTime;
   double lastTime = 0;
@@ -32,33 +38,27 @@ public class Follow extends Command {
   double lastError_l = 0;
   double startHeading = 0;
 
-  public Follow(boolean ignoreHeading, boolean reverse, boolean mirror) {
+  public Follow(boolean followRotation, boolean reverse, boolean mirror) {
     requires(Robot.drivetrain);
 
-    this.ignoreHeading = ignoreHeading;
+    this.followRotation = followRotation;
     this.reverse = reverse;
     this.mirror = mirror;
 
     // check if follow ka, follow kp, follow kd exist and put them in if they don't
-    if (!Preferences.getInstance().containsKey("MP ka")){
-      Preferences.getInstance().putDouble("MP ka", ka);
-    }
-    if (!Preferences.getInstance().containsKey("MP kp")){
-      Preferences.getInstance().putDouble("MP kp", kp);
-    }
-    if (!Preferences.getInstance().containsKey("MP kd")){
-      Preferences.getInstance().putDouble("MP kd", kd);
-    }
-    if (!Preferences.getInstance().containsKey("MP kh_reverse")){
-      Preferences.getInstance().putDouble("MP kh_reverse", kh_reverse);
-    }
-    if (!Preferences.getInstance().containsKey("MP kp_reverse")){
-      Preferences.getInstance().putDouble("MP kp_reverse", kp_reverse);
-    }
+    if (!Preferences.getInstance().containsKey("MP ka")) Preferences.getInstance().putDouble("MP ka", ka);
+    if (!Preferences.getInstance().containsKey("MP kp")) Preferences.getInstance().putDouble("MP kp", kp);
+    if (!Preferences.getInstance().containsKey("MP kd")) Preferences.getInstance().putDouble("MP kd", kd);
+    if (!Preferences.getInstance().containsKey("MP kh_reverse")) Preferences.getInstance().putDouble("MP kh_reverse", kh_reverse);
+    if (!Preferences.getInstance().containsKey("MP kp_reverse")) Preferences.getInstance().putDouble("MP kp_reverse", kp_reverse);
+    if (!Preferences.getInstance().containsKey("MP ka_rotate")) Preferences.getInstance().putDouble("MP ka_rotate", ka_rotate);
+    if (!Preferences.getInstance().containsKey("MP kh_rotate")) Preferences.getInstance().putDouble("MP kh_rotate", kh_rotate);
+    if (!Preferences.getInstance().containsKey("MP kp_rotate")) Preferences.getInstance().putDouble("MP kp_rotate", kp_rotate);
   }
 
-  public Follow(ArrayList<ArrayList<TPoint>> list, boolean ignoreHeading) {
-    this(ignoreHeading, false, false);
+  public Follow(ArrayList<ArrayList<TPoint>> list, boolean followRotation, boolean followForward) {
+    this(followRotation, false, false);
+    this.followForward = followForward;
     pathL = list.get(0);
     pathR = list.get(1);
   }
@@ -67,6 +67,8 @@ public class Follow extends Command {
     this(false, reverse, mirror);
     this.pathName = pathName;
 
+    nonexistentPath = !Robot.follower.paths.keySet().contains(pathName);
+
     ArrayList<ArrayList<TPoint>> pathPair = Robot.follower.paths.get(this.pathName);
     pathL = pathPair.get(0);
     pathR = pathPair.get(1);
@@ -74,6 +76,8 @@ public class Follow extends Command {
 
   @Override
   protected void initialize() {
+    if(nonexistentPath) return;
+    Robot.isFollowingPath = true;
     Robot.drivetrain.zeroEncoders();
     // Get paths and put them in the TPoint lists
     startTime = Timer.getFPGATimestamp();
@@ -88,11 +92,16 @@ public class Follow extends Command {
 
     kp_reverse = Robot.prefs.getDouble("MP kp_reverse", kp_reverse);
     kh_reverse = Robot.prefs.getDouble("MP kh_reverse", kh_reverse);
+    
+    ka_rotate = Robot.prefs.getDouble("MP ka_rotate", ka_rotate);
+    kp_rotate = Robot.prefs.getDouble("MP kp_rotate", kp_rotate);
+    kh_rotate = Robot.prefs.getDouble("MP kh_rotate", kh_rotate);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    if(nonexistentPath) return;
     // Get all trajectory points
     double currentTime = Timer.getFPGATimestamp();
     double runTime = currentTime - startTime;
@@ -105,10 +114,18 @@ public class Follow extends Command {
     TPoint currentR = Robot.drivetrain.currentRightTrajectoryPoint;
     
     double targetHeading_rad = mirror ? -targetL.heading_rad : targetL.heading_rad;
-    if(ignoreHeading) {
-      double difference = targetL.position_ft-targetR.position_ft;
-      double halfTurnFeet = RobotMap.halfTurn * RobotMap.feetPerTick;
-      targetHeading_rad = difference/halfTurnFeet * Math.PI;
+    double kp = reverse ? this.kp_reverse : this.kp;
+    kp = followForward ? this.kp_forward : kp;
+    double kh = reverse ? this.kh_reverse  : this.kh;
+
+    double ka = this.ka;
+
+    if(followRotation) {
+      double differenceTicks = (targetL.position_ft-targetR.position_ft)/RobotMap.feetPerTick;
+      targetHeading_rad = differenceTicks / RobotMap.halfTurn * Math.PI;
+      ka = this.ka_rotate;
+      kp = this.kp_rotate;
+      kh = this.kh_rotate;
     }
 
     double pos_targetL = (reverse^mirror) ? targetR.position_ft : targetL.position_ft;
@@ -128,7 +145,7 @@ public class Follow extends Command {
     }
 
     // Calculate the differences
-    double start_head_target = pathL.get(0).position_ft;
+    double start_head_target = pathL.get(0).heading_rad;
 
     double pos_error_l = pos_targetL - currentL.position_ft;
     double pos_error_r = pos_targetR - currentR.position_ft;
@@ -137,9 +154,6 @@ public class Follow extends Command {
     head_error %= (2*Math.PI);
     if(head_error > Math.PI) head_error-=2*Math.PI;
     if(head_error < -Math.PI) head_error+=2*Math.PI; 
-
-    double kp = reverse ? this.kp_reverse : this.kp;
-    double kh = reverse ? this.kh_reverse  : this.kh;
 
     double leftOutput = Robot.follower.kv * vel_targetL +
                         ka * accel_targetL +
@@ -157,10 +171,10 @@ public class Follow extends Command {
 
     SmartDashboard.putNumber("V", vel_targetL);
     SmartDashboard.putNumber("A"  , accel_targetL);
-    SmartDashboard.putNumber("P",  kp * pos_error_l);
+    SmartDashboard.putNumber("P",  pos_error_l);
     SmartDashboard.putNumber("D", kd * ((pos_error_l - lastError_l) / 
     (currentTime - lastTime) - vel_targetL));
-    SmartDashboard.putNumber("H", kh * targetHeading_rad);
+    SmartDashboard.putNumber("H", head_error);
 
     lastTime = currentTime;
     lastError_r = pos_error_r;
@@ -170,6 +184,7 @@ public class Follow extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    if(nonexistentPath) return true;
     double runTime = Timer.getFPGATimestamp() - startTime;
     double totalRunTime = pathL.size() * Robot.follower.dt;
     return runTime >= totalRunTime;
@@ -179,6 +194,7 @@ public class Follow extends Command {
   @Override
   protected void end() {
     Robot.drivetrain.stop();
+    Robot.isFollowingPath = false;
   }
 
   // Called when another command which requires one or more of the same

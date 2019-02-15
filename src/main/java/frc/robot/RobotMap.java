@@ -16,12 +16,13 @@ package frc.robot;
 public class RobotMap {
   
   public static boolean enableCameras = true;
+  public static boolean gyroDrive = false;
 
   public static double ticksPerRev = 128;  //ticks
   public static double wheelDiameter = 6./12.;  //ft
   public static double halfTurn = 256; //ticks per 180 degrees on EACH side
 
-  public static double feetPerTick = Math.PI * wheelDiameter / 128;
+  public static double feetPerTick = Math.PI * wheelDiameter / ticksPerRev;
 
   
 }

@@ -90,7 +90,7 @@ public class VisionTurnToTarget extends Command {
     else if(reachedTarget && isTimedOut()) {
       Robot.drivetrain.stop();
       ArrayList<ArrayList<TPoint>> trajectory = Robot.limelight.getTrajectory();
-      Scheduler.getInstance().add(new Follow(trajectory, false));
+      Scheduler.getInstance().add(new Follow(trajectory, false, false));
       return true;
     }
     return isTimedOut();

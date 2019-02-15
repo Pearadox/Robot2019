@@ -10,7 +10,7 @@ public class TrajectoryGenerator {
 	static double ACCELERATION = 6;
 
     public static ArrayList<TPoint> getTrajectory(double distance, double interval, 
-        double cruiseVelocity, double acceleration) //meters, seconds, m/s, m/s/s
+        double cruiseVelocity, double acceleration) 
     {
 		CRUISE_VELOCITY = cruiseVelocity;
 		ACCELERATION = acceleration;

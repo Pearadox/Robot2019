@@ -16,14 +16,17 @@ import frc.robot.pathfollowing.TrajectoryGenerator;
 
 public class DriveForward extends CommandGroup {
   
+  double velocity = Robot.follower.maxVelocity;
+  double acceleration = 8;
+
   public DriveForward(double distance) {
 
     ArrayList<TPoint> sideTraj = TrajectoryGenerator.getTrajectory(distance, Robot.follower.dt, 
-                                    Robot.follower.maxVelocity, 8);  
+                                    velocity, acceleration);  
     ArrayList<ArrayList<TPoint>> trajectory = new ArrayList<>();
     trajectory.add(sideTraj);
     trajectory.add(sideTraj);
-    addSequential(new Follow(trajectory, false));
+    addSequential(new Follow(trajectory, false, true));
 
   }
 }

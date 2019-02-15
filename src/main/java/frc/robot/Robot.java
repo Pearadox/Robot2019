@@ -32,15 +32,17 @@ public class Robot extends TimedRobot {
   public static Preferences prefs;
   public static PDP pdp;
   public static Limelight limelight;
-  public static Pneumatics pneumatics;
   public static PurePursuit pp;
   public static Intake intake;
   public static Moth moth;
   public static Climber climber;
   public static Arm arm;
 
+  Compressor compressor = new Compressor();
+
   public static String folder = "/home/lvuser/paths/";
   public static boolean reverseDrivetrain = false;
+  public static boolean isFollowingPath = false;
 
   UsbCamera camera1, camera2;
   VideoSink server;
@@ -65,7 +67,6 @@ public class Robot extends TimedRobot {
     prefs = Preferences.getInstance();
     pdp = new PDP();
     limelight = new Limelight();
-    pneumatics = new Pneumatics();
     // intake = new Intake();
     moth = new Moth();
     // climber = new Climber();
@@ -139,7 +140,7 @@ public class Robot extends TimedRobot {
   /**
    * This autonomous (along with the chooser code above) shows how to select
    * between different autonomous modes using the dashboard. The sendable
-   * chooser code works with the Java SmartDashboard. If you prefer the
+   * chooser code works wit%h the Java SmartDashboard. If you prefer the
    * LabVIEW Dashboard, remove all of the chooser code and uncomment the
    * getString code to get the auto name from the text box below the Gyro
    *
@@ -150,9 +151,9 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
 
-    // autonomousCommand = new AutonomousDefault();
-    // autonomousCommand = new PPFollow(5, 5, 0);
-    autonomousCommand = new AutonomousTest();
+    // autonomousCommand = new AutonomousTest();
+    autonomousCommand = new AutonomousRtoCMRtoCML(1, false);
+    // autonomousCommand = new AutonomousRtoCMRtoCR(1, 1, false);
 
     if (autonomousCommand != null) {
       autonomousCommand.start();
@@ -186,22 +187,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-
-    if(oi.joystick.getRawButton(7)) {
-      // pneumatics.setForward07();
-      pneumatics.setForward16();
-      
-    }
-    else if(oi.joystick.getRawButton(8)) {
-      // pneumatics.setReverse07();
-      pneumatics.setReverse16(); 
-    }
-    else if(oi.joystick.getRawButton(3)) {
-      pneumatics.setForward07();
-    }
-    else if(oi.joystick.getRawButton(4)) {
-      pneumatics.setReverse07();
-    }
 
     boolean reverseBtn = oi.joystick.getRawButton(2);
     if(reverseBtn && !prevReverse) {

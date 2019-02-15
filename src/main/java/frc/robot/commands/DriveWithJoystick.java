@@ -12,17 +12,16 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
-/**
- * An example command.  You can replace me with your own command.
- */
+
 public class DriveWithJoystick extends Command {
 
-  double turnRate = 210;  // deg per sec
+  double turnRate = 360;  // deg per sec
   double targetHeading, lastTime, lastError;
 
   double kp = 0.01;
-  double kd = 0.1;
+  double kd = 0.07;
 
   public DriveWithJoystick() {
     requires(Robot.drivetrain);
@@ -38,7 +37,8 @@ public class DriveWithJoystick extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    targetHeading = Robot.gyro.getYaw();
+    // targetHeading = Robot.gyro.getYaw();
+    targetHeading = (Robot.drivetrain.getLeftEncoder() - Robot.drivetrain.getRightEncoder())/RobotMap.halfTurn*180;
     lastTime = Timer.getFPGATimestamp();
     lastError = 0;
     
@@ -50,37 +50,45 @@ public class DriveWithJoystick extends Command {
   @Override
   protected void execute() {
 
-    double forwardJoystick = Robot.oi.joystick.getRawAxis(1);
-    double rotateJoystick = Robot.oi.joystick.getRawAxis(2);
+    double throttle = Robot.oi.joystick.getRawAxis(1);
+    double twist = Robot.oi.joystick.getRawAxis(2);
     boolean reverse = Robot.reverseDrivetrain;
     boolean reduce = Robot.oi.joystick.getRawButton(1);
 
-    if(Math.abs(forwardJoystick)<.15) {
-			forwardJoystick = 0;
-		}
+    if(Math.abs(throttle)<.15) 
+      throttle = 0;
+    if(Math.abs(twist)<.15) 
+      twist = 0;
+
+    double f = .25;
+    throttle = Math.copySign(((throttle * throttle + Math.abs(2*throttle*f)) / (1+2*f)), throttle);
+    twist = Math.copySign(((twist * twist + Math.abs(2*twist *f)) / (1+2*f)), twist);
+
     if(reverse) {
-      forwardJoystick *= -1;
+      throttle *= -1;
     }
     if(reduce) {
-      forwardJoystick *= 0.5;
-      rotateJoystick *= 0.2;
+      throttle *= 0.5;
+      twist *= 0.2;
     }
 
-    double dt = Timer.getFPGATimestamp() - lastTime;
-    lastTime = Timer.getFPGATimestamp();
-    double currentHeading = Robot.gyro.getYaw();
-    targetHeading += rotateJoystick * turnRate * dt;
+    if(RobotMap.gyroDrive) {
+      double dt = Timer.getFPGATimestamp() - lastTime;
+      lastTime = Timer.getFPGATimestamp();
+      // double currentHeading = Robot.gyro.getYaw();
+      double currentHeading = (Robot.drivetrain.getLeftEncoder() - Robot.drivetrain.getRightEncoder())/RobotMap.halfTurn*180;
+      targetHeading += twist * turnRate * dt;
 
-    double error = targetHeading - currentHeading;
+      double error = targetHeading - currentHeading;
 
-    double P = kp * error;
-    double D = kd * (error - lastError);
-    lastError = error;
+      double P = kp * error;
+      double D = kd * (error - lastError);
+      lastError = error;
 
-    double output = P + D;
-
-    // Robot.drivetrain.driveWithJoystick(forwardJoystick, rotateJoystick);
-    Robot.drivetrain.driveWithJoystick(forwardJoystick, output);
+      double output = P + D;
+      Robot.drivetrain.driveWithJoystick(throttle, output);
+    }
+    else Robot.drivetrain.driveWithJoystick(throttle, twist);
   }
 
   // Make this return true when this Command no longer needs to run execute()

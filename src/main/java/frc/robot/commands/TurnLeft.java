@@ -9,17 +9,17 @@ import frc.robot.pathfollowing.*;
 import java.util.*;
 
 
-public class TurnRight extends CommandGroup {
+public class TurnLeft extends CommandGroup {
 
   double acceleration = 8;
   ArrayList<ArrayList<TPoint>> trajectory = new ArrayList();
 
-  public TurnRight(double degrees) {
+  public TurnLeft(double degrees) {
     double desired_ticks = degrees / 180. * RobotMap.halfTurn;
 
-    ArrayList<TPoint> left_trajectory = TrajectoryGenerator.getTrajectory(desired_ticks*RobotMap.feetPerTick, 
+    ArrayList<TPoint> left_trajectory = TrajectoryGenerator.getTrajectory(-desired_ticks*RobotMap.feetPerTick, 
         Robot.follower.dt, Robot.follower.maxVelocity, acceleration);
-    ArrayList<TPoint> right_trajectory = TrajectoryGenerator.getTrajectory(-desired_ticks*RobotMap.feetPerTick, 
+    ArrayList<TPoint> right_trajectory = TrajectoryGenerator.getTrajectory(desired_ticks*RobotMap.feetPerTick, 
         Robot.follower.dt, Robot.follower.maxVelocity, acceleration);
     trajectory.add(left_trajectory);
     trajectory.add(right_trajectory);

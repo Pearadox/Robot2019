@@ -14,8 +14,8 @@ public class AutonomousTest extends CommandGroup{
 
     public AutonomousTest() {
         
-        // addSequential(new Follow("LtoML", false, false));
-        addSequential(new PPFollow(0,0,0));
+        // addSequential(new Follow("distanceCalibration", false, false));
+        // addSequential(new Follow("turnCalibration", false, false));
 
                     // bobtrajectory tuning
         // addSequential(new FollowArc(Robot.drivetrain, new R2toCMRArc()));

@@ -19,7 +19,7 @@ public class Moth extends Subsystem {
   DoubleSolenoid allensol07;
 
   public Moth(){
-    allensol07 = new DoubleSolenoid(0,7);
+    allensol07 = new DoubleSolenoid(2,3);
   }
 
   
