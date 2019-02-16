@@ -15,14 +15,14 @@ import frc.robot.pathfollowing.*;
 
 public class Follow extends Command {
 
-  double ka = 0.04;
+  double ka = 0.02;
   double ka_rotate = 0.0;
-  double kp = 2.0;
+  double kp = 0.8;
   double kp_forward = 0.125;
   double kp_rotate = 0.125;
   double kp_reverse = 0.15;
   double kd = 0.0;  
-  double kh = .8;
+  double kh = 1.3;
   double kh_reverse = 0.4;
   double kh_rotate = 0.0;
 
@@ -170,11 +170,11 @@ public class Follow extends Command {
     Robot.drivetrain.setSpeed(leftOutput, rightOutput);
 
     SmartDashboard.putNumber("V", vel_targetL);
-    SmartDashboard.putNumber("A"  , accel_targetL);
-    SmartDashboard.putNumber("P",  pos_error_l);
+    SmartDashboard.putNumber("A"  , ka*accel_targetL);
+    SmartDashboard.putNumber("P",  kp*pos_error_l);
     SmartDashboard.putNumber("D", kd * ((pos_error_l - lastError_l) / 
     (currentTime - lastTime) - vel_targetL));
-    SmartDashboard.putNumber("H", head_error);
+    SmartDashboard.putNumber("H", kh*head_error);
 
     lastTime = currentTime;
     lastError_r = pos_error_r;

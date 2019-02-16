@@ -22,7 +22,8 @@ public class JaciPathfinder {
     
 
     public ArrayList<ArrayList<TPoint>> createShortPath(double x, double y, double headingCorrection) {
-        
+        return null;
+        /*
         Waypoint[] points = new Waypoint[] {
             new Waypoint(-x, -y, -headingCorrection),
             new Waypoint(0, 0, 0)
@@ -57,10 +58,13 @@ public class JaciPathfinder {
         lists.add(right);
         
         return lists;
+        */
     }
 
     public double[][] createPositionalPath(double x, double y, double headingCorrection, double dt)
     {
+        return null;
+        /*
         Waypoint[] points = new Waypoint[] {
             new Waypoint(-x, -y, -headingCorrection),
             new Waypoint(0, 0, 0)
@@ -85,5 +89,6 @@ public class JaciPathfinder {
             lastPosition = seg.position;
         }
         return path;
+        */
     }
 }

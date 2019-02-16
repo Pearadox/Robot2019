@@ -17,8 +17,8 @@ public class LSRtoCR extends CommandGroup {
 
   public LSRtoCR(int cargoTarget, boolean mirror) {
     addSequential(new Follow("LSRtoCR" + cargoTarget, false, mirror));
-    if(!mirror) addSequential(new TurnRight(45));
-    else addSequential(new TurnLeft(45));
+    if(!mirror) addSequential(new TurnRight(45, 3));
+    else addSequential(new TurnLeft(45, 3));
     addSequential(new DriveForward(-2));
   }
 }

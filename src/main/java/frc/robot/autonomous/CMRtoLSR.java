@@ -20,8 +20,8 @@ public class CMRtoLSR extends CommandGroup {
    */
   public CMRtoLSR(boolean mirror) {
     addSequential(new Follow("CMRtoLSR", false, mirror));
-    if(!mirror) addSequential(new TurnLeft(120));
-    else addSequential(new TurnRight(120));
+    if(!mirror) addSequential(new TurnLeft(120, 3));
+    else addSequential(new TurnRight(120, 3));
     addSequential(new DriveForward(-1));
     addSequential(new Delay(.5));
   }

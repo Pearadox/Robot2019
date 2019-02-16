@@ -22,8 +22,6 @@ public class Moth extends Subsystem {
     allensol07 = new DoubleSolenoid(2,3);
   }
 
-  
-
   public void open(){
     allensol07.set(DoubleSolenoid.Value.kForward);
     

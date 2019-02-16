@@ -20,24 +20,24 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 public class Intake extends Subsystem {
  
   VictorSPX wheels;
-  Solenoid allenSolenoid;
+  Solenoid raiserSol;
 
   public Intake(){
-    wheels = new VictorSPX(-1);
-    allenSolenoid = new Solenoid(-1);
+    // wheels = new VictorSPX(-1);
+    raiserSol = new Solenoid(1);
   }
 
 
   public void lower(){
-    allenSolenoid.set(true);
+    raiserSol.set(false);
   }
 
   public void raise(){
-    allenSolenoid.set(false);
+    raiserSol.set(true);
   }
 
   public void toggleRaise(){
-    allenSolenoid.set(!allenSolenoid.get());
+    raiserSol.set(!raiserSol.get());
   }
   
   public void setSpeed(double setSpeed){

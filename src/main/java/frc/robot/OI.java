@@ -8,6 +8,7 @@
 package frc.robot;
 
 import frc.robot.commands.*;
+import frc.robot.subsystems.Arm;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
@@ -33,15 +34,18 @@ public class OI {
 	
 	public OI() {
 		
-		// btn3.whenPressed(new );
-		// btn4.whenPressed(new );
-		// btn5.whenPressed(new );
-		// btn6.whenPressed(new );
-		btn7.whenPressed(new MothToggle());
-		btn9.whenPressed(new DriveForward(1));
-		// btn9.whenPressed(new TurnLeft(135));
-		btn11.whileHeld(new VisionHoldOnTarget());
-		btn12.whenPressed(new VisionTurnToTarget());
+		// btn3.whenPressed(new ArmGoLow());
+		// btn4.whenPressed(new ArmGoMiddle());
+		// btn5.whenPressed(new ArmGoHigh());
+		
+		btn6.whenPressed(new TurnLeft(180, 3));  // spare, mostly for testing
+
+		// btn7.whileHeld(new ArmManualUp());
+		// btn8.whileHeld(new ArmManualDown());
+		// btn9.whileHeld(new IntakeGroup());
+		// btn10.whenPressed(new Outtake());
+		btn11.whenPressed(new MothToggle());
+		// btn12.whenPressed(new VisionTurnToTarget());
 
 	}
 	

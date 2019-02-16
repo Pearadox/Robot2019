@@ -18,6 +18,8 @@ public class PurePursuit {
     double tolerance = 0.001;
     
     public ArrayList<PPPoint> generatePath(double x, double y, double headingCorrection) {
+        return null;
+        /*
         // get rough path of points
         // double[][] rawPath = Robot.pathfinder.createPositionalPath(x, y, headingCorrection, dt);
         double[][] rawPath = new double[][] {{0,0},{3,5}, {5,5}};
@@ -92,6 +94,7 @@ public class PurePursuit {
         }
 
         return trajectory;
+        */
     }
 
     private double distanceFormula(double x1, double y1, double x2, double y2) {

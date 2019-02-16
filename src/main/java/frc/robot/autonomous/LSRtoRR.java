@@ -19,8 +19,8 @@ public class LSRtoRR extends CommandGroup {
    */
   public LSRtoRR(int rocketTarget, boolean mirror) {
     addSequential(new Follow("LSRtoRR" + rocketTarget, false, mirror));
-    if(!mirror) addSequential(new TurnLeft(90));
-    else addSequential(new TurnRight(90));
+    if(!mirror) addSequential(new TurnLeft(90, 3));
+    else addSequential(new TurnRight(90, 3));
     addSequential(new DriveForward(-1));
   }
 }

@@ -12,7 +12,7 @@ public class Follower{
     LtoML: Starts from left side, goes to mid-left hatch
     */
 
-    public double maxVelocity = 13;
+    public double maxVelocity = 14;
     public double kv = 1/maxVelocity;
 
     public double WHEEL_BASE_WIDTH = 2.3;

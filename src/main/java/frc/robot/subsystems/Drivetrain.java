@@ -28,9 +28,7 @@ public class Drivetrain extends Subsystem implements FollowsArc{
 	//to save money, two talons are used as masters and victors are chained to follow
 	//master motors controls slave motors
 	//numbers represent ports on roborio
-	//this is all on CAN bus (bus is connection to different devices)
-
-	// PigeonIMU pigeon = new PigeonIMU(9);  // BOB
+	//this is all on CAN bus (bus is connection to different
 
 	VictorSPX leftSlave1 = new VictorSPX(11);
 	VictorSPX leftSlave2 = new VictorSPX(10);
@@ -43,8 +41,8 @@ public class Drivetrain extends Subsystem implements FollowsArc{
 	//two ports are used because they have two channels because idk
 	//encoders are digital
 
-	Encoder leftEncoder = new Encoder(6,7);
-	Encoder rightEncoder = new Encoder(8,9);
+	Encoder leftEncoder = new Encoder(9,8);
+	Encoder rightEncoder = new Encoder(7,6);
 	// */
 /*
 	Victor left1 = new Victor(0);
@@ -172,11 +170,11 @@ public class Drivetrain extends Subsystem implements FollowsArc{
 	}
 	
 	public double getLeftEncoderInches() {
-		return getLeftEncoder()/ 128.0 * 2 * Math.PI * 3; //256 on practice
+		return getLeftEncoder()/ RobotMap.ticksPerRev * 2 * Math.PI * 3; //256 on practice
 	}
 	
 	public double getRightEncoderInches() {
-		return getRightEncoder()/ 128.0 * 2 * Math.PI * 3; //256 on practice
+		return getRightEncoder()/ RobotMap.ticksPerRev * 2 * Math.PI * 3; //256 on practice
 	}
 
 	public double getRightEncoderFeet() {

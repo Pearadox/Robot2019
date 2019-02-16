@@ -106,6 +106,7 @@ public class Robot extends TimedRobot {
     drivetrain.updateTrajectory();
     SmartDashboard.putNumber("Left Feet Encoder", drivetrain.getLeftEncoderFeet());
     SmartDashboard.putNumber("Right Feet Encoder", drivetrain.getRightEncoderFeet());
+    SmartDashboard.putNumber("Heading", gyro.getYaw());
     SmartDashboard.putNumber("Voltage", pdp.getVoltage());
     SmartDashboard.putNumber("tx", limelight.getX());
     SmartDashboard.putNumber("ty", limelight.getY());
@@ -151,8 +152,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
 
-    // autonomousCommand = new AutonomousTest();
-    autonomousCommand = new AutonomousRtoCMRtoCML(1, false);
+    autonomousCommand = new AutonomousTest();
+    // autonomousCommand = new AutonomousRtoCMRtoCML(1, false);
     // autonomousCommand = new AutonomousRtoCMRtoCR(1, 1, false);
 
     if (autonomousCommand != null) {
