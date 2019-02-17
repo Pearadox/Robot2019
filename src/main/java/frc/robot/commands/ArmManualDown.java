@@ -37,12 +37,14 @@ public class ArmManualDown extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.arm.setArmSpeed(0.3 + Robot.arm.calculateHoldOutput(Robot.arm.getAngle()));
+    // Robot.arm.setArmSpeed(Robot.arm.calculateHoldOutput(Robot.arm.getAngle()));
+    Robot.arm.setArmSpeed(0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }

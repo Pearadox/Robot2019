@@ -10,6 +10,7 @@ package frc.robot.autonomous;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.Follow;
+import frc.robot.commands.TurnAbsolute;
 import frc.robot.commands.TurnLeft;
 import frc.robot.commands.TurnRight;
 
@@ -19,8 +20,7 @@ public class LSRtoRR extends CommandGroup {
    */
   public LSRtoRR(int rocketTarget, boolean mirror) {
     addSequential(new Follow("LSRtoRR" + rocketTarget, false, mirror));
-    if(!mirror) addSequential(new TurnLeft(90, 3));
-    else addSequential(new TurnRight(90, 3));
+    // addSequential(new TurnAbsolute(-30));
     addSequential(new DriveForward(-1));
   }
 }

@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.*;
@@ -26,10 +27,16 @@ public class Arm extends Subsystem {
         // intakeMotor = new VictorSPX(-1);
         armMotor = new CANSparkMax(3, MotorType.kBrushless);
         encoder = new CANEncoder(armMotor);
+        armMotor.setIdleMode(IdleMode.kBrake);
+        armMotor.setInverted(true);
     }
 
     public double getAngle(){
-        return encoder.getPosition()*360 + angleMin;
+        return getRawEncoder()*.360 + angleMin;
+    }
+
+    public double getRawEncoder() {
+        return -encoder.getPosition();
     }
 
     public void setIntakeSpeed(double percentOutput){
@@ -37,8 +44,12 @@ public class Arm extends Subsystem {
     }
 
     public void setArmSpeed(double percentOutput){
-        if (getAngle()>180) return;
+        // if (getAngle()>180) return;
         armMotor.set(percentOutput);
+    }
+
+    public void zero() {
+        encoder.setPosition(0);
     }
 
     public void initDefaultCommand() {
@@ -46,7 +57,7 @@ public class Arm extends Subsystem {
     }
 
     public double calculateHoldOutput(double angle){
-		double amplitude = 0.138;
+		double amplitude = 0;
 		double equation = amplitude * Math.sin(angle*Math.PI/180);
 		return equation;
     }

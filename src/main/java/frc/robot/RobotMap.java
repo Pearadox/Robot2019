@@ -20,9 +20,27 @@ public class RobotMap {
 
   public static double ticksPerRev = 256;  //ticks
   public static double wheelDiameter = 6./12.;  //ft
-  public static double halfTurn = 256; //ticks per 180 degrees on EACH side
+  public static double halfTurn = 1090; //ticks per 180 degrees on EACH side
 
   public static double feetPerTick = Math.PI * wheelDiameter / ticksPerRev;
 
-  
+  public static int leftEncoderA = 9;
+  public static int leftEncoderB = 8;
+  public static int rightEncoderA = 7;
+  public static int rightEncoderB = 6;
+
+
+  public static int CANLeftSlave1Victor = 11; 
+  public static int CANLeftSlave2Victor = 10;
+  public static int CANRightSlave1Victor = 12;
+  public static int CANRightSlave2Victor = 13;
+  public static int CANLeftMasterTalon = 14;
+  public static int CANRightMasterTalon = 16;
+
+  public static int CANIntakeVictor = 20;
+
+  public static int CANArmBLDCSparkMax = 3;  // 30
+  public static int CANArmIntakeVictor = 31;
+
+  public static int CANClimberVictor = 40;
 }

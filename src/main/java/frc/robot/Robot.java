@@ -106,17 +106,19 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     drivetrain.updateTrajectory();
-    SmartDashboard.putNumber("Left Feet Encoder", drivetrain.getLeftEncoderFeet());
-    SmartDashboard.putNumber("Right Feet Encoder", drivetrain.getRightEncoderFeet());
-    SmartDashboard.putNumber("Left Encoder", drivetrain.getLeftEncoder());
-    SmartDashboard.putNumber("Right Encoder", drivetrain.getRightEncoder());
-    SmartDashboard.putNumber("Heading", gyro.getYaw());
-    SmartDashboard.putNumber("Voltage", pdp.getVoltage());
-    SmartDashboard.putNumber("tx", limelight.getX());
-    SmartDashboard.putNumber("ty", limelight.getY());
-    SmartDashboard.putBoolean("tv", limelight.targetExists());
-    SmartDashboard.putNumber("Limelight Distance", limelight.getDistance());
-    SmartDashboard.putNumber("Angle", limelight.getAngle());
+    // SmartDashboard.putNumber("Left Feet Encoder", drivetrain.getLeftEncoderFeet());
+    // SmartDashboard.putNumber("Right Feet Encoder", drivetrain.getRightEncoderFeet());
+    // SmartDashboard.putNumber("Left Encoder", drivetrain.getLeftEncoder());
+    // SmartDashboard.putNumber("Right Encoder", drivetrain.getRightEncoder());
+    // SmartDashboard.putNumber("Arm Encoder", arm.getAngle());
+    // SmartDashboard.putNumber("Arm Raw Encoder", arm.getRawEncoder());
+    // SmartDashboard.putNumber("Heading", gyro.getYaw());
+    // SmartDashboard.putNumber("Drivetrain Heading", drivetrain.getHeading());
+    // SmartDashboard.putNumber("tx", limelight.getX());
+    // SmartDashboard.putNumber("ty", limelight.getY());
+    // SmartDashboard.putBoolean("tv", limelight.targetExists());
+    // SmartDashboard.putNumber("Limelight Distance", limelight.getDistance());
+    // SmartDashboard.putNumber("Angle", limelight.getAngle());
 
     if(RobotMap.enableCameras) {
       if(!reverseDrivetrain) {
@@ -125,6 +127,8 @@ public class Robot extends TimedRobot {
         server.setSource(camera1);
       }
     }
+
+    if(oi.joystick.getRawButton(11)) arm.zero();
   }
 
   /**
@@ -134,7 +138,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    
+    arm.setArmSpeed(0);
   }
 
   @Override
@@ -155,6 +159,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+
+    gyro.zero(180);  // facing backwards
 
     autonomousCommand = new AutonomousTest();
     // autonomousCommand = new AutonomousRtoCMRtoCML(1, false);

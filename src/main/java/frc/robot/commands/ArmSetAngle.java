@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 /**
@@ -17,9 +18,9 @@ import frc.robot.Robot;
  */
 public class ArmSetAngle extends Command {
     double targetAngle;
-    double kp = 0.1;
+    double kp = 0.05;
     double ki = 0.0;
-    double kd = 0.;
+    double kd = 0.0001;
     double error, errorSum, lastError;
 
   public ArmSetAngle(double angle) {
@@ -46,14 +47,17 @@ public class ArmSetAngle extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double error = targetAngle - Robot.arm.getAngle();
+    double error = targetAngle - Robot.arm.getRawEncoder();
+    // double error = targetAngle - Robot.arm.getAngle();
     double F = Robot.arm.calculateHoldOutput(Robot.arm.getAngle());
     double P = error * kp;
     double I = errorSum * ki;
     double D = (error-lastError) * kd;
     double output = P + I + D + F;
 
-    Robot.arm.setArmSpeed(output);
+    SmartDashboard.putNumber("Arm Out", output);
+
+    Robot.arm.setArmSpeed(-output);
 
     errorSum += error;
     lastError = error;
@@ -62,10 +66,10 @@ public class ArmSetAngle extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    double error = targetAngle - Robot.arm.getAngle();
-    if (Math.abs(error) <= 2){
-      return true;
-    }
+    // double error = targetAngle - Robot.arm.getAngle();
+    // if (Math.abs(error) <= 2){
+    //   return true;
+    // }
     return false;
   }
 

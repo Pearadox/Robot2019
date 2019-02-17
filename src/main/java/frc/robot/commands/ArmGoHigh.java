@@ -14,7 +14,7 @@ public class ArmGoHigh extends CommandGroup {
    * Add your docs here.
    */
   public ArmGoHigh() {
-    addSequential(new ArmSetAngle(120));
+    addSequential(new ArmSetAngle(12.5));
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());

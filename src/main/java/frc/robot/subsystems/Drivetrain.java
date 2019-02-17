@@ -30,19 +30,19 @@ public class Drivetrain extends Subsystem implements FollowsArc{
 	//numbers represent ports on roborio
 	//this is all on CAN bus (bus is connection to different
 
-	VictorSPX leftSlave1 = new VictorSPX(11);
-	VictorSPX leftSlave2 = new VictorSPX(10);
-	VictorSPX rightSlave1 = new VictorSPX(12);
-	VictorSPX rightSlave2 = new VictorSPX(13);
-    TalonSRX leftMaster = new TalonSRX(14);
-	TalonSRX rightMaster = new TalonSRX(16);
+	VictorSPX leftSlave1 = new VictorSPX(RobotMap.CANLeftSlave1Victor);
+	VictorSPX leftSlave2 = new VictorSPX(RobotMap.CANLeftSlave2Victor);
+	VictorSPX rightSlave1 = new VictorSPX(RobotMap.CANRightSlave1Victor);
+	VictorSPX rightSlave2 = new VictorSPX(RobotMap.CANRightSlave2Victor);
+    TalonSRX leftMaster = new TalonSRX(RobotMap.CANLeftMasterTalon);
+	TalonSRX rightMaster = new TalonSRX(RobotMap.CANRightMasterTalon);
 
 	//encoders track wheel rotations (track ticks)
 	//two ports are used because they have two channels because idk
 	//encoders are digital
 
-	Encoder leftEncoder = new Encoder(9,8);
-	Encoder rightEncoder = new Encoder(7,6);
+	Encoder leftEncoder = new Encoder(RobotMap.leftEncoderA,RobotMap.leftEncoderB);
+	Encoder rightEncoder = new Encoder(RobotMap.rightEncoderA, RobotMap.rightEncoderB);
 	// */
 /*
 	Victor left1 = new Victor(0);
@@ -186,7 +186,7 @@ public class Drivetrain extends Subsystem implements FollowsArc{
 	}
 
 	public double getHeading() {
-		return getLeftEncoder() - getRightEncoder() / RobotMap.halfTurn*180;
+		return (getLeftEncoder() - getRightEncoder()) / RobotMap.halfTurn*180;
 	}
 	
 	public void zeroEncoders() {

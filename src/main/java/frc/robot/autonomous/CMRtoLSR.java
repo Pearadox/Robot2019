@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.Delay;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.Follow;
+import frc.robot.commands.TurnAbsolute;
 import frc.robot.commands.TurnLeft;
 import frc.robot.commands.TurnRight;
 
@@ -20,8 +21,7 @@ public class CMRtoLSR extends CommandGroup {
    */
   public CMRtoLSR(boolean mirror) {
     addSequential(new Follow("CMRtoLSR", false, mirror));
-    if(!mirror) addSequential(new TurnLeft(120, 3));
-    else addSequential(new TurnRight(120, 3));
+    // addSequential(new TurnAbsolute(0));
     addSequential(new DriveForward(-1));
     addSequential(new Delay(.5));
   }
