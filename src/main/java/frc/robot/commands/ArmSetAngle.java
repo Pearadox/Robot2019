@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import frc.robot.Robot;
@@ -15,18 +16,20 @@ import frc.robot.Robot;
  * An example command.  You can replace me with your own command.
  */
 public class ArmSetAngle extends Command {
-    double targetAngle = 0.;
-    double armkP = 0.1;
-    double armkI = 0.0;
-    double armkD = 0.;
-    double error;
-    double errorSum = 0;
-    double lastError = 0;
+    double targetAngle;
+    double kp = 0.1;
+    double ki = 0.0;
+    double kd = 0.;
+    double error, errorSum, lastError;
 
   public ArmSetAngle(double angle) {
-      targetAngle = angle;
-    // Use requires() here to declare subsystem dependencies
     requires(Robot.arm);
+
+    targetAngle = angle;
+
+    if (!Preferences.getInstance().containsKey("Arm kp")) Preferences.getInstance().putDouble("Arm kp", kp);
+    if (!Preferences.getInstance().containsKey("Arm ki")) Preferences.getInstance().putDouble("Arm ki", ki);
+    if (!Preferences.getInstance().containsKey("Arm kd")) Preferences.getInstance().putDouble("Arm kd", kd);
   }
   
   // Called just before this Command runs the first time
@@ -34,6 +37,10 @@ public class ArmSetAngle extends Command {
   protected void initialize() {
     lastError = 0;
     errorSum = 0;
+
+    kp = Robot.prefs.getDouble("Arm kp", kp);
+    ki = Robot.prefs.getDouble("Arm ki", ki);
+    kd = Robot.prefs.getDouble("Arm kd", kd);
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -41,11 +48,13 @@ public class ArmSetAngle extends Command {
   protected void execute() {
     double error = targetAngle - Robot.arm.getAngle();
     double F = Robot.arm.calculateHoldOutput(Robot.arm.getAngle());
-    double P = error * armkP;
-    double I = errorSum * armkI;
-    double D = (error-lastError) * armkD;
+    double P = error * kp;
+    double I = errorSum * ki;
+    double D = (error-lastError) * kd;
     double output = P + I + D + F;
+
     Robot.arm.setArmSpeed(output);
+
     errorSum += error;
     lastError = error;
   }
@@ -71,5 +80,6 @@ public class ArmSetAngle extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }

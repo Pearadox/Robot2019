@@ -7,6 +7,9 @@ import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -15,23 +18,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Arm extends Subsystem {
     double angleMin = 45.;
-    double angleMax = 180.;
-    double volMin = 3.998;
-    double volMax = 1.518;
-    AnalogInput potentiometer;
     VictorSPX intakeMotor;
-    VictorSPX positionMotor;
+    CANSparkMax armMotor;
+    CANEncoder encoder;
 
     public Arm(){
-        potentiometer = new AnalogInput(-1);
-        intakeMotor = new VictorSPX(-1);
-        positionMotor = new VictorSPX(-1);
+        // intakeMotor = new VictorSPX(-1);
+        armMotor = new CANSparkMax(3, MotorType.kBrushless);
+        encoder = new CANEncoder(armMotor);
     }
 
     public double getAngle(){
-        
-        return (potentiometer.getVoltage()-volMin)*(angleMax-angleMin)/(volMax-volMin) + angleMin;
-
+        return encoder.getPosition()*360 + angleMin;
     }
 
     public void setIntakeSpeed(double percentOutput){
@@ -40,7 +38,7 @@ public class Arm extends Subsystem {
 
     public void setArmSpeed(double percentOutput){
         if (getAngle()>180) return;
-        positionMotor.set(ControlMode.PercentOutput, percentOutput);
+        armMotor.set(percentOutput);
     }
 
     public void initDefaultCommand() {

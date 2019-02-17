@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoMode;
@@ -52,7 +55,6 @@ public class Robot extends TimedRobot {
 
   Command autonomousCommand;
 
-
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -70,7 +72,7 @@ public class Robot extends TimedRobot {
     // intake = new Intake();
     moth = new Moth();
     // climber = new Climber();
-    // arm = new Arm();
+    arm = new Arm();
 
     oi = new OI();
 
@@ -106,6 +108,8 @@ public class Robot extends TimedRobot {
     drivetrain.updateTrajectory();
     SmartDashboard.putNumber("Left Feet Encoder", drivetrain.getLeftEncoderFeet());
     SmartDashboard.putNumber("Right Feet Encoder", drivetrain.getRightEncoderFeet());
+    SmartDashboard.putNumber("Left Encoder", drivetrain.getLeftEncoder());
+    SmartDashboard.putNumber("Right Encoder", drivetrain.getRightEncoder());
     SmartDashboard.putNumber("Heading", gyro.getYaw());
     SmartDashboard.putNumber("Voltage", pdp.getVoltage());
     SmartDashboard.putNumber("tx", limelight.getX());

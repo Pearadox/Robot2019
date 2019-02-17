@@ -15,32 +15,24 @@ import frc.robot.Robot;
 
 public class TurnLeft extends Command {
 
-  double setHeading;
+  double setHeading, timeout;
   double targetHeading;
   double lastTime, lastError;
   double kp = .006;
   double ki = .00002;
   double kd = .05;
 
-  double maxIntegral = 0.3;
-  double frictionCompensation = 0.1;
+  double maxIntegral = 0.2;
+  double maxP = 0.8;
+  double frictionCompensation = 0.09;
 
   double errorSum;
+  boolean reachedThreshold = false;
 
   public TurnLeft(double setHeading, double timeout) {
     requires(Robot.drivetrain);
     this.setHeading = setHeading;
-    setTimeout(timeout);
-  }
-
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-    lastTime = Timer.getFPGATimestamp();
-    lastError = 0;
-    errorSum = 0;
-
-    targetHeading = Robot.gyro.getYaw() - setHeading;
+    this.timeout = timeout;
 
     if (!Preferences.getInstance().containsKey("Gyro kp")){
       Preferences.getInstance().putDouble("Gyro kp", kp);
@@ -51,6 +43,19 @@ public class TurnLeft extends Command {
     if (!Preferences.getInstance().containsKey("Gyro kd")){
       Preferences.getInstance().putDouble("Gyro kd", kd);
     }
+  }
+
+  // Called just before this Command runs the first time
+  @Override
+  protected void initialize() {
+    setTimeout(timeout);
+    lastTime = Timer.getFPGATimestamp();
+    lastError = 0;
+    errorSum = 0;
+    this.reachedThreshold = false;
+
+    // targetHeading = Robot.gyro.getYaw() - setHeading;
+    targetHeading = Robot.drivetrain.getHeading() - setHeading;
 
     kp = Robot.prefs.getDouble("Gyro kp", kp);
     ki = Robot.prefs.getDouble("Gyro ki", ki);
@@ -63,7 +68,6 @@ public class TurnLeft extends Command {
     double dt = Timer.getFPGATimestamp() - lastTime;
     lastTime = Timer.getFPGATimestamp();
     double currentHeading = Robot.gyro.getYaw();
-    // double currentHeading = (Robot.drivetrain.getLeftEncoder() - Robot.drivetrain.getRightEncoder())/RobotMap.halfTurn*180;
 
     double error = targetHeading - currentHeading;
     errorSum += error;
@@ -73,6 +77,7 @@ public class TurnLeft extends Command {
     double D = kd * (error - lastError);
     lastError = error;
 
+    if(Math.abs(P) > maxP) P = Math.copySign(maxP, P);
     if(Math.abs(I) > maxIntegral) I = Math.copySign(maxIntegral, I);
 
     double output = P + I + D;
@@ -85,7 +90,9 @@ public class TurnLeft extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Math.abs(targetHeading - Robot.gyro.getYaw()) < 2 || isTimedOut();
+    if(!reachedThreshold && Math.abs(targetHeading - Robot.gyro.getYaw()) < 3) setTimeout(.3); // give extra time to finish
+    if(Math.abs(targetHeading - Robot.gyro.getYaw()) < 1) return true;
+    return isTimedOut();
   }
 
   // Called once after isFinished returns true

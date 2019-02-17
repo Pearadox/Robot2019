@@ -184,6 +184,10 @@ public class Drivetrain extends Subsystem implements FollowsArc{
 	public double getLeftEncoderFeet() {
 		return getLeftEncoderInches()/12;
 	}
+
+	public double getHeading() {
+		return getLeftEncoder() - getRightEncoder() / RobotMap.halfTurn*180;
+	}
 	
 	public void zeroEncoders() {
 		 leftEncoder.reset();
