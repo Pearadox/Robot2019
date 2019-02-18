@@ -24,7 +24,7 @@ public class Arm extends Subsystem {
     CANEncoder encoder;
 
     public Arm(){
-        // intakeMotor = new VictorSPX(-1);
+        intakeMotor = new VictorSPX(RobotMap.CANArmIntakeVictor);
         armMotor = new CANSparkMax(3, MotorType.kBrushless);
         encoder = new CANEncoder(armMotor);
         armMotor.setIdleMode(IdleMode.kBrake);
@@ -32,7 +32,7 @@ public class Arm extends Subsystem {
     }
 
     public double getAngle(){
-        return getRawEncoder()*.360 + angleMin;
+        return getRawEncoder()*3.60 + angleMin;
     }
 
     public double getRawEncoder() {
@@ -44,7 +44,7 @@ public class Arm extends Subsystem {
     }
 
     public void setArmSpeed(double percentOutput){
-        // if (getAngle()>180) return;
+        if (getAngle()>180) return;
         armMotor.set(percentOutput);
     }
 

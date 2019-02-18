@@ -11,13 +11,8 @@ public class AutonomousTest extends CommandGroup{
 
     public AutonomousTest() {
         
-        // addSequential(new Follow("distanceCalibration", false, false));
-        addSequential(new Follow("turnCalibration", false, false));
-
-                    // bobtrajectory tuning
-        // addSequential(new FollowArc(Robot.drivetrain, new R2toCMRArc()));
-        // addSequential(new FollowArc(Robot.drivetrain, new DistanceScalingArc()));
-        // addSequential(new FollowArc(Robot.drivetrain, new TurnScalingArc()));
+        addSequential(new Follow("distanceCalibration", false, false));
+        // addSequential(new Follow("turnCalibration", false, false));
     }  
 
 }

@@ -12,12 +12,12 @@ public class Follower{
     LtoML: Starts from left side, goes to mid-left hatch
     */
 
-    public double maxVelocity = 14;
+    public double maxVelocity = 12;
     public double kv = 1/maxVelocity;
 
     public double WHEEL_BASE_WIDTH = 2.3;
 
-    public static final double dt = 0.01;
+    public static final double dt = 0.02;
     final String folder = "/home/lvuser/paths/";
 
     public TreeMap<String, ArrayList<ArrayList<TPoint>>> paths = new TreeMap<>(); // 0: left, 1:right
@@ -73,14 +73,5 @@ public class Follower{
 
         L_scanner.close();
         R_scanner.close();
-    }
-
-    public void updateMaxVelocity() {
-        double v = Robot.pdp.getVoltage();
-        double a = 0;
-        double b = 0;
-        double c = 0;
-        maxVelocity = a*v*v + b*v + c;
-        //scrap this idea
     }
 }

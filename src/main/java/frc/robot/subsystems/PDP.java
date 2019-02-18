@@ -28,7 +28,7 @@ public String WhatisAllen(){
   }
 
 public String WhatisJayden(){
-    String Jayden = "good";
+    String Jayden = "who?";
     return Jayden;
   }
   @Override

@@ -55,8 +55,6 @@ public class ArmSetAngle extends Command {
     double D = (error-lastError) * kd;
     double output = P + I + D + F;
 
-    SmartDashboard.putNumber("Arm Out", output);
-
     Robot.arm.setArmSpeed(-output);
 
     errorSum += error;

@@ -19,7 +19,7 @@ public class DriveWithJoystick extends Command {
 
   double turnRate = 360;  // deg per sec
   double targetHeading, lastTime, lastError;
-
+  
   double kp = 0.01;
   double kd = 0.07;
 
@@ -42,14 +42,14 @@ public class DriveWithJoystick extends Command {
     lastTime = Timer.getFPGATimestamp();
     lastError = 0;
     
-    kp = Robot.prefs.getDouble("GyroDrive kp", kp);
-    kd = Robot.prefs.getDouble("GyroDrive kd", kd);
+    // kp = Robot.prefs.getDouble("GyroDrive kp", kp);
+    // kd = Robot.prefs.getDouble("GyroDrive kd", kd);
   }
-
+  double start = 0;
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
+    
     double throttle = Robot.oi.joystick.getRawAxis(1);
     double twist = Robot.oi.joystick.getRawAxis(2);
     boolean reverse = Robot.reverseDrivetrain;
@@ -57,7 +57,7 @@ public class DriveWithJoystick extends Command {
 
     if(Math.abs(throttle)<.15) 
       throttle = 0;
-    if(Math.abs(twist)<.15) 
+    if(Math.abs(twist)<.25) 
       twist = 0;
 
     double f = .25;
@@ -69,14 +69,14 @@ public class DriveWithJoystick extends Command {
     }
     if(reduce) {
       throttle *= 0.5;
-      twist *= 0.2;
+      twist *= 0.3;
     }
 
     if(RobotMap.gyroDrive) {
       double dt = Timer.getFPGATimestamp() - lastTime;
       lastTime = Timer.getFPGATimestamp();
-      // double currentHeading = Robot.gyro.getYaw();
-      double currentHeading = (Robot.drivetrain.getLeftEncoder() - Robot.drivetrain.getRightEncoder())/RobotMap.halfTurn*180;
+      double currentHeading = Robot.gyro.getYaw();
+      // double currentHeading = (Robot.drivetrain.getLeftEncoder() - Robot.drivetrain.getRightEncoder())/RobotMap.halfTurn*180;
       targetHeading += twist * turnRate * dt;
 
       double error = targetHeading - currentHeading;

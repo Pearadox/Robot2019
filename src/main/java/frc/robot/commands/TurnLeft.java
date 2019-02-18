@@ -10,7 +10,7 @@ import java.util.*;
 
 public class TurnLeft extends CommandGroup {
 
-  double acceleration = 8;
+  double acceleration = 5;
   ArrayList<ArrayList<TPoint>> trajectory = new ArrayList();
 
   public TurnLeft(double degrees) {

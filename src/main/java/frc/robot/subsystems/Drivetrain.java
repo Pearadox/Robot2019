@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
-public class Drivetrain extends Subsystem implements FollowsArc{
+public class Drivetrain extends Subsystem {
 	//  /*
 	 
 	//victorspx is motor controller, but talon is better and costs more and is more loved
@@ -205,19 +205,15 @@ public class Drivetrain extends Subsystem implements FollowsArc{
 		lastFeet_r = getRightEncoderFeet();
 		lastTime = Timer.getFPGATimestamp();
 		double velocity_r = changeFeet_r/changeSeconds;
-		SmartDashboard.putNumber("Velocity_r", velocity_r);
 		double changeVelocity_r = lastVelocity_r - lastVelocity_r; 
 		double acceleration_r = changeVelocity_r / changeSeconds;
-		SmartDashboard.putNumber("Acceleration_r", acceleration_r);
 		lastVelocity_r = velocity_r;
 
 		double changeAcceleration_r = acceleration_r - lastAcceleration_r;
 		double jerk_r = changeAcceleration_r / changeSeconds;
 		lastAcceleration_r = acceleration_r;
-		SmartDashboard.putNumber("Jerk_r", jerk_r);
 
 		double heading_rad = Math.toRadians(Robot.gyro.getYaw());
-		SmartDashboard.putNumber("Heading_rad", heading_rad); 
 
 		currentRightTrajectoryPoint = new TPoint(getRightEncoderFeet(), velocity_r, acceleration_r, heading_rad);
 
@@ -225,17 +221,14 @@ public class Drivetrain extends Subsystem implements FollowsArc{
 		lastFeet_l = getLeftEncoderFeet();
 		lastTime = Timer.getFPGATimestamp();
 		double velocity_l = changeFeet/changeSeconds;
-		SmartDashboard.putNumber("Velocity_l", velocity_l);
 		
 		double changeVelocity_l = velocity_l - lastVelocity_l; 
 		double acceleration_l = changeVelocity_l / changeSeconds;
-		SmartDashboard.putNumber("Acceleration_l", acceleration_l);
 		lastVelocity_l = velocity_l;
 
 		double changeAcceleration_l = acceleration_l - lastAcceleration_l;
 		double jerk_l = changeAcceleration_l / changeSeconds;
 		lastAcceleration_l = acceleration_l;
-		SmartDashboard.putNumber("Jerk_l", jerk_l);
 
 
 		currentLeftTrajectoryPoint = new TPoint(getLeftEncoderFeet(), velocity_l, acceleration_l, heading_rad);
@@ -245,34 +238,6 @@ public class Drivetrain extends Subsystem implements FollowsArc{
     public void initDefaultCommand() {
         setDefaultCommand(new DriveWithJoystick());
 	}
-	
-	  // This should return your left talon object
-	  @Override
-	  public TalonSRX getLeft() {
-		// return leftMaster; 
-		return null;
-	  }
-	
-	  // This should return your right talon object
-	  @Override
-	  
-	  public TalonSRX getRight() {
-		// return rightMaster; 
-		return null;
-	  }
-	
-	  // This should return the current value of your sum sensor that will be configured in a future step
-	  @Override
-	  public double getDistance() {
-		// return rightMaster.getSelectedSensorPosition(0);
-		return 0;
-	  }
-	  
-	  // This should return the instance of your drive train
-	  @Override
-	  public Subsystem getRequiredSubsystem() {
-		return Robot.drivetrain;
-	  }
-
+		
 }
 

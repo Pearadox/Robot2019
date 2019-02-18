@@ -20,7 +20,7 @@ public class Intake extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.intake.setSpeed(1);
+    Robot.intake.setSpeed(.4);
     
   }
 //kona mad illeterate

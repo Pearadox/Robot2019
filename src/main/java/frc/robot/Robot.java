@@ -69,7 +69,7 @@ public class Robot extends TimedRobot {
     prefs = Preferences.getInstance();
     pdp = new PDP();
     limelight = new Limelight();
-    // intake = new Intake();
+    intake = new Intake();
     moth = new Moth();
     // climber = new Climber();
     arm = new Arm();
@@ -95,16 +95,11 @@ public class Robot extends TimedRobot {
     }
   }
 
-  /**
-   * This function is called every robot packet, no matter the mode. Use
-   * this for items like diagnostics that you want ran during disabled,
-   * autonomous, teleoperated and test.
-   *
-   * <p>This runs after the mode specific periodic functions, but before
-   * LiveWindow and SmartDashboard integrated updating.
-   */
+  
+  double start = 0;
   @Override
   public void robotPeriodic() {
+    
     drivetrain.updateTrajectory();
     // SmartDashboard.putNumber("Left Feet Encoder", drivetrain.getLeftEncoderFeet());
     // SmartDashboard.putNumber("Right Feet Encoder", drivetrain.getRightEncoderFeet());
@@ -120,6 +115,8 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("Limelight Distance", limelight.getDistance());
     // SmartDashboard.putNumber("Angle", limelight.getAngle());
 
+    
+
     if(RobotMap.enableCameras) {
       if(!reverseDrivetrain) {
         server.setSource(camera2);
@@ -131,11 +128,7 @@ public class Robot extends TimedRobot {
     if(oi.joystick.getRawButton(11)) arm.zero();
   }
 
-  /**
-   * This function is called once each time the robot enters Disabled mode.
-   * You can use it to reset any subsystem information you want to clear when
-   * the robot is disabled.
-   */
+  
   @Override
   public void disabledInit() {
     arm.setArmSpeed(0);
@@ -146,24 +139,14 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
   }
 
-  /**
-   * This autonomous (along with the chooser code above) shows how to select
-   * between different autonomous modes using the dashboard. The sendable
-   * chooser code works wit%h the Java SmartDashboard. If you prefer the
-   * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-   * getString code to get the auto name from the text box below the Gyro
-   *
-   * <p>You can add additional auto modes by adding additional commands to the
-   * chooser code above (like the commented example) or additional comparisons
-   * to the switch structure below with additional strings & commands.
-   */
+  
   @Override
   public void autonomousInit() {
 
     gyro.zero(180);  // facing backwards
 
     autonomousCommand = new AutonomousTest();
-    // autonomousCommand = new AutonomousRtoCMRtoCML(1, false);
+    autonomousCommand = new AutonomousRtoCMRtoCML(1, false);
     // autonomousCommand = new AutonomousRtoCMRtoCR(1, 1, false);
 
     if (autonomousCommand != null) {

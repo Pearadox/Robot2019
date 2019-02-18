@@ -14,6 +14,7 @@ public class TrajectoryGenerator {
     {
         return null;
         /*
+        interval = 0.02;
 		CRUISE_VELOCITY = cruiseVelocity;
 		ACCELERATION = acceleration;
 

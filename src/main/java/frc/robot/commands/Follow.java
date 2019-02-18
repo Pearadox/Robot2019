@@ -16,13 +16,13 @@ import frc.robot.pathfollowing.*;
 public class Follow extends Command {
 
   double ka = 0.02;
-  double ka_rotate = 0.0;
-  double kp = 0.8;
+  double ka_rotate = 0.065;
+  double kp = 0.4;
   double kp_forward = 0.125;
-  double kp_rotate = 0.125;
+  double kp_rotate = 0.02;
   double kp_reverse = 0.15;
   double kd = 0.0;  
-  double kh = 1.3;
+  double kh = .45;  
   double kh_reverse = 0.4;
   double kh_rotate = 0.0;
 
@@ -84,23 +84,24 @@ public class Follow extends Command {
     
     startHeading = Math.toRadians(Robot.gyro.getYaw());
 
-    Robot.prefs = Preferences.getInstance();
+    // Robot.prefs = Preferences.getInstance();
 
-    kp = Robot.prefs.getDouble("MP kp", kp);
-    ka = Robot.prefs.getDouble("MP ka", ka);
-    kh = Robot.prefs.getDouble("MP kh", kh);
+    // kp = Robot.prefs.getDouble("MP kp", kp);
+    // ka = Robot.prefs.getDouble("MP ka", ka);
+    // kh = Robot.prefs.getDouble("MP kh", kh);
 
-    kp_reverse = Robot.prefs.getDouble("MP kp_reverse", kp_reverse);
-    kh_reverse = Robot.prefs.getDouble("MP kh_reverse", kh_reverse);
+    // kp_reverse = Robot.prefs.getDouble("MP kp_reverse", kp_reverse);
+    // kh_reverse = Robot.prefs.getDouble("MP kh_reverse", kh_reverse);
     
-    ka_rotate = Robot.prefs.getDouble("MP ka_rotate", ka_rotate);
-    kp_rotate = Robot.prefs.getDouble("MP kp_rotate", kp_rotate);
-    kh_rotate = Robot.prefs.getDouble("MP kh_rotate", kh_rotate);
+    // ka_rotate = Robot.prefs.getDouble("MP ka_rotate", ka_rotate);
+    // kp_rotate = Robot.prefs.getDouble("MP kp_rotate", kp_rotate);
+    // kh_rotate = Robot.prefs.getDouble("MP kh_rotate", kh_rotate);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    double start = Timer.getFPGATimestamp();
     if(nonexistentPath) return;
     // Get all trajectory points
     double currentTime = Timer.getFPGATimestamp();
@@ -117,7 +118,6 @@ public class Follow extends Command {
     double kp = reverse ? this.kp_reverse : this.kp;
     kp = followForward ? this.kp_forward : kp;
     double kh = reverse ? this.kh_reverse  : this.kh;
-
     double ka = this.ka;
 
     if(followRotation) {
@@ -143,7 +143,7 @@ public class Follow extends Command {
       vel_targetR *= -1;
       accel_targetR *= -1;
     }
-
+    
     // Calculate the differences
     double start_head_target = pathL.get(0).heading_rad;
 
@@ -169,16 +169,17 @@ public class Follow extends Command {
                         kh * head_error;
     Robot.drivetrain.setSpeed(leftOutput, rightOutput);
 
-    SmartDashboard.putNumber("V", vel_targetL);
-    SmartDashboard.putNumber("A"  , ka*accel_targetL);
-    SmartDashboard.putNumber("P",  kp*pos_error_l);
-    SmartDashboard.putNumber("D", kd * ((pos_error_l - lastError_l) / 
-    (currentTime - lastTime) - vel_targetL));
-    SmartDashboard.putNumber("H", kh*head_error);
+    // SmartDashboard.putNumber("V", vel_targetL);
+    // SmartDashboard.putNumber("A"  , ka*accel_targetL);
+    // SmartDashboard.putNumber("P",  kp*pos_error_l);
+    // SmartDashboard.putNumber("D", kd * ((pos_error_l - lastError_l) / 
+    // (currentTime - lastTime) - vel_targetL));
+    // SmartDashboard.putNumber("H", kh*head_error);
 
     lastTime = currentTime;
     lastError_r = pos_error_r;
     lastError_l = pos_error_l;
+    SmartDashboard.putNumber("dt", Timer.getFPGATimestamp() - start);
   }
 
   // Make this return true when this Command no longer needs to run execute()
