@@ -84,102 +84,105 @@ public class Follow extends Command {
     
     startHeading = Math.toRadians(Robot.gyro.getYaw());
 
-    // Robot.prefs = Preferences.getInstance();
+    Robot.prefs = Preferences.getInstance();
 
-    // kp = Robot.prefs.getDouble("MP kp", kp);
-    // ka = Robot.prefs.getDouble("MP ka", ka);
-    // kh = Robot.prefs.getDouble("MP kh", kh);
+    kp = Robot.prefs.getDouble("MP kp", kp);
+    ka = Robot.prefs.getDouble("MP ka", ka);
+    kh = Robot.prefs.getDouble("MP kh", kh);
 
-    // kp_reverse = Robot.prefs.getDouble("MP kp_reverse", kp_reverse);
-    // kh_reverse = Robot.prefs.getDouble("MP kh_reverse", kh_reverse);
+    kp_reverse = Robot.prefs.getDouble("MP kp_reverse", kp_reverse);
+    kh_reverse = Robot.prefs.getDouble("MP kh_reverse", kh_reverse);
     
-    // ka_rotate = Robot.prefs.getDouble("MP ka_rotate", ka_rotate);
-    // kp_rotate = Robot.prefs.getDouble("MP kp_rotate", kp_rotate);
-    // kh_rotate = Robot.prefs.getDouble("MP kh_rotate", kh_rotate);
+    ka_rotate = Robot.prefs.getDouble("MP ka_rotate", ka_rotate);
+    kp_rotate = Robot.prefs.getDouble("MP kp_rotate", kp_rotate);
+    kh_rotate = Robot.prefs.getDouble("MP kh_rotate", kh_rotate);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double start = Timer.getFPGATimestamp();
-    if(nonexistentPath) return;
-    // Get all trajectory points
-    double currentTime = Timer.getFPGATimestamp();
-    double runTime = currentTime - startTime;
-    int index = (int)Math.round(runTime / Robot.follower.dt);
-    if(index >= pathL.size()) return;
+    try {
+      double start = Timer.getFPGATimestamp();
+      if(nonexistentPath) return;
+      // Get all trajectory points
+      double currentTime = Timer.getFPGATimestamp();
+      double runTime = currentTime - startTime;
+      int index = (int)Math.round(runTime / Robot.follower.dt);
+      if(index >= pathL.size()) return;
 
-    TPoint targetL = pathL.get(index);
-    TPoint targetR = pathR.get(index);
-    TPoint currentL = Robot.drivetrain.currentLeftTrajectoryPoint;
-    TPoint currentR = Robot.drivetrain.currentRightTrajectoryPoint;
-    
-    double targetHeading_rad = mirror ? -targetL.heading_rad : targetL.heading_rad;
-    double kp = reverse ? this.kp_reverse : this.kp;
-    kp = followForward ? this.kp_forward : kp;
-    double kh = reverse ? this.kh_reverse  : this.kh;
-    double ka = this.ka;
+      TPoint targetL = pathL.get(index);
+      TPoint targetR = pathR.get(index);
+      TPoint currentL = Robot.drivetrain.currentLeftTrajectoryPoint;
+      TPoint currentR = Robot.drivetrain.currentRightTrajectoryPoint;
+      
+      double targetHeading_rad = mirror ? -targetL.heading_rad : targetL.heading_rad;
+      double kp = reverse ? this.kp_reverse : this.kp;
+      kp = followForward ? this.kp_forward : kp;
+      double kh = reverse ? this.kh_reverse  : this.kh;
+      double ka = this.ka;
 
-    if(followRotation) {
-      double differenceTicks = (targetL.position_ft-targetR.position_ft)/RobotMap.feetPerTick;
-      targetHeading_rad = differenceTicks / RobotMap.halfTurn * Math.PI;
-      ka = this.ka_rotate;
-      kp = this.kp_rotate;
-      kh = this.kh_rotate;
-    }
+      if(followRotation) {
+        double differenceTicks = (targetL.position_ft-targetR.position_ft)/RobotMap.feetPerTick;
+        targetHeading_rad = differenceTicks / RobotMap.halfTurn * Math.PI;
+        ka = this.ka_rotate;
+        kp = this.kp_rotate;
+        kh = this.kh_rotate;
+      }
 
-    double pos_targetL = (reverse^mirror) ? targetR.position_ft : targetL.position_ft;
-    double vel_targetL = (reverse^mirror) ? targetR.velocity_ft : targetL.velocity_ft;
-    double accel_targetL = (reverse^mirror) ? targetR.acceleration_ft : targetL.acceleration_ft;
-    double pos_targetR = (reverse^mirror) ? targetL.position_ft : targetR.position_ft;
-    double vel_targetR = (reverse^mirror) ? targetL.velocity_ft : targetR.velocity_ft;
-    double accel_targetR = (reverse^mirror) ? targetL.acceleration_ft : targetR.acceleration_ft;
+      double pos_targetL = (reverse^mirror) ? targetR.position_ft : targetL.position_ft;
+      double vel_targetL = (reverse^mirror) ? targetR.velocity_ft : targetL.velocity_ft;
+      double accel_targetL = (reverse^mirror) ? targetR.acceleration_ft : targetL.acceleration_ft;
+      double pos_targetR = (reverse^mirror) ? targetL.position_ft : targetR.position_ft;
+      double vel_targetR = (reverse^mirror) ? targetL.velocity_ft : targetR.velocity_ft;
+      double accel_targetR = (reverse^mirror) ? targetL.acceleration_ft : targetR.acceleration_ft;
 
-    if(reverse) {
-      pos_targetL *= -1;
-      vel_targetL *= -1;
-      accel_targetL *= -1;
-      pos_targetR *= -1;
-      vel_targetR *= -1;
-      accel_targetR *= -1;
-    }
-    
-    // Calculate the differences
-    double start_head_target = pathL.get(0).heading_rad;
+      if(reverse) {
+        pos_targetL *= -1;
+        vel_targetL *= -1;
+        accel_targetL *= -1;
+        pos_targetR *= -1;
+        vel_targetR *= -1;
+        accel_targetR *= -1;
+      }
+      
+      // Calculate the differences
+      double start_head_target = pathL.get(0).heading_rad;
 
-    double pos_error_l = pos_targetL - currentL.position_ft;
-    double pos_error_r = pos_targetR - currentR.position_ft;
-    double head_error = (targetHeading_rad - start_head_target) - (currentL.heading_rad - startHeading);
+      double pos_error_l = pos_targetL - currentL.position_ft;
+      double pos_error_r = pos_targetR - currentR.position_ft;
+      double head_error = (targetHeading_rad - start_head_target) - (currentL.heading_rad - startHeading);
 
-    head_error %= (2*Math.PI);
-    if(head_error > Math.PI) head_error-=2*Math.PI;
-    if(head_error < -Math.PI) head_error+=2*Math.PI; 
+      head_error %= (2*Math.PI);
+      if(head_error > Math.PI) head_error-=2*Math.PI;
+      if(head_error < -Math.PI) head_error+=2*Math.PI; 
 
-    double leftOutput = Robot.follower.kv * vel_targetL +
-                        ka * accel_targetL +
-                        kp * pos_error_l +
-                        kd * ((pos_error_l - lastError_l) / 
-                          (currentTime - lastTime) - vel_targetL) +
-                        kh * head_error;
-    double rightOutput = Robot.follower.kv * vel_targetR +
-                        ka * accel_targetR +
-                        kp * pos_error_r +
-                        kd * ((pos_error_r - lastError_r) / 
-                          (currentTime - lastTime) - vel_targetL) -
-                        kh * head_error;
-    Robot.drivetrain.setSpeed(leftOutput, rightOutput);
+      double leftOutput = Robot.follower.kv * vel_targetL +
+                          ka * accel_targetL +
+                          kp * pos_error_l +
+                          kd * ((pos_error_l - lastError_l) / 
+                            (currentTime - lastTime) - vel_targetL) +
+                          kh * head_error;
+      double rightOutput = Robot.follower.kv * vel_targetR +
+                          ka * accel_targetR +
+                          kp * pos_error_r +
+                          kd * ((pos_error_r - lastError_r) / 
+                            (currentTime - lastTime) - vel_targetL) -
+                          kh * head_error;
+      Robot.drivetrain.setSpeed(leftOutput, rightOutput);
 
-    // SmartDashboard.putNumber("V", vel_targetL);
-    // SmartDashboard.putNumber("A"  , ka*accel_targetL);
-    // SmartDashboard.putNumber("P",  kp*pos_error_l);
-    // SmartDashboard.putNumber("D", kd * ((pos_error_l - lastError_l) / 
-    // (currentTime - lastTime) - vel_targetL));
-    // SmartDashboard.putNumber("H", kh*head_error);
+      // SmartDashboard.putNumber("V", vel_targetL);
+      // SmartDashboard.putNumber("A"  , ka*accel_targetL);
+      // SmartDashboard.putNumber("P",  kp*pos_error_l);
+      // SmartDashboard.putNumber("D", kd * ((pos_error_l - lastError_l) / 
+      // (currentTime - lastTime) - vel_targetL));
+      // SmartDashboard.putNumber("H", kh*head_error);
 
-    lastTime = currentTime;
-    lastError_r = pos_error_r;
-    lastError_l = pos_error_l;
-    SmartDashboard.putNumber("dt", Timer.getFPGATimestamp() - start);
+      lastTime = currentTime;
+      lastError_r = pos_error_r;
+      lastError_l = pos_error_l;
+      SmartDashboard.putNumber("dt", Timer.getFPGATimestamp() - start);
+
+    } catch(Exception e) {e.printStackTrace();}
   }
 
   // Make this return true when this Command no longer needs to run execute()

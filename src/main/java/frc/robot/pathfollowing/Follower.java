@@ -29,8 +29,8 @@ public class Follower{
     public Follower() {
         try {
             readPath("M1toCMR");
-            readPath("LSRtoCML");
             readPath("CMRtoLSR");
+            readPath("LSRtoCML");
             readPath("R1toCMR");
             readPath("LSRtoCR1");
 

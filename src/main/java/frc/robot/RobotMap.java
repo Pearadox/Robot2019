@@ -43,4 +43,7 @@ public class RobotMap {
   public static int CANArmIntakeVictor = 20; //31
 
   public static int CANClimberVictor = 40;
+
+  public static int CANMothDSolenoid1 = 2;
+  public static int CANMothDSolenoid2 = 3;
 }

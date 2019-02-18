@@ -73,6 +73,7 @@ public class Robot extends TimedRobot {
     moth = new Moth();
     // climber = new Climber();
     arm = new Arm();
+    compressor.start();
 
     oi = new OI();
 
@@ -114,7 +115,7 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putBoolean("tv", limelight.targetExists());
     // SmartDashboard.putNumber("Limelight Distance", limelight.getDistance());
     // SmartDashboard.putNumber("Angle", limelight.getAngle());
-
+    SmartDashboard.putNumber("Ultrasonic", arm.getUltrasonic());
     
 
     if(RobotMap.enableCameras) {
@@ -145,7 +146,7 @@ public class Robot extends TimedRobot {
 
     gyro.zero(180);  // facing backwards
 
-    autonomousCommand = new AutonomousTest();
+    // autonomousCommand = new AutonomousTest();
     autonomousCommand = new AutonomousRtoCMRtoCML(1, false);
     // autonomousCommand = new AutonomousRtoCMRtoCR(1, 1, false);
 

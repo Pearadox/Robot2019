@@ -44,7 +44,7 @@ public class OI {
 		// btn8.whileHeld(new ArmManualDown());
 		// btn9.whileHeld(new IntakeGroup());
 		// btn10.whileHeld(new Outtake());
-		// btn11.whenPressed(new MothToggle());
+		btn11.whenPressed(new MothToggle());
 		// btn12.whenPressed(new VisionTurnToTarget());
 
 	}

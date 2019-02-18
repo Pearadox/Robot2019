@@ -11,31 +11,33 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.Robot;
+import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
  */
 public class Moth extends Subsystem {
-  DoubleSolenoid allensol07;
+  DoubleSolenoid dSolenoid07;
 
   public Moth(){
-    allensol07 = new DoubleSolenoid(2,3);
+    dSolenoid07 = new DoubleSolenoid(RobotMap.CANMothDSolenoid1,RobotMap.CANMothDSolenoid2);
   }
 
   public void open(){
-    allensol07.set(DoubleSolenoid.Value.kForward);
+    dSolenoid07.set(DoubleSolenoid.Value.kForward);
     
   }
 
   public void close(){
-    allensol07.set(DoubleSolenoid.Value.kReverse);
+    dSolenoid07.set(DoubleSolenoid.Value.kReverse);
     
   }
   public void toggle(){
-    if (allensol07.get()== Value.kForward ){
-      allensol07.set(Value.kReverse);
+    if (dSolenoid07.get()== Value.kForward ){
+      dSolenoid07.set(Value.kReverse);
     }
-    else allensol07.set(Value.kForward);
+    else dSolenoid07.set(Value.kForward);
   }
 
   

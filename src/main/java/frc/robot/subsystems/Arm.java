@@ -22,11 +22,14 @@ public class Arm extends Subsystem {
     VictorSPX intakeMotor;
     CANSparkMax armMotor;
     CANEncoder encoder;
+    Ultrasonic ultrasonic;
 
     public Arm(){
         intakeMotor = new VictorSPX(RobotMap.CANArmIntakeVictor);
         armMotor = new CANSparkMax(3, MotorType.kBrushless);
         encoder = new CANEncoder(armMotor);
+        ultrasonic = new Ultrasonic(0, 1);
+        ultrasonic.setAutomaticMode(true);
         armMotor.setIdleMode(IdleMode.kBrake);
         armMotor.setInverted(true);
     }
@@ -46,6 +49,10 @@ public class Arm extends Subsystem {
     public void setArmSpeed(double percentOutput){
         if (getAngle()>180) return;
         armMotor.set(percentOutput);
+    }
+
+    public double getUltrasonic() {
+        return ultrasonic.getRangeInches();
     }
 
     public void zero() {
