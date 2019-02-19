@@ -102,14 +102,14 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     
     drivetrain.updateTrajectory();
-    // SmartDashboard.putNumber("Left Feet Encoder", drivetrain.getLeftEncoderFeet());
-    // SmartDashboard.putNumber("Right Feet Encoder", drivetrain.getRightEncoderFeet());
-    // SmartDashboard.putNumber("Left Encoder", drivetrain.getLeftEncoder());
-    // SmartDashboard.putNumber("Right Encoder", drivetrain.getRightEncoder());
-    // SmartDashboard.putNumber("Arm Encoder", arm.getAngle());
-    // SmartDashboard.putNumber("Arm Raw Encoder", arm.getRawEncoder());
-    // SmartDashboard.putNumber("Heading", gyro.getYaw());
-    // SmartDashboard.putNumber("Drivetrain Heading", drivetrain.getHeading());
+    SmartDashboard.putNumber("Left Feet Encoder", drivetrain.getLeftEncoderFeet());
+    SmartDashboard.putNumber("Right Feet Encoder", drivetrain.getRightEncoderFeet());
+    SmartDashboard.putNumber("Left Encoder", drivetrain.getLeftEncoder());
+    SmartDashboard.putNumber("Right Encoder", drivetrain.getRightEncoder());
+    SmartDashboard.putNumber("Arm Encoder", arm.getAngle());
+    SmartDashboard.putNumber("Arm Raw Encoder", arm.getRawEncoder());
+    SmartDashboard.putNumber("Heading", gyro.getYaw());
+    SmartDashboard.putNumber("Drivetrain Heading", drivetrain.getHeading());
     // SmartDashboard.putNumber("tx", limelight.getX());
     // SmartDashboard.putNumber("ty", limelight.getY());
     // SmartDashboard.putBoolean("tv", limelight.targetExists());
@@ -126,7 +126,7 @@ public class Robot extends TimedRobot {
       }
     }
 
-    if(oi.joystick.getRawButton(11)) arm.zero();
+    if(arm.getLimit()) arm.zero();
   }
 
   
@@ -188,7 +188,6 @@ public class Robot extends TimedRobot {
       reverseDrivetrain = !reverseDrivetrain;
     }
     prevReverse = reverseBtn;
-
   }
 
   

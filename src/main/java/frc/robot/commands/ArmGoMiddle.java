@@ -14,7 +14,7 @@ public class ArmGoMiddle extends CommandGroup {
    * Add your docs here.
    */
   public ArmGoMiddle() {
-    addSequential(new ArmSetAngle(90));
+    addSequential(new ArmSetAngle(104));
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());

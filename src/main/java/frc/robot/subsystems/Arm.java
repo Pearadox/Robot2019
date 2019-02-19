@@ -14,28 +14,29 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.interfaces.Potentiometer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Arm extends Subsystem {
-    double angleMin = 45.;
+    double angleMin = 40.;
     VictorSPX intakeMotor;
     CANSparkMax armMotor;
     CANEncoder encoder;
     Ultrasonic ultrasonic;
+    DigitalInput limit;
 
     public Arm(){
         intakeMotor = new VictorSPX(RobotMap.CANArmIntakeVictor);
         armMotor = new CANSparkMax(3, MotorType.kBrushless);
         encoder = new CANEncoder(armMotor);
         ultrasonic = new Ultrasonic(0, 1);
+        limit = new DigitalInput(3);
         ultrasonic.setAutomaticMode(true);
         armMotor.setIdleMode(IdleMode.kBrake);
-        armMotor.setInverted(true);
+        armMotor.setInverted(false);
+        intakeMotor.setInverted(true);
     }
 
     public double getAngle(){
-        return getRawEncoder()*3.60 + angleMin;
+        return -getRawEncoder()*3.60 + angleMin;
     }
 
     public double getRawEncoder() {
@@ -47,7 +48,8 @@ public class Arm extends Subsystem {
     }
 
     public void setArmSpeed(double percentOutput){
-        if (getAngle()>180) return;
+        if(getAngle() > 170 && percentOutput > 0) return;
+        if(getLimit() && percentOutput < 0) return;
         armMotor.set(percentOutput);
     }
 
@@ -59,12 +61,16 @@ public class Arm extends Subsystem {
         encoder.setPosition(0);
     }
 
+    public boolean getLimit() {
+        return !limit.get();
+    }
+
     public void initDefaultCommand() {
         
     }
 
     public double calculateHoldOutput(double angle){
-		double amplitude = 0;
+		double amplitude = 0.025;
 		double equation = amplitude * Math.sin(angle*Math.PI/180);
 		return equation;
     }
