@@ -78,13 +78,13 @@ public class VisionHoldOnTarget extends Command {
 
       double joystickOutput = -Robot.oi.joystick.getRawAxis(1);
 
-      Robot.drivetrain.setSpeed(output+joystickOutput, -output+joystickOutput);
+      Robot.drivetrain.drive(output+joystickOutput, -output+joystickOutput);
   }
   
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return !Robot.limelight.targetExists();
   }
 
   // Called once after isFinished returns true

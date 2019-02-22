@@ -4,15 +4,10 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class Intake extends Command {
+public class BoxIntakeHold extends Command {
 
-  boolean sensorStop;
-
-  public Intake(boolean sensorStop) {
+  public BoxIntakeHold() {
     requires(Robot.box);
-    requires(Robot.intake);
-
-    sensorStop = this.sensorStop;
   }
 
   @Override
@@ -21,20 +16,17 @@ public class Intake extends Command {
 
   @Override
   protected void execute() {
-    Robot.box.set(.3);
-    Robot.intake.set(1);
-  }
+    Robot.box.setHold();
+    }
 
   @Override
   protected boolean isFinished() {
-    if(sensorStop) return Robot.box.hasBall();
-    else return false;
+    return false;
   }
 
   @Override
   protected void end() {
     Robot.box.set(0);
-    Robot.intake.set(0);
   }
 
   @Override

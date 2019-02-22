@@ -10,7 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.*;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
@@ -34,7 +34,6 @@ public class DriveWithJoystick extends Command {
     }
   }
 
-  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     // targetHeading = Robot.gyro.getYaw();
@@ -42,11 +41,10 @@ public class DriveWithJoystick extends Command {
     lastTime = Timer.getFPGATimestamp();
     lastError = 0;
     
-    // kp = Robot.prefs.getDouble("GyroDrive kp", kp);
-    // kd = Robot.prefs.getDouble("GyroDrive kd", kd);
+    kp = Robot.prefs.getDouble("GyroDrive kp", kp);
+    kd = Robot.prefs.getDouble("GyroDrive kd", kd);
   }
-  double start = 0;
-  // Called repeatedly when this Command is scheduled to run
+
   @Override
   protected void execute() {
     
@@ -76,7 +74,6 @@ public class DriveWithJoystick extends Command {
       double dt = Timer.getFPGATimestamp() - lastTime;
       lastTime = Timer.getFPGATimestamp();
       double currentHeading = Robot.gyro.getYaw();
-      // double currentHeading = (Robot.drivetrain.getLeftEncoder() - Robot.drivetrain.getRightEncoder())/RobotMap.halfTurn*180;
       targetHeading += twist * turnRate * dt;
 
       double error = targetHeading - currentHeading;
@@ -86,25 +83,23 @@ public class DriveWithJoystick extends Command {
       lastError = error;
 
       double output = P + D;
-      Robot.drivetrain.driveWithJoystick(throttle, output);
+      Robot.drivetrain.arcadeDrive(throttle, output);
     }
-    else Robot.drivetrain.driveWithJoystick(throttle, twist);
+    else Robot.drivetrain.arcadeDrive(throttle, twist);
   }
 
-  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
     return false;
   }
 
-  // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.drivetrain.stop();
   }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }

@@ -12,8 +12,6 @@ public class TrajectoryGenerator {
     public static ArrayList<TPoint> getTrajectory(double distance, double interval, 
         double cruiseVelocity, double acceleration) 
     {
-        return null;
-        /*
         interval = 0.02;
 		CRUISE_VELOCITY = cruiseVelocity;
 		ACCELERATION = acceleration;
@@ -98,7 +96,6 @@ public class TrajectoryGenerator {
         	}
         }
         return list;
-        */
     }
 }
 

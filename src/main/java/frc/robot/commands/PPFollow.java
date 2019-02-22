@@ -37,7 +37,6 @@ public class PPFollow extends Command {
     }
   }
 
-  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     startingHeading = Robot.gyro.getYaw();
@@ -49,7 +48,6 @@ public class PPFollow extends Command {
     ka = Robot.prefs.getDouble("PP ka", ka);
   }
 
-  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
     // estimate current odometry
@@ -166,7 +164,7 @@ public class PPFollow extends Command {
     double leftOutput = FF_l;
     double rightOutput = FF_r;
 
-    Robot.drivetrain.setSpeed(leftOutput, rightOutput);
+    Robot.drivetrain.drive(leftOutput, rightOutput);
 
     SmartDashboard.putNumber("PP VelocityL", left);
     SmartDashboard.putNumber("PP VelocityR", right);

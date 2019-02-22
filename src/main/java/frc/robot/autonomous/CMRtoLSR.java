@@ -8,7 +8,7 @@
 package frc.robot.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.commands.Delay;
+import frc.robot.commands.DriveTimed;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.Follow;
 import frc.robot.commands.TurnAbsolute;
@@ -23,6 +23,6 @@ public class CMRtoLSR extends CommandGroup {
     addSequential(new Follow("CMRtoLSR", false, mirror));
     addSequential(new TurnAbsolute(0));
     addSequential(new DriveForward(-1));
-    addSequential(new Delay(.5));
+    addSequential(new DriveTimed(.5));
   }
 }

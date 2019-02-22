@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
@@ -10,39 +10,45 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class IntakeGroup extends Command {
-  public IntakeGroup() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    // requires(Robot.intake);
+
+public class BoxOuttake extends Command {
+
+  boolean hasTimeout;
+  double timeout;
+
+  public BoxOuttake(double timeout) {
+    requires(Robot.box);
+    if(timeout != -1) {
+      hasTimeout = true;
+      this.timeout = timeout;
+    }
   }
 
-  // Called just before this Command runs the first time
+  public BoxOuttake() {
+    this(-1);
+  }
+
   @Override
   protected void initialize() {
-    Robot.arm.setIntakeSpeed(.3);
+    if(hasTimeout) setTimeout(timeout);
   }
 
-  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    
+      Robot.box.set(-1);
   }
 
-  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    if(hasTimeout) return isTimedOut();
+    else return false;
   }
 
-  // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.arm.setIntakeSpeed(0);
+    Robot.box.set(0);
   }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
   @Override
   protected void interrupted() {
     end();

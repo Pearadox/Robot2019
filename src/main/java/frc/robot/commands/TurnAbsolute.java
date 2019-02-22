@@ -20,10 +20,10 @@ public class TurnAbsolute extends Command {
     this.absoluteTarget = angle;
   }
 
-  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     double toTurn = (this.absoluteTarget - Robot.gyro.getYaw()) % (360);
+
     if(toTurn > 180) toTurn -= 360;
     else if(toTurn < -180) toTurn += 360;
     
@@ -31,18 +31,15 @@ public class TurnAbsolute extends Command {
     else Scheduler.getInstance().add(new TurnLeft(Math.abs(toTurn)));
   }
 
-  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
   }
 
-  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
     return !Robot.isFollowingPath;
   }
 
-  // Called once after isFinished returns true
   @Override
   protected void end() {
   }

@@ -15,15 +15,15 @@ import frc.robot.pathfollowing.*;
 
 public class Follow extends Command {
 
-  double ka = 0.02;
-  double ka_rotate = 0.065;
-  double kp = 0.4;
+  double ka = 0.04;
+  double ka_rotate = 0.04;
+  double kp = 0.01;
   double kp_forward = 0.125;
-  double kp_rotate = 0.02;
-  double kp_reverse = 0.15;
+  double kp_rotate = 0.01;
+  double kp_reverse = 0.1;
   double kd = 0.0;  
-  double kh = .45;  
-  double kh_reverse = 0.4;
+  double kh = .7;  
+  double kh_reverse = 1.8;
   double kh_rotate = 0.0;
 
   boolean reverse, mirror;
@@ -168,19 +168,18 @@ public class Follow extends Command {
                           kd * ((pos_error_r - lastError_r) / 
                             (currentTime - lastTime) - vel_targetL) -
                           kh * head_error;
-      Robot.drivetrain.setSpeed(leftOutput, rightOutput);
+      Robot.drivetrain.drive(leftOutput, rightOutput);
 
       // SmartDashboard.putNumber("V", vel_targetL);
       // SmartDashboard.putNumber("A"  , ka*accel_targetL);
-      // SmartDashboard.putNumber("P",  kp*pos_error_l);
+      SmartDashboard.putNumber("P",  kp*pos_error_l);
       // SmartDashboard.putNumber("D", kd * ((pos_error_l - lastError_l) / 
       // (currentTime - lastTime) - vel_targetL));
-      // SmartDashboard.putNumber("H", kh*head_error);
+      SmartDashboard.putNumber("H", kh*head_error);
 
       lastTime = currentTime;
       lastError_r = pos_error_r;
       lastError_l = pos_error_l;
-      SmartDashboard.putNumber("dt", Timer.getFPGATimestamp() - start);
 
     } catch(Exception e) {e.printStackTrace();}
   }

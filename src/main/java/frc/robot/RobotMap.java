@@ -35,15 +35,15 @@ public class RobotMap {
   public static int CANRightSlave1Victor = 12;
   public static int CANRightSlave2Victor = 13;
   public static int CANLeftMasterTalon = 14;
-  public static int CANRightMasterTalon = 16;
+  public static int CANRightMasterTalon = 16 ;
 
-  public static int CANIntakeVictor = 30; // 20
+  public static int CANIntakeVictor = 20;
 
-  public static int CANArmBLDCSparkMax = 3;  // 30
-  public static int CANArmIntakeVictor = 20; //31
+  public static int CANArmBLDCSparkMax = 30;
+  public static int CANBoxIntakeVictor = 31;
 
   public static int CANClimberVictor = 40;
 
-  public static int CANMothDSolenoid1 = 2;
-  public static int CANMothDSolenoid2 = 3;
+  public static int CANMothDoubleSolenoidForward = 2;
+  public static int CANMothDoubleSolenoidReverse = 3;
 }

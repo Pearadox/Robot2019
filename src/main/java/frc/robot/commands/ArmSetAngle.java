@@ -13,12 +13,9 @@ import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-/**
- * An example command.  You can replace me with your own command.
- */
 public class ArmSetAngle extends Command {
     double targetAngle;
-    double kp = 0.01;
+    double kp = 0.005;
     double ki = 0.0;
     double kd = 0.04;
     double error, errorSum, lastError;
@@ -35,7 +32,6 @@ public class ArmSetAngle extends Command {
     if (!Preferences.getInstance().containsKey("Arm kd")) Preferences.getInstance().putDouble("Arm kd", kd);
   }
   
-  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     setTimeout(2);
@@ -47,7 +43,6 @@ public class ArmSetAngle extends Command {
     kd = Robot.prefs.getDouble("Arm kd", kd);
   }
 
-  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
     // double error = targetAngle - Robot.arm.getRawEncoder();
@@ -59,13 +54,12 @@ public class ArmSetAngle extends Command {
     double D = (error-lastError) * kd;
     double output = P + I + D + F;
 
-    Robot.arm.setArmSpeed(output);
+    Robot.arm.set(output);
 
     errorSum += error;
     lastError = error;
   }
 
-  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
     double error = targetAngle - Robot.arm.getAngle();
@@ -75,15 +69,12 @@ public class ArmSetAngle extends Command {
     return false;
   }
 
-  // Called once after isFinished returns true
   @Override
   protected void end() {
     double output = Robot.arm.calculateHoldOutput(Robot.arm.getAngle()); 
-    Robot.arm.setArmSpeed(output);
+    Robot.arm.set(output);
   }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
   @Override
   protected void interrupted() {
     end();

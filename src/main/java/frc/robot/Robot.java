@@ -40,6 +40,7 @@ public class Robot extends TimedRobot {
   public static Moth moth;
   public static Climber climber;
   public static Arm arm;
+  public static Box box;
 
   Compressor compressor = new Compressor();
 
@@ -55,10 +56,6 @@ public class Robot extends TimedRobot {
 
   Command autonomousCommand;
 
-  /**
-   * This function is run when the robot is first started up and should be
-   * used for any initialization code.
-   */
   @Override
   public void robotInit() {
     follower = new Follower();
@@ -73,6 +70,7 @@ public class Robot extends TimedRobot {
     moth = new Moth();
     // climber = new Climber();
     arm = new Arm();
+    box = new Box();
     compressor.start();
 
     oi = new OI();
@@ -94,6 +92,8 @@ public class Robot extends TimedRobot {
       cvsink2.setSource(camera2);
       cvsink2.setEnabled(true);
     }
+
+    arm.zero();
   }
 
   
@@ -115,7 +115,7 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putBoolean("tv", limelight.targetExists());
     // SmartDashboard.putNumber("Limelight Distance", limelight.getDistance());
     // SmartDashboard.putNumber("Angle", limelight.getAngle());
-    SmartDashboard.putNumber("Ultrasonic", arm.getUltrasonic());
+    SmartDashboard.putNumber("Ultrasonic", box.getUltrasonic());
     
 
     if(RobotMap.enableCameras) {
@@ -126,28 +126,25 @@ public class Robot extends TimedRobot {
       }
     }
 
-    if(arm.getLimit()) arm.zero();
   }
-
   
   @Override
   public void disabledInit() {
-    arm.setArmSpeed(0);
+    arm.set(0);
   }
 
   @Override
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
   }
-
   
   @Override
   public void autonomousInit() {
 
     gyro.zero(180);  // facing backwards
 
-    // autonomousCommand = new AutonomousTest();
-    autonomousCommand = new AutonomousRtoCMRtoCML(1, false);
+    autonomousCommand = new AutonomousTest();
+    // autonomousCommand = new AutonomousRtoCMRtoCML(1, false);
     // autonomousCommand = new AutonomousRtoCMRtoCR(1, 1, false);
 
     if (autonomousCommand != null) {
@@ -155,30 +152,24 @@ public class Robot extends TimedRobot {
     }
   }
 
-  /**
-   * This function is called periodically during autonomous.
-   */
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
   }
 
-  @Override
-  public void teleopInit() {
-    // This makes sure that the autonomous stops running wheng+*-+
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
+  public void stopAutonomous() {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
+  }
+
+  @Override
+  public void teleopInit() {
+    stopAutonomous();
 
     reverseDrivetrain = false;
   }
 
-  /**
-   * This function is called periodically during operator control.
-   */
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
@@ -190,9 +181,6 @@ public class Robot extends TimedRobot {
     prevReverse = reverseBtn;
   }
 
-  
-  //  * This function is called periodically during test mode.
-   
   @Override
   public void testPeriodic() {
   }

@@ -4,36 +4,42 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class Intake extends Command {
+public class IntakeOuttake extends Command {
 
-  boolean sensorStop;
+  boolean hasTimeout;
+  double timeout;
 
-  public Intake(boolean sensorStop) {
-    requires(Robot.box);
+  public IntakeOuttake(double timeout) {
     requires(Robot.intake);
+    
+    if(timeout != -1) {
+        this.hasTimeout = true;
+        this.timeout = timeout;
+    }
+  }
 
-    sensorStop = this.sensorStop;
+  public IntakeOuttake() {
+    this(-1);
   }
 
   @Override
   protected void initialize() {
+    if(hasTimeout) setTimeout(timeout);
   }
 
   @Override
   protected void execute() {
-    Robot.box.set(.3);
-    Robot.intake.set(1);
+    Robot.intake.set(-1);
   }
 
   @Override
   protected boolean isFinished() {
-    if(sensorStop) return Robot.box.hasBall();
+    if(hasTimeout) return isTimedOut();
     else return false;
   }
 
   @Override
   protected void end() {
-    Robot.box.set(0);
     Robot.intake.set(0);
   }
 

@@ -10,7 +10,7 @@ import java.util.*;
 
 public class TurnLeft extends CommandGroup {
 
-  double acceleration = 5;
+  public static double acceleration = 4.5;
   ArrayList<ArrayList<TPoint>> trajectory = new ArrayList();
 
   public TurnLeft(double degrees) {
@@ -20,9 +20,10 @@ public class TurnLeft extends CommandGroup {
         Robot.follower.dt, Robot.follower.maxVelocity, acceleration);
     ArrayList<TPoint> right_trajectory = TrajectoryGenerator.getTrajectory(desired_ticks*RobotMap.feetPerTick, 
         Robot.follower.dt, Robot.follower.maxVelocity, acceleration);
+
     trajectory.add(left_trajectory);
     trajectory.add(right_trajectory);
-    Scheduler.getInstance().add(new Follow(trajectory, true, false));
+    
     addSequential(new Follow(trajectory, true, false));
   }
 

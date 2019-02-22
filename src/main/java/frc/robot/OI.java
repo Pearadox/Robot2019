@@ -38,14 +38,14 @@ public class OI {
 		btn4.whenPressed(new ArmGoMiddle());
 		btn5.whenPressed(new ArmGoHigh());
 		
-		btn6.whenPressed(new TurnAbsolute(0));  // spare, mostly for testing
+		// btn6.whenPressed(new TurnAbsolute(0));  // spare, mostly for testing
 
 		btn7.whileHeld(new ArmManualDown());
 		btn8.whileHeld(new ArmManualUp());
-		btn9.whileHeld(new Outtake());
-		btn10.whileHeld(new IntakeGroup());
-		// btn11.whenPressed(new MothToggle());
-		// btn12.whenPressed(new VisionTurnToTarget());
+		btn9.whileHeld(new BoxOuttake());
+		btn10.whileHeld(new BoxIntake());
+		btn11.whenPressed(new MothToggle());
+		// btn12.whenPressed(new VisionHoldOnTarget());
 
 	}
 	

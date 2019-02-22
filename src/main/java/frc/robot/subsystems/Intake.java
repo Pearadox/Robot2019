@@ -20,27 +20,32 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 public class Intake extends Subsystem {
  
   VictorSPX wheels;
-  Solenoid raiserSol;
+  Solenoid raiserSol1, raiserSol2;
 
   public Intake(){
     // wheels = new VictorSPX(-1);
-    raiserSol = new Solenoid(1);
+    raiserSol1 = new Solenoid(0);
+    raiserSol2 = new Solenoid(1);
   }
 
 
   public void lower(){
-    raiserSol.set(false);
+    raiserSol1.set(false);
+    raiserSol1.set(false);
   }
 
   public void raise(){
-    raiserSol.set(true);
+    raiserSol1.set(true);
+    raiserSol2.set(true);
   }
 
   public void toggleRaise(){
-    raiserSol.set(!raiserSol.get());
+    boolean toSet = !raiserSol1.get();
+    raiserSol1.set(toSet);
+    raiserSol2.set(toSet);
   }
   
-  public void setSpeed(double setSpeed){
+  public void set(double setSpeed){
     wheels.set(ControlMode.PercentOutput, setSpeed);
   }
 

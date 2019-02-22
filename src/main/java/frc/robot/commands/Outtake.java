@@ -1,9 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
 
@@ -11,40 +5,36 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class Outtake extends Command {
-  public Outtake() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    requires(Robot.intake);
-    
 
+  boolean sensorStop;
+
+  public Outtake() {
+    requires(Robot.box);
+    requires(Robot.intake);
   }
 
-  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    // Robot.intake.setSpeed(-1);
-    Robot.arm.setIntakeSpeed(-1);
   }
 
-  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    Robot.box.set(-1);
+    Robot.intake.set(-0.3);
   }
 
-  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    if(sensorStop) return Robot.box.hasBall();
+    else return false;
   }
 
-  // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.arm.setIntakeSpeed(0);
+    Robot.box.set(0);
+    Robot.intake.set(0);
   }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
   @Override
   protected void interrupted() {
     end();

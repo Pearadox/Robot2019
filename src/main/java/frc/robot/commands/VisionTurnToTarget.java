@@ -74,7 +74,7 @@ public class VisionTurnToTarget extends Command {
       if(output > 0) output += 0.1;
       else output -= 0.1;
 
-      Robot.drivetrain.setSpeed(output, -output);
+      Robot.drivetrain.drive(output, -output);
   }
   
   // Make this return true when this Command no longer needs to run execute()

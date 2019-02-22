@@ -22,13 +22,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class Drivetrain extends Subsystem {
-	//  /*
-	 
-	//victorspx is motor controller, but talon is better and costs more and is more loved
-	//to save money, two talons are used as masters and victors are chained to follow
-	//master motors controls slave motors
-	//numbers represent ports on roborio
-	//this is all on CAN bus (bus is connection to different
+//  /* 
+	//VictorSPX is motor controller, but Talon is better and costs more and is more loved
+	//To save money, two talons are used as masters and Victors are chained to follow
+	//Master motors controls slave motors
+	//Numbers represent CAN IDs on CAN bus
 
 	VictorSPX leftSlave1 = new VictorSPX(RobotMap.CANLeftSlave1Victor);
 	VictorSPX leftSlave2 = new VictorSPX(RobotMap.CANLeftSlave2Victor);
@@ -36,14 +34,14 @@ public class Drivetrain extends Subsystem {
 	VictorSPX rightSlave2 = new VictorSPX(RobotMap.CANRightSlave2Victor);
     TalonSRX leftMaster = new TalonSRX(RobotMap.CANLeftMasterTalon);
 	TalonSRX rightMaster = new TalonSRX(RobotMap.CANRightMasterTalon);
+// */
 
-	//encoders track wheel rotations (track ticks)
-	//two ports are used because they have two channels because idk
-	//encoders are digital
+	//encoders track wheel rotations (ticks)
+	//two ports are used because they have two channels because idk, encoders are digital
 
 	Encoder leftEncoder = new Encoder(RobotMap.leftEncoderA,RobotMap.leftEncoderB);
 	Encoder rightEncoder = new Encoder(RobotMap.rightEncoderA, RobotMap.rightEncoderB);
-	// */
+
 /*
 	Victor left1 = new Victor(0);
 	Victor left2 = new Victor(1);
@@ -53,13 +51,6 @@ public class Drivetrain extends Subsystem {
 	Victor right3 = new Victor(5);
  */
 
- /*
-
-
-
-
-
- */
 	double lastFeet_r = 0;
 	double lastTime = 0;
 	double lastVelocity_r = 0;
@@ -89,74 +80,37 @@ public class Drivetrain extends Subsystem {
 		leftSlave1.setNeutralMode(NeutralMode.Brake);
 		leftSlave2.setNeutralMode(NeutralMode.Brake);
 		// */
-
-		/*
-		// bobtrajectory talon configurations BOB
-		leftMaster.setSensorPhase(true);
-		rightMaster.setSensorPhase(true);
-		leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
-		leftMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, 0);
-		rightMaster.configRemoteFeedbackFilter(leftMaster.getDeviceID(), RemoteSensorSource.TalonSRX_SelectedSensor, 0, 0);
-		// rightMaster.configRemoteFeedbackFilter(pigeon.getDeviceID(), RemoteSensorSource.GadgeteerPigeon_Yaw, 1, 0);
-		rightMaster.configSensorTerm(SensorTerm.Sum0, FeedbackDevice.RemoteSensor0, 0);
-		rightMaster.configSensorTerm(SensorTerm.Sum1, FeedbackDevice.QuadEncoder, 0);
-		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.SensorSum, 0, 0);
-		rightMaster.configSelectedFeedbackCoefficient(0.5, 0, 0);
-		// rightMaster.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor1, 1, 0);
-		// rightMaster.configSelectedFeedbackCoefficient((3600.0 / 8192.0), 1, 0);
-
-		double kf = 4;
-		double kp = 1.6;
-		double ki = 0.00;
-		double kd = 4;
-
-		leftMaster.config_kF(0, kf, 0);
-		leftMaster.config_kP(0, kp, 0);
-		leftMaster.config_kI(0, ki, 0);
-		leftMaster.config_kD(0, kd, 0);
-		rightMaster.config_kF(0, kf, 0);
-		rightMaster.config_kP(0, kp, 0);
-		rightMaster.config_kI(0, ki, 0);
-		rightMaster.config_kD(0, kd, 0);
-		// */
 	}
 	
-	public void driveWithJoystick(double forward, double rotate ) {
-		setSpeed(-forward+rotate, -forward-rotate);
-	}
-
-	public void stopMotionMagic() {
-		// leftMaster.set(ControlMode.PercentOutput, 0);
-		// rightMaster.set(ControlMode.PercentOutput, 0);
-	}
-
-	public void setMotionMagic(double rotations) {
-		// double target = rotations * 128;
-		// leftMaster.set(ControlMode.MotionMagic, 1280);
-		// rightMaster.set(ControlMode.MotionMagic, 1280);
+	public void arcadeDrive(double forward, double rotate ) {
+		drive(-forward+rotate, -forward-rotate);
 	}
 	
-	public void setSpeed(double leftSpeed, double rightSpeed) {
-		setSpeedLeft(leftSpeed);
-		setSpeedRight(rightSpeed);
+	public void drive(double leftSpeed, double rightSpeed) {
+		setLeft(leftSpeed);
+		setRight(rightSpeed);
 	}
 	
-	public void setSpeedLeft(double leftSpeed) {
+	public void setLeft(double leftSpeed) {
 		leftMaster.set(ControlMode.PercentOutput, leftSpeed);
-		// left1.set(leftSpeed);
-		// left2.set(leftSpeed);
-		// left3.set(leftSpeed);
+		/*
+		left1.set(leftSpeed);
+		left2.set(leftSpeed);
+		left3.set(leftSpeed);
+		*/
 	}
 	
-	public void setSpeedRight(double rightSpeed) {
+	public void setRight(double rightSpeed) {
 		 rightMaster.set(ControlMode.PercentOutput, rightSpeed);
-		// right1.set(-rightSpeed);
-		// right2.set(-rightSpeed);
-		// right3.set(-rightSpeed);
+		 /*
+		right1.set(-rightSpeed);
+		right2.set(-rightSpeed);
+		right3.set(-rightSpeed);
+		*/
 	}
 
 	public void stop() {
-		setSpeed(0, 0);
+		drive(0, 0);
 	}
 	
 	public long getLeftEncoder() {
@@ -170,11 +124,11 @@ public class Drivetrain extends Subsystem {
 	}
 	
 	public double getLeftEncoderInches() {
-		return getLeftEncoder()/ RobotMap.ticksPerRev * 2 * Math.PI * 3; //256 on practice
+		return getLeftEncoder()/ RobotMap.ticksPerRev * 2 * Math.PI * 3;
 	}
 	
 	public double getRightEncoderInches() {
-		return getRightEncoder()/ RobotMap.ticksPerRev * 2 * Math.PI * 3; //256 on practice
+		return getRightEncoder()/ RobotMap.ticksPerRev * 2 * Math.PI * 3;
 	}
 
 	public double getRightEncoderFeet() {
@@ -238,6 +192,5 @@ public class Drivetrain extends Subsystem {
     public void initDefaultCommand() {
         setDefaultCommand(new DriveWithJoystick());
 	}
-		
-}
 
+}

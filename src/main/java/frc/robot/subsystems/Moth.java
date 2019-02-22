@@ -21,7 +21,7 @@ public class Moth extends Subsystem {
   DoubleSolenoid dSolenoid07;
 
   public Moth(){
-    dSolenoid07 = new DoubleSolenoid(RobotMap.CANMothDSolenoid1,RobotMap.CANMothDSolenoid2);
+    dSolenoid07 = new DoubleSolenoid(RobotMap.CANMothDoubleSolenoidForward,RobotMap.CANMothDoubleSolenoidReverse);
   }
 
   public void open(){
@@ -40,13 +40,7 @@ public class Moth extends Subsystem {
     else dSolenoid07.set(Value.kForward);
   }
 
-  
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-
   @Override
   public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
   }
 }
