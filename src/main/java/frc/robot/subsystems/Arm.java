@@ -23,7 +23,7 @@ public class Arm extends Subsystem {
     DigitalInput limit;
 
     public Arm(){
-        armMotor = new CANSparkMax(3, MotorType.kBrushless);
+        armMotor = new CANSparkMax(RobotMap.CANArmBLDCSparkMax, MotorType.kBrushless);
         encoder = new CANEncoder(armMotor);
         limit = new DigitalInput(3);
         armMotor.setIdleMode(IdleMode.kBrake);

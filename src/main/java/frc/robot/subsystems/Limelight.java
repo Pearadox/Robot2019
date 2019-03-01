@@ -64,6 +64,14 @@ public class Limelight extends Subsystem {
     return Math.toDegrees(Math.acos(ratio));
   }
 
+  public void lightOn() {
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+  }
+
+  public void lightOff() {
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+  }
+
   public ArrayList<ArrayList<TPoint>> getTrajectory() {
 
     double theta = 90 - getAngle() - 2 * getX();

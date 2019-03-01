@@ -12,8 +12,6 @@ import frc.robot.commands.DriveTimed;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.Follow;
 import frc.robot.commands.TurnAbsolute;
-import frc.robot.commands.TurnLeft;
-import frc.robot.commands.TurnRight;
 
 public class CMRtoLSR extends CommandGroup {
   /**
@@ -22,7 +20,7 @@ public class CMRtoLSR extends CommandGroup {
   public CMRtoLSR(boolean mirror) {
     addSequential(new Follow("CMRtoLSR", false, mirror));
     addSequential(new TurnAbsolute(0));
+    addSequential(new TurnAbsolute(0));
     addSequential(new DriveForward(-1));
-    addSequential(new DriveTimed(.5));
   }
 }

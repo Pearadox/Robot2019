@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.Solenoid;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -23,9 +24,11 @@ public class Intake extends Subsystem {
   Solenoid raiserSol1, raiserSol2;
 
   public Intake(){
-    // wheels = new VictorSPX(-1);
-    raiserSol1 = new Solenoid(0);
-    raiserSol2 = new Solenoid(1);
+    wheels = new VictorSPX(RobotMap.CANIntakeVictor);
+    raiserSol1 = new Solenoid(RobotMap.IntakeSolenoid1);
+    raiserSol2 = new Solenoid(RobotMap.IntakeSolenoid2);
+
+    raiserSol2.set(raiserSol1.get());
   }
 
 

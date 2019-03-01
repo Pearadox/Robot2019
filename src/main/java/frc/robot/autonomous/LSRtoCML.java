@@ -21,7 +21,7 @@ public class LSRtoCML extends CommandGroup {
    */
   public LSRtoCML(boolean mirror) {
     addSequential(new Follow("LSRtoCML", false, mirror));
-    addSequential(new DriveTimed(.5));
+    addSequential(new TurnAbsolute(180));
     addSequential(new TurnAbsolute(180));
     addSequential(new DriveForward(-1));
   }

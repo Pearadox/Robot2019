@@ -21,7 +21,7 @@ public class Moth extends Subsystem {
   DoubleSolenoid dSolenoid07;
 
   public Moth(){
-    dSolenoid07 = new DoubleSolenoid(RobotMap.CANMothDoubleSolenoidForward,RobotMap.CANMothDoubleSolenoidReverse);
+    dSolenoid07 = new DoubleSolenoid(RobotMap.MothDoubleSolenoidForward,RobotMap.MothDoubleSolenoidReverse);
   }
 
   public void open(){

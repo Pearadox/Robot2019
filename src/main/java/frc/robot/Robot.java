@@ -79,12 +79,6 @@ public class Robot extends TimedRobot {
       camera1 = CameraServer.getInstance().startAutomaticCapture(0);
       camera2 = CameraServer.getInstance().startAutomaticCapture(1);
       server = CameraServer.getInstance().getServer();
-
-      camera1.setResolution(320, 240);
-      camera2.setResolution(320, 240);
-
-      camera1.setPixelFormat(PixelFormat.kMJPEG);
-      camera2.setPixelFormat(PixelFormat.kMJPEG);
       
       cvsink1.setSource(camera1);
       cvsink1.setEnabled(true);
@@ -93,7 +87,8 @@ public class Robot extends TimedRobot {
       cvsink2.setEnabled(true);
     }
 
-    arm.zero();
+    if(arm != null) arm.zero();
+    if(gyro != null) gyro.zero();
   }
 
   
@@ -106,8 +101,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Right Feet Encoder", drivetrain.getRightEncoderFeet());
     SmartDashboard.putNumber("Left Encoder", drivetrain.getLeftEncoder());
     SmartDashboard.putNumber("Right Encoder", drivetrain.getRightEncoder());
-    SmartDashboard.putNumber("Arm Encoder", arm.getAngle());
-    SmartDashboard.putNumber("Arm Raw Encoder", arm.getRawEncoder());
+    // SmartDashboard.putNumber("Arm Encoder", arm.getAngle());
+    // SmartDashboard.putNumber("Arm Raw Encoder", arm.getRawEncoder());
     SmartDashboard.putNumber("Heading", gyro.getYaw());
     SmartDashboard.putNumber("Drivetrain Heading", drivetrain.getHeading());
     // SmartDashboard.putNumber("tx", limelight.getX());
@@ -115,7 +110,7 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putBoolean("tv", limelight.targetExists());
     // SmartDashboard.putNumber("Limelight Distance", limelight.getDistance());
     // SmartDashboard.putNumber("Angle", limelight.getAngle());
-    SmartDashboard.putNumber("Ultrasonic", box.getUltrasonic());
+    // SmartDashboard.putNumber("Ultrasonic", box.getUltrasonic());
     
 
     if(RobotMap.enableCameras) {
@@ -126,11 +121,12 @@ public class Robot extends TimedRobot {
       }
     }
 
+    limelight.lightOff();
   }
   
   @Override
   public void disabledInit() {
-    arm.set(0);
+    if(arm != null) arm.set(0);
   }
 
   @Override
@@ -143,7 +139,7 @@ public class Robot extends TimedRobot {
 
     gyro.zero(180);  // facing backwards
 
-    autonomousCommand = new AutonomousTest();
+    // autonomousCommand = new AutonomousTest();
     // autonomousCommand = new AutonomousRtoCMRtoCML(1, false);
     // autonomousCommand = new AutonomousRtoCMRtoCR(1, 1, false);
 
@@ -179,6 +175,8 @@ public class Robot extends TimedRobot {
       reverseDrivetrain = !reverseDrivetrain;
     }
     prevReverse = reverseBtn;
+
+    if(arm.getLimit()) arm.zero();
   }
 
   @Override

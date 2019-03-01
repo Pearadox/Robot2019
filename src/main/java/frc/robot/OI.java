@@ -19,6 +19,8 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 public class OI {
 	
 	public Joystick joystick = new Joystick(0);
+	public Joystick operator = new Joystick(1);
+
 	JoystickButton btn1 = new JoystickButton(joystick, 1);
 	JoystickButton btn2 = new JoystickButton(joystick, 2);
 	JoystickButton btn3 = new JoystickButton(joystick, 3);
@@ -31,22 +33,48 @@ public class OI {
 	JoystickButton btn10 = new JoystickButton(joystick, 10);
 	JoystickButton btn11 = new JoystickButton(joystick, 11);
 	JoystickButton btn12 = new JoystickButton(joystick, 12);
+
+	JoystickButton opbtn1 = new JoystickButton(operator, 1);
+	JoystickButton opbtn2 = new JoystickButton(operator, 2);
+	JoystickButton opbtn3 = new JoystickButton(operator, 3);
+	JoystickButton opbtn4 = new JoystickButton(operator, 4);
+	JoystickButton opbtn5 = new JoystickButton(operator, 5);
+	JoystickButton opbtn6 = new JoystickButton(operator, 6);
+	JoystickButton opbtn7 = new JoystickButton(operator, 7);
+	JoystickButton opbtn8 = new JoystickButton(operator, 8);
+	JoystickButton opbtn9 = new JoystickButton(operator, 9);
+	JoystickButton opbtn10 = new JoystickButton(operator, 10);
+	JoystickButton opbtn11 = new JoystickButton(operator, 11);
+	JoystickButton opbtn12 = new JoystickButton(operator, 12);
 	
 	public OI() {
 		
 		btn3.whenPressed(new ArmGoLow());
 		btn4.whenPressed(new ArmGoMiddle());
 		btn5.whenPressed(new ArmGoHigh());
-		
-		// btn6.whenPressed(new TurnAbsolute(0));  // spare, mostly for testing
+
+		btn6.whenPressed(new IntakeToggle());
 
 		btn7.whileHeld(new ArmManualDown());
 		btn8.whileHeld(new ArmManualUp());
-		btn9.whileHeld(new BoxOuttake());
-		btn10.whileHeld(new BoxIntake());
+
+		btn9.whileHeld(new OuttakeGroup());
+		btn10.whileHeld(new IntakeGroup(false));
+
 		btn11.whenPressed(new MothToggle());
+		
 		// btn12.whenPressed(new VisionHoldOnTarget());
 
+
+		opbtn6.whenPressed(new IntakeToggle());
+
+		opbtn7.whileHeld(new ArmManualDown());
+		opbtn8.whileHeld(new ArmManualUp());
+
+		opbtn9.whileHeld(new OuttakeGroup());
+		opbtn10.whileHeld(new IntakeGroup(false));
+
+		opbtn11.whenPressed(new MothToggle());
 	}
 	
 	

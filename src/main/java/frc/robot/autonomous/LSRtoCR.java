@@ -8,17 +8,13 @@
 package frc.robot.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.commands.DriveForward;
-import frc.robot.commands.Follow;
-import frc.robot.commands.TurnLeft;
-import frc.robot.commands.TurnRight;
+import frc.robot.commands.*;
 
 public class LSRtoCR extends CommandGroup {
 
   public LSRtoCR(int cargoTarget, boolean mirror) {
     addSequential(new Follow("LSRtoCR" + cargoTarget, false, mirror));
-    // if(!mirror) addSequential(new TurnRight(45, 3));
-    // else addSequential(new TurnLeft(45, 3));
+    addSequential(new TurnAbsolute(mirror ? -90 : 90));
     addSequential(new DriveForward(-2));
   }
 }

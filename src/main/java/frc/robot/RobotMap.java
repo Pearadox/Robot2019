@@ -15,7 +15,7 @@ package frc.robot;
  */
 public class RobotMap {
   
-  public static boolean enableCameras = false;
+  public static boolean enableCameras = true;
   public static boolean gyroDrive = false;
 
   public static double ticksPerRev = 256;  //ticks
@@ -30,12 +30,12 @@ public class RobotMap {
   public static int rightEncoderB = 6;
 
 
-  public static int CANLeftSlave1Victor = 11; 
+  public static int CANLeftSlave1Victor = 11;
   public static int CANLeftSlave2Victor = 10;
   public static int CANRightSlave1Victor = 12;
   public static int CANRightSlave2Victor = 13;
   public static int CANLeftMasterTalon = 14;
-  public static int CANRightMasterTalon = 16 ;
+  public static int CANRightMasterTalon = 16;
 
   public static int CANIntakeVictor = 20;
 
@@ -44,6 +44,8 @@ public class RobotMap {
 
   public static int CANClimberVictor = 40;
 
-  public static int CANMothDoubleSolenoidForward = 2;
-  public static int CANMothDoubleSolenoidReverse = 3;
+  public static int IntakeSolenoid1 = 2;
+  public static int IntakeSolenoid2 = 1;
+  public static int MothDoubleSolenoidForward = 0;
+  public static int MothDoubleSolenoidReverse = 3;
 }

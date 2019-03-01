@@ -15,16 +15,17 @@ import frc.robot.pathfollowing.*;
 
 public class Follow extends Command {
 
-  double ka = 0.04;
-  double ka_rotate = 0.04;
+  double ka = 0.035;
   double kp = 0.01;
+  double kd = 0.0;
+  double kh = .7;
+  double ka_reverse = 0.02;
+  double kp_reverse = 0.2; 
+  double kh_reverse = 0.9;
+  double ka_rotate = 0.03;
+  double kp_rotate = 0.035;
+  double kh_rotate = 0.05;
   double kp_forward = 0.125;
-  double kp_rotate = 0.01;
-  double kp_reverse = 0.1;
-  double kd = 0.0;  
-  double kh = .7;  
-  double kh_reverse = 1.8;
-  double kh_rotate = 0.0;
 
   boolean reverse, mirror;
   boolean followRotation;
@@ -47,6 +48,7 @@ public class Follow extends Command {
 
     // check if follow ka, follow kp, follow kd exist and put them in if they don't
     if (!Preferences.getInstance().containsKey("MP ka")) Preferences.getInstance().putDouble("MP ka", ka);
+    if (!Preferences.getInstance().containsKey("MP ka_reverse")) Preferences.getInstance().putDouble("MP ka_reverse", ka_reverse);
     if (!Preferences.getInstance().containsKey("MP kp")) Preferences.getInstance().putDouble("MP kp", kp);
     if (!Preferences.getInstance().containsKey("MP kd")) Preferences.getInstance().putDouble("MP kd", kd);
     if (!Preferences.getInstance().containsKey("MP kh_reverse")) Preferences.getInstance().putDouble("MP kh_reverse", kh_reverse);
@@ -90,6 +92,7 @@ public class Follow extends Command {
     ka = Robot.prefs.getDouble("MP ka", ka);
     kh = Robot.prefs.getDouble("MP kh", kh);
 
+    ka_reverse = Robot.prefs.getDouble("MP ka_reverse", ka_reverse);
     kp_reverse = Robot.prefs.getDouble("MP kp_reverse", kp_reverse);
     kh_reverse = Robot.prefs.getDouble("MP kh_reverse", kh_reverse);
     
@@ -102,7 +105,6 @@ public class Follow extends Command {
   @Override
   protected void execute() {
     try {
-      double start = Timer.getFPGATimestamp();
       if(nonexistentPath) return;
       // Get all trajectory points
       double currentTime = Timer.getFPGATimestamp();
@@ -119,7 +121,7 @@ public class Follow extends Command {
       double kp = reverse ? this.kp_reverse : this.kp;
       kp = followForward ? this.kp_forward : kp;
       double kh = reverse ? this.kh_reverse  : this.kh;
-      double ka = this.ka;
+      double ka = reverse ? this.ka_reverse : this.ka;
 
       if(followRotation) {
         double differenceTicks = (targetL.position_ft-targetR.position_ft)/RobotMap.feetPerTick;

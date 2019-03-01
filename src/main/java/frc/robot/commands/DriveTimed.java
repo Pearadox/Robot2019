@@ -14,7 +14,9 @@ public class DriveTimed extends Command {
 
   double leftMotor, rightMotor, timeout;
 
-  public DriveTimed(double timeout) {
+  public DriveTimed(double left, double right, double timeout) {
+    this.leftMotor = left;
+    this.rightMotor = right;
     this.timeout = timeout;
     requires(Robot.drivetrain);
   }
