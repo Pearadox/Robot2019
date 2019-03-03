@@ -33,19 +33,23 @@ public class Intake extends Subsystem {
 
 
   public void lower(){
-    raiserSol1.set(false);
-    raiserSol1.set(false);
+    raiserSol1.set(true);
+    raiserSol1.set(true);
   }
 
   public void raise(){
-    raiserSol1.set(true);
-    raiserSol2.set(true);
+    raiserSol1.set(false);
+    raiserSol2.set(false);
   }
 
   public void toggleRaise(){
     boolean toSet = !raiserSol1.get();
     raiserSol1.set(toSet);
     raiserSol2.set(toSet);
+  }
+
+  public boolean isLow() {
+    return raiserSol1.get();
   }
   
   public void set(double setSpeed){
@@ -58,9 +62,5 @@ public class Intake extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-
-
   }
 }

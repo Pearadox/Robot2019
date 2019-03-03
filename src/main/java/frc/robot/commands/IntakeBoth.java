@@ -4,11 +4,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class IntakeGroup extends Command {
+
+public class IntakeBoth extends Command {
 
   boolean sensorStop;
 
-  public IntakeGroup(boolean sensorStop) {
+  public IntakeBoth(boolean sensorStop) {
     requires(Robot.box);
     requires(Robot.intake);
 

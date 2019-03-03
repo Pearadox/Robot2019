@@ -34,7 +34,7 @@ public class IntakeIntake extends Command {
   
   @Override
   protected void execute() {
-    Robot.intake.set(.3);
+    Robot.intake.set(.5);
   }
 
   @Override

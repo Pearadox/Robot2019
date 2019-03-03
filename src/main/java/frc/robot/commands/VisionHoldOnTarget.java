@@ -27,9 +27,11 @@ public class VisionHoldOnTarget extends Command {
   
   double lastError = 0;
   double error_sum = 0;
-  double kp = 0.01;
+  double kp = 0.02;
   double ki = 0.0;
   double kd = 0.1;
+
+  double offset = -1;  // degrees, positive is to right, negative to left
 
   boolean reachedTarget;
 
@@ -49,6 +51,7 @@ public class VisionHoldOnTarget extends Command {
   @Override
   protected void initialize() {
     setTimeout(1.5);
+    Robot.limelight.lightOn();
     error_sum = 0;
     kp = Robot.prefs.getDouble("VisionHold kp", kp);
     ki = Robot.prefs.getDouble("VisionHold ki", ki);
@@ -60,23 +63,27 @@ public class VisionHoldOnTarget extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-      if(!Robot.limelight.targetExists()) return;
 
-      double getX = Robot.limelight.getX();
+      double getX = Robot.limelight.getX() - offset;
 
-      double changeInError = lastError - Robot.limelight.getX();
-      error_sum += Robot.limelight.getX();
+      double changeInError = lastError - getX;
+      error_sum += getX;
 
-      double P = kp * Robot.limelight.getX();
+      double P = kp * getX;
       double I = ki * error_sum;
       double D = kd * changeInError;
-      lastError = Robot.limelight.getX();
+      lastError = getX;
       double output = P + I - D;
 
       if(output > 0) output += 0.0;
       else output -= 0.0;
 
+      if(!Robot.limelight.targetExists()) output = 0;
+
       double joystickOutput = -Robot.oi.joystick.getRawAxis(1);
+
+      boolean reduce = Robot.oi.joystick.getRawButton(1);
+      if(reduce) joystickOutput *= 0.5;
 
       Robot.drivetrain.drive(output+joystickOutput, -output+joystickOutput);
   }
@@ -84,13 +91,14 @@ public class VisionHoldOnTarget extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return !Robot.limelight.targetExists();
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
     Robot.drivetrain.stop();
+    Robot.limelight.lightOff();
   }
 
   // Called when another command which requires one or more of the same

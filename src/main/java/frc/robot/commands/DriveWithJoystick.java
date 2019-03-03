@@ -21,7 +21,7 @@ public class DriveWithJoystick extends Command {
   double targetHeading, lastTime, lastError;
   
   double kp = 0.01;
-  double kd = 0.07;
+  double kd = 0.2;
 
   public DriveWithJoystick() {
     requires(Robot.drivetrain);
@@ -36,8 +36,8 @@ public class DriveWithJoystick extends Command {
 
   @Override
   protected void initialize() {
-    // targetHeading = Robot.gyro.getYaw();
-    targetHeading = (Robot.drivetrain.getLeftEncoder() - Robot.drivetrain.getRightEncoder())/RobotMap.halfTurn*180;
+    targetHeading = Robot.gyro.getYaw();
+    // targetHeading = (Robot.drivetrain.getLeftEncoder() - Robot.drivetrain.getRightEncoder())/RobotMap.halfTurn*180;
     lastTime = Timer.getFPGATimestamp();
     lastError = 0;
     

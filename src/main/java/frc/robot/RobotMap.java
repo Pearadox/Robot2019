@@ -14,9 +14,11 @@ package frc.robot;
  * floating around.
  */
 public class RobotMap {
+
+  public static int limitSwitchArm = 3;
   
   public static boolean enableCameras = true;
-  public static boolean gyroDrive = false;
+  public static boolean gyroDrive = true;
 
   public static double ticksPerRev = 256;  //ticks
   public static double wheelDiameter = 6./12.;  //ft

@@ -76,8 +76,8 @@ public class Robot extends TimedRobot {
     oi = new OI();
 
     if(RobotMap.enableCameras) {
-      camera1 = CameraServer.getInstance().startAutomaticCapture(0);
-      camera2 = CameraServer.getInstance().startAutomaticCapture(1);
+      camera1 = CameraServer.getInstance().startAutomaticCapture(1);
+      camera2 = CameraServer.getInstance().startAutomaticCapture(0);
       server = CameraServer.getInstance().getServer();
       
       cvsink1.setSource(camera1);
@@ -89,28 +89,28 @@ public class Robot extends TimedRobot {
 
     if(arm != null) arm.zero();
     if(gyro != null) gyro.zero();
+    limelight.lightOff();
   }
 
   
   double start = 0;
   @Override
   public void robotPeriodic() {
-    
     drivetrain.updateTrajectory();
     SmartDashboard.putNumber("Left Feet Encoder", drivetrain.getLeftEncoderFeet());
     SmartDashboard.putNumber("Right Feet Encoder", drivetrain.getRightEncoderFeet());
     SmartDashboard.putNumber("Left Encoder", drivetrain.getLeftEncoder());
     SmartDashboard.putNumber("Right Encoder", drivetrain.getRightEncoder());
-    // SmartDashboard.putNumber("Arm Encoder", arm.getAngle());
-    // SmartDashboard.putNumber("Arm Raw Encoder", arm.getRawEncoder());
+    SmartDashboard.putNumber("Arm Encoder", arm.getAngle());
+    SmartDashboard.putNumber("Arm Raw Encoder", arm.getRawEncoder());
+    SmartDashboard.putBoolean("Limit Switch", arm.getLimit());
     SmartDashboard.putNumber("Heading", gyro.getYaw());
     SmartDashboard.putNumber("Drivetrain Heading", drivetrain.getHeading());
-    // SmartDashboard.putNumber("tx", limelight.getX());
-    // SmartDashboard.putNumber("ty", limelight.getY());
-    // SmartDashboard.putBoolean("tv", limelight.targetExists());
-    // SmartDashboard.putNumber("Limelight Distance", limelight.getDistance());
-    // SmartDashboard.putNumber("Angle", limelight.getAngle());
-    // SmartDashboard.putNumber("Ultrasonic", box.getUltrasonic());
+    SmartDashboard.putNumber("tx", limelight.getX());
+    SmartDashboard.putNumber("ty", limelight.getY());
+    SmartDashboard.putBoolean("tv", limelight.targetExists());
+    SmartDashboard.putNumber("Limelight Distance", limelight.getDistance());
+    SmartDashboard.putNumber("Ultrasonic", box.getUltrasonic());
     
 
     if(RobotMap.enableCameras) {
@@ -120,8 +120,6 @@ public class Robot extends TimedRobot {
         server.setSource(camera1);
       }
     }
-
-    limelight.lightOff();
   }
   
   @Override
@@ -132,6 +130,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
+    limelight.lightOff();
   }
   
   @Override
@@ -176,7 +175,9 @@ public class Robot extends TimedRobot {
     }
     prevReverse = reverseBtn;
 
-    if(arm.getLimit()) arm.zero();
+    limelight.lightOn();
+
+    // if(arm.getLimit()) arm.zero();
   }
 
   @Override

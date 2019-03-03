@@ -50,31 +50,44 @@ public class OI {
 	public OI() {
 		
 		btn3.whenPressed(new ArmGoLow());
-		btn4.whenPressed(new ArmGoMiddle());
-		btn5.whenPressed(new ArmGoHigh());
+		btn4.whenPressed(new ArmGoRocket());
+		btn5.whenPressed(new ArmGoCargo());
 
 		btn6.whenPressed(new IntakeToggle());
 
 		btn7.whileHeld(new ArmManualDown());
 		btn8.whileHeld(new ArmManualUp());
 
-		btn9.whileHeld(new OuttakeGroup());
-		btn10.whileHeld(new IntakeGroup(false));
+		btn9.whileHeld(new OuttakeBoth());
+		btn10.whileHeld(new IntakeBoth(false));
 
 		btn11.whenPressed(new MothToggle());
 		
-		// btn12.whenPressed(new VisionHoldOnTarget());
+		btn12.whileHeld(new VisionHoldOnTarget());
 
+		/*============================
+		===== OPERATOR CONTROLS ======
+		==============================*/
 
-		opbtn6.whenPressed(new IntakeToggle());
+		// opbtn1.whenPressed(new ());
+		opbtn2.whenPressed(new ArmZeroReset());
+
+		opbtn3.whenPressed(new MothOpen());
+		opbtn4.whenPressed(new MothClose());
+		
+		opbtn2.whenPressed(new ArmZeroReset());
+
+		opbtn5.whenPressed(new DriverLowerGroup());
+		opbtn6.whenPressed(new DriverRaiseGroup());
 
 		opbtn7.whileHeld(new ArmManualDown());
 		opbtn8.whileHeld(new ArmManualUp());
 
-		opbtn9.whileHeld(new OuttakeGroup());
-		opbtn10.whileHeld(new IntakeGroup(false));
+		opbtn9.whileHeld(new IntakeLower());
+		opbtn10.whileHeld(new IntakeRaise());
 
-		opbtn11.whenPressed(new MothToggle());
+		opbtn11.whileHeld(new IntakeBoth(false));
+		opbtn12.whileHeld(new OuttakeBoth());
 	}
 	
 	
