@@ -9,10 +9,12 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class ArmGoLow extends CommandGroup {
+public class DriverLowerGroup extends CommandGroup {
   
-  
-  public ArmGoLow() {
-    addSequential(new ArmSetAngle(50));
+  public DriverLowerGroup() {
+    addSequential(new IntakeLower());
+    addSequential(new Delay(1.5));
+    addSequential(new ArmGoLow());
+    addSequential(new IntakeBoth(false));
   }
 }

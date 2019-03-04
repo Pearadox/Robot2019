@@ -45,7 +45,7 @@ public class Box extends Subsystem {
     }
 
     public void initDefaultCommand() {
-        setDefaultCommand(new BoxIntakeHold());
+        setDefaultCommand(new BoxStop());
     }
 
 }

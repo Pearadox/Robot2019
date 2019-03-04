@@ -76,52 +76,51 @@ public class Robot extends TimedRobot {
     oi = new OI();
 
     if(RobotMap.enableCameras) {
-      camera1 = CameraServer.getInstance().startAutomaticCapture(0);
-      camera2 = CameraServer.getInstance().startAutomaticCapture(1);
-      server = CameraServer.getInstance().getServer();
+	    camera1 = edu.wpi.first.cameraserver.CameraServer.getInstance().startAutomaticCapture(1);
+      camera2 = edu.wpi.first.cameraserver.CameraServer.getInstance().startAutomaticCapture(0);
+      // server = edu.wpi.first.cameraserver.CameraServer.getInstance().getServer();      
+      // cvsink1.setSource(camera1);
+      // cvsink1.setEnabled(true);
       
-      cvsink1.setSource(camera1);
-      cvsink1.setEnabled(true);
-      
-      cvsink2.setSource(camera2);
-      cvsink2.setEnabled(true);
+      // cvsink2.setSource(camera2);
+      // cvsink2.setEnabled(true);
     }
 
     if(arm != null) arm.zero();
     if(gyro != null) gyro.zero();
+    limelight.lightOff();
+    intake.raise();
+    intake.raise();
   }
 
   
   double start = 0;
   @Override
   public void robotPeriodic() {
-    
     drivetrain.updateTrajectory();
     SmartDashboard.putNumber("Left Feet Encoder", drivetrain.getLeftEncoderFeet());
     SmartDashboard.putNumber("Right Feet Encoder", drivetrain.getRightEncoderFeet());
     SmartDashboard.putNumber("Left Encoder", drivetrain.getLeftEncoder());
     SmartDashboard.putNumber("Right Encoder", drivetrain.getRightEncoder());
-    // SmartDashboard.putNumber("Arm Encoder", arm.getAngle());
-    // SmartDashboard.putNumber("Arm Raw Encoder", arm.getRawEncoder());
+    SmartDashboard.putNumber("Arm Encoder", arm.getAngle());
+    SmartDashboard.putNumber("Arm Raw Encoder", arm.getRawEncoder());
+    SmartDashboard.putBoolean("Limit Switch", arm.getLimit());
     SmartDashboard.putNumber("Heading", gyro.getYaw());
     SmartDashboard.putNumber("Drivetrain Heading", drivetrain.getHeading());
-    // SmartDashboard.putNumber("tx", limelight.getX());
-    // SmartDashboard.putNumber("ty", limelight.getY());
-    // SmartDashboard.putBoolean("tv", limelight.targetExists());
-    // SmartDashboard.putNumber("Limelight Distance", limelight.getDistance());
-    // SmartDashboard.putNumber("Angle", limelight.getAngle());
-    // SmartDashboard.putNumber("Ultrasonic", box.getUltrasonic());
+    SmartDashboard.putNumber("tx", limelight.getX());
+    SmartDashboard.putNumber("ty", limelight.getY());
+    SmartDashboard.putBoolean("tv", limelight.targetExists());
+    SmartDashboard.putNumber("Limelight Distance", limelight.getDistance());
+    SmartDashboard.putNumber("Ultrasonic", box.getUltrasonic());
     
 
-    if(RobotMap.enableCameras) {
-      if(!reverseDrivetrain) {
-        server.setSource(camera2);
-      } else {
-        server.setSource(camera1);
-      }
-    }
-
-    limelight.lightOff();
+    // if(RobotMap.enableCameras) {
+    //   if(!reverseDrivetrain) {
+    //     server.setSource(camera2);
+    //   } else {
+    //     server.setSource(camera1);
+    //   }
+    // }
   }
   
   @Override
@@ -132,6 +131,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
+    limelight.lightOff();
   }
   
   @Override
@@ -139,7 +139,7 @@ public class Robot extends TimedRobot {
 
     gyro.zero(180);  // facing backwards
 
-    // autonomousCommand = new AutonomousTest();
+    autonomousCommand = new AutonomousTest();
     // autonomousCommand = new AutonomousRtoCMRtoCML(1, false);
     // autonomousCommand = new AutonomousRtoCMRtoCR(1, 1, false);
 
@@ -172,11 +172,13 @@ public class Robot extends TimedRobot {
 
     boolean reverseBtn = oi.joystick.getRawButton(2);
     if(reverseBtn && !prevReverse) {
-      reverseDrivetrain = !reverseDrivetrain;
+      // reverseDrivetrain = !reverseDrivetrain;
     }
     prevReverse = reverseBtn;
 
-    if(arm.getLimit()) arm.zero();
+    limelight.lightOn();
+
+    // if(arm.getLimit()) arm.zero();
   }
 
   @Override

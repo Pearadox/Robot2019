@@ -9,9 +9,9 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class ArmGoHigh extends CommandGroup {
+public class ArmGoCargo extends CommandGroup {
   
-  public ArmGoHigh() {
-    addSequential(new ArmSetAngle(140));
+  public ArmGoCargo() {
+    addSequential(new ArmSetAngle(150));
   }
 }

@@ -10,45 +10,38 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class IntakeLower extends Command {
-
-  double timeoutIfNecessary;
-
-  public IntakeLower() {
-    this(-1);
-  }
-
-  public IntakeLower(double timeoutIfNecessary) {
-    this.timeoutIfNecessary = timeoutIfNecessary;
+public class ArmZeroReset extends Command {
+  public ArmZeroReset() {
+    requires(Robot.arm);
   }
 
   @Override
   protected void initialize() {
-    if(timeoutIfNecessary > 0) {
-      if(!Robot.intake.isLow()) {
-        setTimeout(timeoutIfNecessary);
-      }
-      else setTimeout(0);
-    }
-    Robot.intake.lower();
+    
   }
 
   @Override
   protected void execute() {
+    Robot.arm.setRawSpeed(-.1);
   }
 
   @Override
   protected boolean isFinished() {
-    if(timeoutIfNecessary > 0)
-      return isTimedOut();
-    else return true;
+    if (Robot.arm.getLimit()) 
+    {
+      Robot.arm.zero();
+      return true;
+    }
+    else return false;
   }
 
   @Override
   protected void end() {
+    Robot.arm.set(0);
   }
 
   @Override
   protected void interrupted() {
+    end();
   }
 }

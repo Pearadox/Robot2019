@@ -50,59 +50,42 @@ public class OI {
 	public OI() {
 		
 		btn3.whenPressed(new ArmGoLow());
-		btn4.whenPressed(new ArmGoMiddle());
-		btn5.whenPressed(new ArmGoHigh());
+		btn4.whenPressed(new ArmGoRocket());
+		btn5.whenPressed(new ArmGoCargo());
 
-		btn6.whenPressed(new IntakeToggle());
+		// btn6.whenPressed(new ());
 
-		btn7.whileHeld(new ArmManualDown());
-		btn8.whileHeld(new ArmManualUp());
+		btn7.whenPressed(new DriverLowerGroup());
+		btn8.whenPressed(new DriverRaiseGroup());
 
-		btn9.whileHeld(new OuttakeGroup());
-		btn10.whileHeld(new IntakeGroup(false));
+		btn9.whileHeld(new OuttakeBoth());
+		btn10.whileHeld(new IntakeBoth(false));
 
+		
 		btn11.whenPressed(new MothToggle());
 		
-		// btn12.whenPressed(new VisionHoldOnTarget());
+		btn12.whileHeld(new VisionHoldOnTarget());
 
+		/*============================
+		===== OPERATOR CONTROLS ======
+		==============================*/
 
-		opbtn6.whenPressed(new IntakeToggle());
+		opbtn1.whenPressed(new MothToggle());
+		opbtn2.whenPressed(new ArmZeroReset());
+
+		opbtn3.whenPressed(new ArmGoLow());
+		opbtn4.whenPressed(new ArmGoCargo());
+
+		opbtn5.whenPressed(new DriverLowerGroup());
+		opbtn6.whenPressed(new DriverRaiseGroup());
 
 		opbtn7.whileHeld(new ArmManualDown());
 		opbtn8.whileHeld(new ArmManualUp());
 
-		opbtn9.whileHeld(new OuttakeGroup());
-		opbtn10.whileHeld(new IntakeGroup(false));
+		opbtn9.whileHeld(new IntakeLower());
+		opbtn10.whileHeld(new IntakeRaise());
 
-		opbtn11.whenPressed(new MothToggle());
+		opbtn11.whileHeld(new OuttakeBoth());
+		opbtn12.whileHeld(new IntakeBoth(false));
 	}
-	
-	
-	//// CREATING BUTTONS
-	// One type of button is a joystick button which is any button on a
-	//// joystick.
-	// You create one by telling it which joystick it's on and which button
-	// number it is.
-	// Joystick stick = new Joystick(port);
-	// Button button = new JoystickButton(stick, buttonNumber);
-
-	// There are a few additional built in buttons you can use. Additionally,
-	// by subclassing Button you can create custom triggers and bind those to
-	// commands the same as any other Button.
-
-	//// TRIGGERING COMMANDS WITH BUTTONS
-	// Once you have a button, it's trivial to bind it to a button in one of
-	// three ways:
-
-	// Start the command when the button is pressed and let it run the command
-	// until it is finished as determined by it's isFinished method.
-	// button.whenPressed(new ExampleCommand());
-
-	// Run the command while the button is being held down and interrupt it once
-	// the button is released.
-	// button.whileHeld(new ExampleCommand());
-
-	// Start the command when the button is released and let it run the command
-	// until it is finished as determined by it's isFinished method.
-	// button.whenReleased(new ExampleCommand());
 }

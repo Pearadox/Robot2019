@@ -4,13 +4,16 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class OuttakeGroup extends Command {
+
+public class IntakeBoth extends Command {
 
   boolean sensorStop;
 
-  public OuttakeGroup() {
+  public IntakeBoth(boolean sensorStop) {
     requires(Robot.box);
     requires(Robot.intake);
+
+    this.sensorStop = sensorStop;
   }
 
   @Override
@@ -19,8 +22,8 @@ public class OuttakeGroup extends Command {
 
   @Override
   protected void execute() {
-    Robot.box.set(-1);
-    Robot.intake.set(-0.3);
+    Robot.box.set(.4);
+    Robot.intake.set(.3);
   }
 
   @Override

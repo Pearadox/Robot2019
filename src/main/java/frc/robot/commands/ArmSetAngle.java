@@ -16,7 +16,7 @@ import frc.robot.Robot;
 public class ArmSetAngle extends Command {
     double targetAngle;
     double kp = 0.005;
-    double ki = 0.0;
+    double ki = 0.0001;
     double kd = 0.04;
     double error, errorSum, lastError;
 

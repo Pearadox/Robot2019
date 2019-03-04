@@ -25,7 +25,7 @@ public class Arm extends Subsystem {
     public Arm(){
         armMotor = new CANSparkMax(RobotMap.CANArmBLDCSparkMax, MotorType.kBrushless);
         encoder = new CANEncoder(armMotor);
-        limit = new DigitalInput(3);
+        limit = new DigitalInput(RobotMap.limitSwitchArm);
         armMotor.setIdleMode(IdleMode.kBrake);
         armMotor.setInverted(false);
     }
@@ -42,6 +42,11 @@ public class Arm extends Subsystem {
         if(getAngle() > 170 && percentOutput > 0) return;
         if(getLimit() && percentOutput < 0) return;
         armMotor.set(percentOutput);
+    }
+
+    public void setRawSpeed(double speed){
+        armMotor.set(speed);
+
     }
 
     public void zero() {
