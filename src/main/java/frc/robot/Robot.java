@@ -76,14 +76,14 @@ public class Robot extends TimedRobot {
     oi = new OI();
 
     if(RobotMap.enableCameras) {
-	camera1 = edu.wpi.first.cameraserver.CameraServer.getInstance().startAutomaticCapture(1);
+	    camera1 = edu.wpi.first.cameraserver.CameraServer.getInstance().startAutomaticCapture(1);
       camera2 = edu.wpi.first.cameraserver.CameraServer.getInstance().startAutomaticCapture(0);
-      server = edu.wpi.first.came      
-      cvsink1.setSource(camera1);
-      cvsink1.setEnabled(true);
+      // server = edu.wpi.first.cameraserver.CameraServer.getInstance().getServer();      
+      // cvsink1.setSource(camera1);
+      // cvsink1.setEnabled(true);
       
-      cvsink2.setSource(camera2);
-      cvsink2.setEnabled(true);
+      // cvsink2.setSource(camera2);
+      // cvsink2.setEnabled(true);
     }
 
     if(arm != null) arm.zero();
@@ -114,13 +114,13 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Ultrasonic", box.getUltrasonic());
     
 
-    if(RobotMap.enableCameras) {
-      if(!reverseDrivetrain) {
-        server.setSource(camera2);
-      } else {
-        server.setSource(camera1);
-      }
-    }
+    // if(RobotMap.enableCameras) {
+    //   if(!reverseDrivetrain) {
+    //     server.setSource(camera2);
+    //   } else {
+    //     server.setSource(camera1);
+    //   }
+    // }
   }
   
   @Override
@@ -139,7 +139,7 @@ public class Robot extends TimedRobot {
 
     gyro.zero(180);  // facing backwards
 
-    // autonomousCommand = new AutonomousTest();
+    autonomousCommand = new AutonomousTest();
     // autonomousCommand = new AutonomousRtoCMRtoCML(1, false);
     // autonomousCommand = new AutonomousRtoCMRtoCR(1, 1, false);
 
@@ -172,7 +172,7 @@ public class Robot extends TimedRobot {
 
     boolean reverseBtn = oi.joystick.getRawButton(2);
     if(reverseBtn && !prevReverse) {
-      reverseDrivetrain = !reverseDrivetrain;
+      // reverseDrivetrain = !reverseDrivetrain;
     }
     prevReverse = reverseBtn;
 
