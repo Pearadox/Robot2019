@@ -28,6 +28,7 @@ public class IntakeLower extends Command {
       if(!Robot.intake.isLow()) {
         setTimeout(timeoutIfNecessary);
       }
+      else setTimeout(0);
     }
     Robot.intake.lower();
   }
@@ -38,7 +39,9 @@ public class IntakeLower extends Command {
 
   @Override
   protected boolean isFinished() {
-    return true;
+    if(timeoutIfNecessary > 0)
+      return isTimedOut();
+    else return true;
   }
 
   @Override

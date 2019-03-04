@@ -22,8 +22,8 @@ public class IntakeBoth extends Command {
 
   @Override
   protected void execute() {
-    Robot.box.set(.3);
-    Robot.intake.set(.4);
+    Robot.box.set(.4);
+    Robot.intake.set(.3);
   }
 
   @Override

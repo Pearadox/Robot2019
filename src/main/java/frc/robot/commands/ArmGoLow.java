@@ -13,6 +13,6 @@ public class ArmGoLow extends CommandGroup {
   
   
   public ArmGoLow() {
-    addSequential(new ArmSetAngle(41));
+    addSequential(new ArmSetAngle(50));
   }
 }

@@ -12,6 +12,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class ArmGoCargo extends CommandGroup {
   
   public ArmGoCargo() {
-    addSequential(new ArmSetAngle(140));
+    addSequential(new ArmSetAngle(150));
   }
 }

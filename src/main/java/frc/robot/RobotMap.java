@@ -26,10 +26,14 @@ public class RobotMap {
 
   public static double feetPerTick = Math.PI * wheelDiameter / ticksPerRev;
 
-  public static int leftEncoderA = 9;
-  public static int leftEncoderB = 8;
-  public static int rightEncoderA = 7;
-  public static int rightEncoderB = 6;
+  // public static int leftEncoderA = 9;
+  // public static int leftEncoderB = 8;
+  // public static int rightEncoderA = 7;
+  // public static int rightEncoderB = 6;
+  public static int leftEncoderA = 7;
+  public static int leftEncoderB = 6;
+  public static int rightEncoderA = 9;
+  public static int rightEncoderB = 8;
 
 
   public static int CANLeftSlave1Victor = 11;

@@ -26,7 +26,6 @@ import frc.robot.commands.*;
 
 
 
-
 public class Robot extends TimedRobot {
   public static Drivetrain drivetrain;
   public static IMU gyro;
@@ -77,10 +76,9 @@ public class Robot extends TimedRobot {
     oi = new OI();
 
     if(RobotMap.enableCameras) {
-      camera1 = edu.wpi.first.cameraserver.CameraServer.getInstance().startAutomaticCapture(1);
+	camera1 = edu.wpi.first.cameraserver.CameraServer.getInstance().startAutomaticCapture(1);
       camera2 = edu.wpi.first.cameraserver.CameraServer.getInstance().startAutomaticCapture(0);
-      server = edu.wpi.first.cameraserver.CameraServer.getInstance().getServer();
-      
+      server = edu.wpi.first.came      
       cvsink1.setSource(camera1);
       cvsink1.setEnabled(true);
       
@@ -91,6 +89,8 @@ public class Robot extends TimedRobot {
     if(arm != null) arm.zero();
     if(gyro != null) gyro.zero();
     limelight.lightOff();
+    intake.raise();
+    intake.raise();
   }
 
   
