@@ -48,10 +48,14 @@ public class DriveWithJoystick extends Command {
   @Override
   protected void execute() {
     
-    double throttle = Robot.oi.joystick.getRawAxis(1);
-    double twist = Robot.oi.joystick.getRawAxis(2);
+    boolean overrideOperator = Robot.oi.operator.getRawButton(1);
+
+    double throttle = overrideOperator ? Robot.oi.operator.getRawAxis(1) : Robot.oi.joystick.getRawAxis(1);
+    double twist = overrideOperator ? Robot.oi.operator.getRawAxis(2) : Robot.oi.joystick.getRawAxis(2);
     boolean reverse = Robot.reverseDrivetrain;
     boolean reduce = Robot.oi.joystick.getRawButton(1);
+
+    if(overrideOperator) reduce = true;
 
     if(Math.abs(throttle)<.15) 
       throttle = 0;

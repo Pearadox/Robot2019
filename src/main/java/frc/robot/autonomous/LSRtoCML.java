@@ -20,9 +20,7 @@ public class LSRtoCML extends CommandGroup {
    * Add your docs here.
    */
   public LSRtoCML(boolean mirror) {
-    addSequential(new Follow("LSRtoCML", false, mirror));
-    addSequential(new TurnAbsolute(180));
-    addSequential(new TurnAbsolute(180));
-    addSequential(new DriveForward(-1));
+    addSequential(new Follow("LSRtoCML1of2", false, mirror));
+    addSequential(new Follow("LSRtoCML2of2", true, mirror));
   }
 }

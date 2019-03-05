@@ -90,7 +90,7 @@ public class Robot extends TimedRobot {
     if(gyro != null) gyro.zero();
     limelight.lightOff();
     intake.raise();
-    intake.raise();
+    moth.open();
   }
 
   
@@ -139,9 +139,10 @@ public class Robot extends TimedRobot {
 
     gyro.zero(180);  // facing backwards
 
-    autonomousCommand = new AutonomousTest();
-    // autonomousCommand = new AutonomousRtoCMRtoCML(1, false);
+    // autonomousCommand = new AutonomousTest();
+    autonomousCommand = new AutonomousRtoCMRtoCML(1, false);
     // autonomousCommand = new AutonomousRtoCMRtoCR(1, 1, false);
+    // autonomousCommand = new AutoVisionDrive(1.5, -0.4, -.25);
 
     if (autonomousCommand != null) {
       autonomousCommand.start();
@@ -176,7 +177,6 @@ public class Robot extends TimedRobot {
     }
     prevReverse = reverseBtn;
 
-    limelight.lightOn();
 
     // if(arm.getLimit()) arm.zero();
   }

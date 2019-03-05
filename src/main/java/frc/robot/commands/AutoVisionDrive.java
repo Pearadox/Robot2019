@@ -20,20 +20,25 @@ import frc.robot.*;
 import frc.robot.subsystems.Limelight;
 import jaci.pathfinder.Pathfinder;
 
-
-public class VisionHoldOnTarget extends Command {
+/**
+ * An example command.  You can replace me with your own command.
+ */
+public class AutoVisionDrive extends Command {
   
   double lastError = 0;
   double error_sum = 0;
-  public static double kp = 0.02;
-  public static double ki = 0.0;
-  public static double kd = 0.1;
+  double kp = VisionHoldOnTarget.kp;
+  double ki = VisionHoldOnTarget.ki;
+  double kd = VisionHoldOnTarget.kd;
 
   double offset = -1;  // degrees, positive is to right, negative to left
+  double finishTime, speed, finishSpeed;
 
-  boolean reachedTarget;
+  boolean sawTarget;
+  boolean lostTarget;
+  boolean timeoutSet;
 
-  public VisionHoldOnTarget() {
+  public AutoVisionDrive(double finishTime, double speed, double finishSpeed) {
     requires(Robot.drivetrain);
     if (!Preferences.getInstance().containsKey("VisionHold kp")){
       Preferences.getInstance().putDouble("VisionHold kp", kp);
@@ -44,6 +49,11 @@ public class VisionHoldOnTarget extends Command {
     if (!Preferences.getInstance().containsKey("VisionHold kd")){
       Preferences.getInstance().putDouble("VisionHold kd", kd);
     }
+
+    this.finishTime = finishTime;
+    this.speed = speed;
+    this.finishSpeed = finishSpeed;
+    this.timeoutSet = false;
   }
 
   @Override
@@ -54,13 +64,25 @@ public class VisionHoldOnTarget extends Command {
     ki = Robot.prefs.getDouble("VisionHold ki", ki);
     kd = Robot.prefs.getDouble("VisionHold kd", kd);
 
-    reachedTarget = false;
+    sawTarget = false;
+    lostTarget = false;
+    timeoutSet = false;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
 
+    if(Robot.limelight.targetExists())  sawTarget = true;
+    else if(sawTarget && !Robot.limelight.targetExists()) lostTarget = true;
+
+    if(lostTarget) {
+      if(!timeoutSet) {
+        timeoutSet = true;
+        setTimeout(finishTime);
+      }
+      Robot.drivetrain.drive(finishSpeed, finishSpeed);
+    } else if(sawTarget) {
       double getX = Robot.limelight.getX() - offset;
 
       double changeInError = lastError - getX;
@@ -75,20 +97,17 @@ public class VisionHoldOnTarget extends Command {
       if(output > 0) output += 0.0;
       else output -= 0.0;
 
-      if(!Robot.limelight.targetExists()) output = 0;
-
-      double joystickOutput = -Robot.oi.joystick.getRawAxis(1);
-
-      boolean reduce = Robot.oi.joystick.getRawButton(1);
-      if(reduce) joystickOutput *= 0.5;
+      double joystickOutput = speed;
 
       Robot.drivetrain.drive(output+joystickOutput, -output+joystickOutput);
+    }
   }
   
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    if(timeoutSet && isTimedOut()) return true;
+    else return false;
   }
 
   // Called once after isFinished returns true

@@ -53,7 +53,7 @@ public class OI {
 		btn4.whenPressed(new ArmGoRocket());
 		btn5.whenPressed(new ArmGoCargo());
 
-		// btn6.whenPressed(new ());
+		btn6.whenPressed(new TurnAbsolute(0));
 
 		btn7.whenPressed(new DriverLowerGroup());
 		btn8.whenPressed(new DriverRaiseGroup());
@@ -70,7 +70,7 @@ public class OI {
 		===== OPERATOR CONTROLS ======
 		==============================*/
 
-		opbtn1.whenPressed(new MothToggle());
+		// opbtn1.whenPressed(new MothToggle());
 		opbtn2.whenPressed(new ArmZeroReset());
 
 		opbtn3.whenPressed(new ArmGoLow());

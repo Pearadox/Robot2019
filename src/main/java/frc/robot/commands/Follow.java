@@ -15,13 +15,13 @@ import frc.robot.pathfollowing.*;
 
 public class Follow extends Command {
 
-  double ka = 0.035;
+  double ka = 0.035; 
   double kp = 0.01;
   double kd = 0.0;
   double kh = .7;
-  double ka_reverse = 0.02;
-  double kp_reverse = 0.2; 
-  double kh_reverse = 0.9;
+  double ka_reverse = 0.035;
+  double kp_reverse = 0.1; 
+  double kh_reverse = 0.8;
   double ka_rotate = 0.03;
   double kp_rotate = 0.035;
   double kh_rotate = 0.05;
@@ -48,9 +48,9 @@ public class Follow extends Command {
 
     // check if follow ka, follow kp, follow kd exist and put them in if they don't
     if (!Preferences.getInstance().containsKey("MP ka")) Preferences.getInstance().putDouble("MP ka", ka);
-    if (!Preferences.getInstance().containsKey("MP ka_reverse")) Preferences.getInstance().putDouble("MP ka_reverse", ka_reverse);
     if (!Preferences.getInstance().containsKey("MP kp")) Preferences.getInstance().putDouble("MP kp", kp);
-    if (!Preferences.getInstance().containsKey("MP kd")) Preferences.getInstance().putDouble("MP kd", kd);
+    if (!Preferences.getInstance().containsKey("MP kh")) Preferences.getInstance().putDouble("MP kh", kh);
+    if (!Preferences.getInstance().containsKey("MP ka_reverse")) Preferences.getInstance().putDouble("MP ka_reverse", ka_reverse);
     if (!Preferences.getInstance().containsKey("MP kh_reverse")) Preferences.getInstance().putDouble("MP kh_reverse", kh_reverse);
     if (!Preferences.getInstance().containsKey("MP kp_reverse")) Preferences.getInstance().putDouble("MP kp_reverse", kp_reverse);
     if (!Preferences.getInstance().containsKey("MP ka_rotate")) Preferences.getInstance().putDouble("MP ka_rotate", ka_rotate);
@@ -173,7 +173,7 @@ public class Follow extends Command {
       Robot.drivetrain.drive(leftOutput, rightOutput);
 
       // SmartDashboard.putNumber("V", vel_targetL);
-      // SmartDashboard.putNumber("A"  , ka*accel_targetL);
+      SmartDashboard.putNumber("A"  , ka*accel_targetL);
       SmartDashboard.putNumber("P",  kp*pos_error_l);
       // SmartDashboard.putNumber("D", kd * ((pos_error_l - lastError_l) / 
       // (currentTime - lastTime) - vel_targetL));
