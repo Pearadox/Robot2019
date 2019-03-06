@@ -68,7 +68,7 @@ public class Robot extends TimedRobot {
     limelight = new Limelight();
     intake = new Intake();
     moth = new Moth();
-    // climber = new Climber();
+    climber = new Climber();
     arm = new Arm();
     box = new Box();
     compressor.start();
@@ -91,6 +91,7 @@ public class Robot extends TimedRobot {
     limelight.lightOff();
     intake.raise();
     moth.open();
+    climber.zero();
   }
 
   
@@ -112,6 +113,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("tv", limelight.targetExists());
     SmartDashboard.putNumber("Limelight Distance", limelight.getDistance());
     SmartDashboard.putNumber("Ultrasonic", box.getUltrasonic());
+    SmartDashboard.putNumber("ClimberL Enc", climber.getLeftRotations());
+    SmartDashboard.putNumber("ClimberR Enc", climber.getRightRotations());
     
 
     // if(RobotMap.enableCameras) {

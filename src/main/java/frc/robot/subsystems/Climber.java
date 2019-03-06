@@ -8,27 +8,48 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.RobotMap;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 
 /**
  * Add your docs here.
  */
 public class Climber extends Subsystem {
-  VictorSPX climber;
+
+  CANSparkMax sparkL, sparkR;
+  CANEncoder encoderL, encoderR;
 
 public Climber(){
-  climber = new VictorSPX(-1);
+  sparkL = new CANSparkMax(RobotMap.CANClimberLeftSparkMax, MotorType.kBrushless);
+  sparkR = new CANSparkMax(RobotMap.CANClimberRightSparkMax, MotorType.kBrushless);
+  encoderL = new CANEncoder(sparkL);
+  encoderR = new CANEncoder(sparkR);
   
 }
 
-  public void setSpeed(double setSpeed){
-    climber.set(ControlMode.PercentOutput, setSpeed);
+  public void set(double speedL, double speedR){
+    sparkL.set(-speedL);
+    sparkR.set(speedR);
   }
 
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+  public double getLeftRotations() {
+    return -encoderL.getPosition();
+  }
+  
+  public double getRightRotations() {
+    return encoderR.getPosition();
+  }
+
+  public void zero() {
+    encoderL.setPosition(0);
+    encoderR.setPosition(0);
+  }
 
   @Override
   public void initDefaultCommand() {

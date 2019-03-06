@@ -18,7 +18,7 @@ public class RobotMap {
   public static int limitSwitchArm = 3;
   
   public static boolean enableCameras = true;
-  public static boolean gyroDrive = true;
+  public static boolean gyroDrive = false;
 
   public static double ticksPerRev = 256;  //ticks
   public static double wheelDiameter = 6./12.;  //ft
@@ -48,7 +48,8 @@ public class RobotMap {
   public static int CANArmBLDCSparkMax = 30;
   public static int CANBoxIntakeVictor = 31;
 
-  public static int CANClimberVictor = 40;
+  public static int CANClimberLeftSparkMax = 40;
+  public static int CANClimberRightSparkMax = 41;
 
   public static int IntakeSolenoid1 = 2;
   public static int IntakeSolenoid2 = 1;
