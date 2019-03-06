@@ -8,13 +8,19 @@
 package frc.robot.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.commands.*;
+import frc.robot.commands.DriveTimed;
+import frc.robot.commands.DriveForward;
+import frc.robot.commands.Follow;
+import frc.robot.commands.TurnAbsolute;
+import frc.robot.commands.TurnLeft;
+import frc.robot.commands.TurnRight;
 
-public class LSRtoCR extends CommandGroup {
-
-  public LSRtoCR(int cargoTarget, boolean mirror) {
-    addSequential(new Follow("LSRtoCR" + cargoTarget, false, mirror));
-    addSequential(new TurnAbsolute(mirror ? -90 : 90));
-    addSequential(new DriveForward(-2));
+public class PathLSRtoCML extends CommandGroup {
+  /**
+   * Add your docs here.
+   */
+  public PathLSRtoCML(boolean mirror) {
+    addSequential(new Follow("LSRtoCML1of2", false, mirror));
+    addSequential(new Follow("LSRtoCML2of2", true, mirror));
   }
 }

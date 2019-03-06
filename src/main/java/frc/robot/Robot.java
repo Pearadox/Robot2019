@@ -88,10 +88,10 @@ public class Robot extends TimedRobot {
 
     if(arm != null) arm.zero();
     if(gyro != null) gyro.zero();
-    limelight.lightOff();
-    intake.raise();
-    moth.open();
-    climber.zero();
+    if(climber != null) climber.zero();
+    if(limelight != null) limelight.lightOff();
+    if(intake != null) intake.raise();
+    if(moth != null) moth.open();
   }
 
   
@@ -130,6 +130,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     if(arm != null) arm.set(0);
+    if(intake != null) intake.raise();
   }
 
   @Override
@@ -145,7 +146,7 @@ public class Robot extends TimedRobot {
 
     // autonomousCommand = new AutonomousTest();
     autonomousCommand = new AutonomousRtoCMRtoCML(1, false);
-    // autonomousCommand = new AutonomousRtoCMRtoCR(1, 1, false);
+    autonomousCommand = new AutonomousRtoCMRtoRR(1, 2, false);
     // autonomousCommand = new AutoVisionDrive(1.5, -0.4, -.25);
 
     if (autonomousCommand != null) {

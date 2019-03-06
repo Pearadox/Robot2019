@@ -1,3 +1,13 @@
+PathPlanner Configuration:
+    Imperial Units
+    Max Velocity: 12
+    Max Acceleration: 8
+    Coefficient of Friction: .77
+    Time Step: 0.02
+    Wheelbase Width: 2.14
+    Robot Length: 2.73
+
+
 R2toCMR
 R2toRR1
 R2toRR2

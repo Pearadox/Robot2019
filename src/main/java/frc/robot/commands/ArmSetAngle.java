@@ -19,6 +19,7 @@ public class ArmSetAngle extends Command {
     double ki = 0.0001;
     double kd = 0.04;
     double error, errorSum, lastError;
+    boolean climbingMode;
 
   public ArmSetAngle(double angle) {
     requires(Robot.arm);
@@ -30,6 +31,11 @@ public class ArmSetAngle extends Command {
     if (!Preferences.getInstance().containsKey("Arm kp")) Preferences.getInstance().putDouble("Arm kp", kp);
     if (!Preferences.getInstance().containsKey("Arm ki")) Preferences.getInstance().putDouble("Arm ki", ki);
     if (!Preferences.getInstance().containsKey("Arm kd")) Preferences.getInstance().putDouble("Arm kd", kd);
+  }
+
+  public ArmSetAngle(boolean climbingMode) {
+    this(ClimbGroup.climbingUpAngle);
+    this.climbingMode = climbingMode;
   }
   
   @Override
@@ -45,12 +51,15 @@ public class ArmSetAngle extends Command {
 
   @Override
   protected void execute() {
-    if((Robot.climber.getLeftRotations()+Robot.climber.getRightRotations())/2 > 30) {
-      targetAngle = 40;
+    if(climbingMode) {
+
+      if((Robot.climber.getLeftRotations()+Robot.climber.getRightRotations())/2 > 30) {
+        targetAngle = ClimbGroup.fallingDownAngle;
+      }
+      else targetAngle = ClimbGroup.climbingUpAngle;
+
     }
-    // double error = targetAngle - Robot.arm.getRawEncoder();
     double error = targetAngle - Robot.arm.getAngle();
-    // double F = Robot.arm.calculateHoldOutput(Robot.arm.getAngle());
     double F = 0;
     double P = error * kp;
     double I = errorSum * ki;
@@ -65,6 +74,9 @@ public class ArmSetAngle extends Command {
 
   @Override
   protected boolean isFinished() {
+
+    if(climbingMode) return false;
+
     double error = targetAngle - Robot.arm.getAngle();
     if (Math.abs(error) <= 2){
       return true;

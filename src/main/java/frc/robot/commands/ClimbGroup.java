@@ -11,8 +11,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class ClimbGroup extends CommandGroup {
 
+  static double climbingUpAngle = 50.8;
+  static double fallingDownAngle = 40;
+
   public ClimbGroup() {
-    addSequential(new ArmGoLow());
-    addSequential(new IntakeRaise());
+    addSequential(new ArmSetAngle(true));
   }
 }

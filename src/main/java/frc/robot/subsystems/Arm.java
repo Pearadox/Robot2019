@@ -65,7 +65,6 @@ public class Arm extends Subsystem {
     }
 
     public void initDefaultCommand() {
-        // setDefaultCommand(new ArmHold());
-        setDefaultCommand(new ArmGoLow());
+        setDefaultCommand(new ArmHold());
     }
 }

@@ -8,17 +8,14 @@
 package frc.robot.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.commands.Follow;
+import frc.robot.commands.*;
 
 public class AutonomousRtoRRtoRR extends CommandGroup {
   /**
    * Add your docs here.
    */
   public AutonomousRtoRRtoRR(int startingLevel, boolean mirror) {
-    addSequential(new Follow("R"+startingLevel+"toRR1", true, mirror));
-    addSequential(new RRtoLSR(1, mirror));
-    addSequential(new LSRtoRR(2, mirror));
-    
-    
+    addSequential(new GroupRtoRR1toLSR(startingLevel, mirror));
+    addSequential(new GroupLSRtoRR2(mirror));
   }
 }

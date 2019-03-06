@@ -53,14 +53,13 @@ public class OI {
 		btn4.whenPressed(new ArmGoRocket());
 		btn5.whenPressed(new ArmGoCargo());
 
-		btn6.whenPressed(new TurnAbsolute(0));
+		// btn6.whenPressed(new );
 
 		btn7.whenPressed(new DriverLowerGroup());
 		btn8.whenPressed(new DriverRaiseGroup());
 
 		btn9.whileHeld(new OuttakeBoth());
 		btn10.whileHeld(new IntakeBoth(false));
-
 		
 		btn11.whenPressed(new MothToggle());
 		
@@ -89,6 +88,7 @@ public class OI {
 		// opbtn11.whileHeld(new OuttakeBoth());
 		// opbtn12.whileHeld(new IntakeBoth(false));
 		opbtn11.whenPressed(new ClimberSet(0.5,.3));  //expand
+		opbtn11.whenPressed(new ClimbGroup());
 		opbtn12.whileHeld(new ClimberSet(-0.2,0));
 	}
 }
