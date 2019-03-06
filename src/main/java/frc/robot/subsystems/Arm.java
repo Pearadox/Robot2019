@@ -58,12 +58,14 @@ public class Arm extends Subsystem {
     }
 
     public double calculateHoldOutput(double angle){
+        angle += Robot.gyro.getPitch();
 		double amplitude = 0.025;
 		double equation = amplitude * Math.sin(angle*Math.PI/180);
 		return equation;
     }
 
     public void initDefaultCommand() {
-        setDefaultCommand(new ArmHold());
+        // setDefaultCommand(new ArmHold());
+        setDefaultCommand(new ArmGoLow());
     }
 }

@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.Robot;
 
 public class ArmManualUp extends Command {
@@ -17,11 +18,12 @@ public class ArmManualUp extends Command {
 
   @Override
   protected void initialize() {
+    // Scheduler.getInstance().add(new ArmSetAngle(48.5));
   }
 
   @Override
   protected void execute() {
-    Robot.arm.set(0.3 + Robot.arm.calculateHoldOutput(Robot.arm.getAngle()));
+    Robot.arm.set(0.1 + Robot.arm.calculateHoldOutput(Robot.arm.getAngle()));
   }
 
   @Override

@@ -23,6 +23,7 @@ public class ArmHold extends Command {
   @Override
   protected void execute() {
     Robot.arm.set(Robot.arm.calculateHoldOutput(Robot.arm.getAngle()));
+    
   }
 
   @Override

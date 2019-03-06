@@ -115,6 +115,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Ultrasonic", box.getUltrasonic());
     SmartDashboard.putNumber("ClimberL Enc", climber.getLeftRotations());
     SmartDashboard.putNumber("ClimberR Enc", climber.getRightRotations());
+    SmartDashboard.putNumber("Pitch", gyro.getPitch());
     
 
     // if(RobotMap.enableCameras) {

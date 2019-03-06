@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class IMU extends Subsystem {
 
 	AHRS navx;
-	double yawOffset = 0;
+	double yawOffset = 0, pitchOffset = 0;
 	
 	public IMU () {
 		navx = new AHRS(SPI.Port.kMXP);
@@ -22,6 +22,10 @@ public class IMU extends Subsystem {
 	public double getYaw() {
 		return navx.getAngle() - yawOffset;
 	}
+
+	public double getPitch() {
+		return navx.getRoll() - pitchOffset;
+	}
 	
 	public void zero() {
 		zero(0);
@@ -29,6 +33,7 @@ public class IMU extends Subsystem {
 
 	public void zero(double extraOffset) {
 		yawOffset += getYaw() - extraOffset;
+		pitchOffset += getPitch();
 	}
 
     public void initDefaultCommand() {

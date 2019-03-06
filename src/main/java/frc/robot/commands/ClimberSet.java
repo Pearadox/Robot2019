@@ -59,8 +59,10 @@ public class ClimberSet extends Command {
         }
 
       }
-      else Robot.climber.set(speed, speed);
-
+      else {
+        Robot.climber.set(speed, speed);
+        Robot.arm.set(0);
+      }
     }
 
     else

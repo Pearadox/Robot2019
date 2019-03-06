@@ -45,6 +45,9 @@ public class ArmSetAngle extends Command {
 
   @Override
   protected void execute() {
+    if((Robot.climber.getLeftRotations()+Robot.climber.getRightRotations())/2 > 30) {
+      targetAngle = 40;
+    }
     // double error = targetAngle - Robot.arm.getRawEncoder();
     double error = targetAngle - Robot.arm.getAngle();
     // double F = Robot.arm.calculateHoldOutput(Robot.arm.getAngle());
