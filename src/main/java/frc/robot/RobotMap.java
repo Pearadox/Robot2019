@@ -14,8 +14,6 @@ package frc.robot;
  * floating around.
  */
 public class RobotMap {
-
-  public static int limitSwitchArm = 3;
   
   public static boolean enableCameras = true;
   public static boolean gyroDrive = false;
@@ -35,6 +33,9 @@ public class RobotMap {
   public static int rightEncoderA = 9;
   public static int rightEncoderB = 8;
 
+  public static int ultrasonicTrig = 10;
+  public static int ultrasonicEcho = 11;
+  public static int limitSwitchArm = 3;
 
   public static int CANLeftSlave1Victor = 11;
   public static int CANLeftSlave2Victor = 10;

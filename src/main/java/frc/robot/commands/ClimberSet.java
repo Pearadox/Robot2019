@@ -52,8 +52,8 @@ public class ClimberSet extends Command {
         if(average >= 67) {
           Robot.climber.set(0, 0);
         } else {
-          double output = 0.4 * Math.sin(3.14*average/100-29.85) + .1;
-          output = Math.max(output, .2);
+          double output = 0.8 * Math.sin(3.14*average/100-29.85) + .1;
+          output = Math.max(output, .3);
           
           Robot.climber.set(output, output);
         }

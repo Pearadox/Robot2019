@@ -15,6 +15,6 @@ public class DriverLowerGroup extends CommandGroup {
     addSequential(new IntakeLower());
     addSequential(new Delay(1.5));
     addSequential(new ArmGoLow());
-    addSequential(new IntakeBoth(false));
+    addSequential(new IntakeBoth(true));
   }
 }

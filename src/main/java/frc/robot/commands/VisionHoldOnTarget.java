@@ -29,7 +29,7 @@ public class VisionHoldOnTarget extends Command {
   public static double ki = 0.0;
   public static double kd = 0.1;
 
-  double offset = -1;  // degrees, positive is to right, negative to left
+  public static double offset = 0;  // degrees, positive is to right, negative to left
 
   boolean reachedTarget;
 
@@ -95,7 +95,7 @@ public class VisionHoldOnTarget extends Command {
   @Override
   protected void end() {
     Robot.drivetrain.stop();
-    Robot.limelight.lightOff();
+    // Robot.limelight.lightOff();
   }
 
   // Called when another command which requires one or more of the same

@@ -22,7 +22,7 @@ public class Box extends Subsystem {
 
     public Box(){
         intakeMotor = new VictorSPX(RobotMap.CANBoxIntakeVictor);
-        ultrasonic = new Ultrasonic(0, 1);
+        ultrasonic = new Ultrasonic(RobotMap.ultrasonicTrig, RobotMap.ultrasonicEcho);
         ultrasonic.setAutomaticMode(true);
         intakeMotor.setInverted(true);
         intakeMotor.setNeutralMode(NeutralMode.Brake);

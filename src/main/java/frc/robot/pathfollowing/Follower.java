@@ -28,13 +28,11 @@ public class Follower{
 
     public Follower() {
         try {
-            readPath("M1toCMR");
             readPath("CMRtoLSR1of2");
             readPath("CMRtoLSR2of2");
             readPath("LSRtoCML1of2");
             readPath("LSRtoCML2of2");
             readPath("R1toCMR");
-            readPath("LSRtoCR1");
 
             readPath("distanceCalibration");
             readPath("turnCalibration");

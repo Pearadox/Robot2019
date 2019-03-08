@@ -31,7 +31,7 @@ public class AutoVisionDrive extends Command {
   double ki = VisionHoldOnTarget.ki;
   double kd = VisionHoldOnTarget.kd;
 
-  double offset = -1;  // degrees, positive is to right, negative to left
+  double offset = VisionHoldOnTarget.offset;  // degrees, positive is to right, negative to left
   double finishTime, speed, finishSpeed;
 
   boolean sawTarget;
@@ -77,12 +77,15 @@ public class AutoVisionDrive extends Command {
     else if(sawTarget && !Robot.limelight.targetExists()) lostTarget = true;
 
     if(lostTarget) {
+
       if(!timeoutSet) {
         timeoutSet = true;
         setTimeout(finishTime);
       }
       Robot.drivetrain.drive(finishSpeed, finishSpeed);
+
     } else if(sawTarget) {
+      
       double getX = Robot.limelight.getX() - offset;
 
       double changeInError = lastError - getX;

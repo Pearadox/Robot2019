@@ -18,12 +18,11 @@ public class ArmManualUp extends Command {
 
   @Override
   protected void initialize() {
-    // Scheduler.getInstance().add(new ArmSetAngle(48.5));
   }
 
   @Override
   protected void execute() {
-    Robot.arm.set(0.1 + Robot.arm.calculateHoldOutput(Robot.arm.getAngle()));
+    Robot.arm.set(0.2 + Robot.arm.calculateHoldOutput(Robot.arm.getAngle()));
   }
 
   @Override

@@ -53,7 +53,7 @@ public class OI {
 		btn4.whenPressed(new ArmGoRocket());
 		btn5.whenPressed(new ArmGoCargo());
 
-		// btn6.whenPressed(new );
+		btn6.whenPressed(new IntakeToggle());
 
 		btn7.whenPressed(new DriverLowerGroup());
 		btn8.whenPressed(new DriverRaiseGroup());
@@ -85,10 +85,10 @@ public class OI {
 		opbtn9.whileHeld(new IntakeLower());
 		opbtn10.whileHeld(new IntakeRaise());
 
-		// opbtn11.whileHeld(new OuttakeBoth());
-		// opbtn12.whileHeld(new IntakeBoth(false));
-		opbtn11.whenPressed(new ClimberSet(0.5,.3));  //expand
-		opbtn11.whenPressed(new ClimbGroup());
-		opbtn12.whileHeld(new ClimberSet(-0.2,0));
+		opbtn11.whileHeld(new OuttakeBoth());
+		opbtn12.whileHeld(new IntakeBoth(false));
+		// opbtn11.whenPressed(new ClimberSet(0.5,.3));  //expand
+		// opbtn11.whenPressed(new ClimbGroup());
+		// opbtn12.whileHeld(new ClimberSet(-0.5,0));
 	}
 }

@@ -28,7 +28,10 @@ public class IntakeBoth extends Command {
 
   @Override
   protected boolean isFinished() {
-    if(sensorStop) return Robot.box.hasBall();
+    if(sensorStop && Robot.box.hasBall()) {
+      (new DriverRaiseGroup()).start();
+      return true;
+    }
     else return false;
   }
 

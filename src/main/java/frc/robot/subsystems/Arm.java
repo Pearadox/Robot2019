@@ -39,8 +39,8 @@ public class Arm extends Subsystem {
     }
 
     public void set(double percentOutput){
-        if(getAngle() > 170 && percentOutput > 0) return;
-        if(getLimit() && percentOutput < 0) return;
+        // if(getAngle() > 170 && percentOutput > 0) return;
+        // if(getLimit() && percentOutput < 0) return;
         armMotor.set(percentOutput);
     }
 

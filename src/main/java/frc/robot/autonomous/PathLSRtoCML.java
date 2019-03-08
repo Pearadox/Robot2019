@@ -8,12 +8,7 @@
 package frc.robot.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.commands.DriveTimed;
-import frc.robot.commands.DriveForward;
-import frc.robot.commands.Follow;
-import frc.robot.commands.TurnAbsolute;
-import frc.robot.commands.TurnLeft;
-import frc.robot.commands.TurnRight;
+import frc.robot.commands.*;
 
 public class PathLSRtoCML extends CommandGroup {
   /**
@@ -21,6 +16,7 @@ public class PathLSRtoCML extends CommandGroup {
    */
   public PathLSRtoCML(boolean mirror) {
     addSequential(new Follow("LSRtoCML1of2", false, mirror));
-    addSequential(new Follow("LSRtoCML2of2", true, mirror));
+    // addSequential(new Follow("LSRtoCML2of2", true, mirror));
+    addSequential(new AutoVisionDrive(2, -0.55, -.2));
   }
 }

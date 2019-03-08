@@ -136,7 +136,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
-    limelight.lightOff();
+    limelight.lightOn();
   }
   
   @Override
@@ -146,7 +146,7 @@ public class Robot extends TimedRobot {
 
     // autonomousCommand = new AutonomousTest();
     autonomousCommand = new AutonomousRtoCMRtoCML(1, false);
-    autonomousCommand = new AutonomousRtoCMRtoRR(1, 2, false);
+    // autonomousCommand = new AutonomousRtoCMRtoRR(1, false);
     // autonomousCommand = new AutoVisionDrive(1.5, -0.4, -.25);
 
     if (autonomousCommand != null) {
