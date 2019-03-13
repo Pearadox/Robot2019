@@ -37,11 +37,13 @@ public class Box extends Subsystem {
     }
 
     public double getUltrasonic() {
-        return ultrasonic.getRangeInches();
+        double reading = ultrasonic.getRangeInches();
+        if(reading > 300) reading = 0;
+        return reading;
     }
 
     public boolean hasBall() {
-        return ultrasonic.getRangeInches() < 0.4;
+        return getUltrasonic() < 2;
     }
 
     public void initDefaultCommand() {

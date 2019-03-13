@@ -38,6 +38,7 @@ public class Follow extends Command {
   double lastError_r = 0;
   double lastError_l = 0;
   double startHeading = 0;
+  double stopPercentage = 1;
 
   public Follow(boolean followRotation, boolean reverse, boolean mirror) {
     requires(Robot.drivetrain);
@@ -45,6 +46,7 @@ public class Follow extends Command {
     this.followRotation = followRotation;
     this.reverse = reverse;
     this.mirror = mirror;
+    this.stopPercentage = 1;
 
     // check if follow ka, follow kp, follow kd exist and put them in if they don't
     if (!Preferences.getInstance().containsKey("MP ka")) Preferences.getInstance().putDouble("MP ka", ka);
@@ -66,8 +68,13 @@ public class Follow extends Command {
   }
 
   public Follow(String pathName, boolean reverse, boolean mirror) {
+    this(pathName, reverse, mirror, 1);
+  }
+
+  public Follow(String pathName, boolean reverse, boolean mirror, double stopPercentage) {
     this(false, reverse, mirror);
     this.pathName = pathName;
+    this.stopPercentage = stopPercentage;
 
     nonexistentPath = !Robot.follower.paths.keySet().contains(pathName);
 
@@ -85,6 +92,7 @@ public class Follow extends Command {
     startTime = Timer.getFPGATimestamp();
     
     startHeading = Math.toRadians(Robot.gyro.getYaw());
+    if(stopPercentage <= 0) stopPercentage = 1;
 
     Robot.prefs = Preferences.getInstance();
 
@@ -191,7 +199,7 @@ public class Follow extends Command {
   protected boolean isFinished() {
     if(nonexistentPath) return true;
     double runTime = Timer.getFPGATimestamp() - startTime;
-    double totalRunTime = pathL.size() * Robot.follower.dt;
+    double totalRunTime = pathL.size() * Robot.follower.dt * stopPercentage;
     return runTime >= totalRunTime;
   }
 

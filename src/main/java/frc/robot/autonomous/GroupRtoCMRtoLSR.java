@@ -16,7 +16,7 @@ public class GroupRtoCMRtoLSR extends CommandGroup {
    */
   public GroupRtoCMRtoLSR(int startingLevel, boolean mirror) {
     addSequential(new MothClose());
-    addSequential(new Follow("R"+startingLevel+"toCMR", true, mirror));
+    addSequential(new Follow("R"+startingLevel+"toCMR", true, mirror, .5));
     addSequential(new AutoVisionDrive(1.5, -0.55, -.25));
     addSequential(new MothOpen());
     addSequential(new CMRtoLSR(mirror));

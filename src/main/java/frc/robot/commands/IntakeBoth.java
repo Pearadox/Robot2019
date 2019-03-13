@@ -8,6 +8,7 @@ import frc.robot.Robot;
 public class IntakeBoth extends Command {
 
   boolean sensorStop;
+  boolean stopTimerSet;
 
   public IntakeBoth(boolean sensorStop) {
     requires(Robot.box);
@@ -18,6 +19,7 @@ public class IntakeBoth extends Command {
 
   @Override
   protected void initialize() {
+    stopTimerSet = false;
   }
 
   @Override
@@ -28,9 +30,14 @@ public class IntakeBoth extends Command {
 
   @Override
   protected boolean isFinished() {
-    if(sensorStop && Robot.box.hasBall()) {
+    if(stopTimerSet && isTimedOut()) {
       (new DriverRaiseGroup()).start();
       return true;
+    }
+    else if(sensorStop && Robot.box.hasBall() && !stopTimerSet) {
+      setTimeout(0.5);
+      stopTimerSet = true;
+      return false;
     }
     else return false;
   }

@@ -67,10 +67,6 @@ public class Drivetrain extends Subsystem {
 		rightSlave1.setInverted(true);
 		rightSlave2.setInverted(true);
 		rightMaster.setInverted(true);
-		leftSlave1.follow(leftMaster);
-		leftSlave2.follow(leftMaster);
-		rightSlave1.follow(rightMaster);
-		rightSlave2.follow(rightMaster);
 		leftEncoder.setReverseDirection(true);
 
 		rightMaster.setNeutralMode(NeutralMode.Brake);
@@ -92,21 +88,39 @@ public class Drivetrain extends Subsystem {
 	}
 	
 	public void setLeft(double leftSpeed) {
-		leftMaster.set(ControlMode.PercentOutput, leftSpeed);
-		/*
-		left1.set(leftSpeed);
-		left2.set(leftSpeed);
-		left3.set(leftSpeed);
-		*/
+		setLeftMaster(leftSpeed);
+		setLeftSlave1(leftSpeed);
+		setLeftSlave2(leftSpeed);
 	}
 	
 	public void setRight(double rightSpeed) {
-		 rightMaster.set(ControlMode.PercentOutput, rightSpeed);
-		 /*
-		right1.set(-rightSpeed);
-		right2.set(-rightSpeed);
-		right3.set(-rightSpeed);
-		*/
+		setRightMaster(rightSpeed);
+		setRightSlave1(rightSpeed);
+		setRightSlave2(rightSpeed);
+	}
+
+	public void setRightMaster(double speed) {
+		rightMaster.set(ControlMode.PercentOutput, speed);
+	}
+
+	public void setRightSlave1(double speed) {
+		rightSlave1.set(ControlMode.PercentOutput, speed);
+	}
+
+	public void setRightSlave2(double speed) {
+		rightSlave2.set(ControlMode.PercentOutput, speed);
+	}
+
+	public void setLeftMaster(double speed) {
+		leftMaster.set(ControlMode.PercentOutput, speed);
+	}
+
+	public void setLeftSlave1(double speed) {
+		leftSlave1.set(ControlMode.PercentOutput, speed);
+	}
+
+	public void setLeftSlave2(double speed) {
+		leftSlave2.set(ControlMode.PercentOutput, speed);
 	}
 
 	public void stop() {

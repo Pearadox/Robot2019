@@ -92,6 +92,13 @@ public class Robot extends TimedRobot {
     if(limelight != null) limelight.lightOff();
     if(intake != null) intake.raise();
     if(moth != null) moth.open();
+
+    SmartDashboard.putData("L1Test", new TestIndividualMotor(1, false, 3));
+    SmartDashboard.putData("L2Test", new TestIndividualMotor(2, false, 3));
+    SmartDashboard.putData("L3Test", new TestIndividualMotor(3, false, 3));
+    SmartDashboard.putData("R1Test", new TestIndividualMotor(1, true, 3));
+    SmartDashboard.putData("R2Test", new TestIndividualMotor(2, true, 3));
+    SmartDashboard.putData("R3Test", new TestIndividualMotor(3, true, 3));
   }
 
   
@@ -99,23 +106,16 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     drivetrain.updateTrajectory();
-    SmartDashboard.putNumber("Left Feet Encoder", drivetrain.getLeftEncoderFeet());
-    SmartDashboard.putNumber("Right Feet Encoder", drivetrain.getRightEncoderFeet());
     SmartDashboard.putNumber("Left Encoder", drivetrain.getLeftEncoder());
     SmartDashboard.putNumber("Right Encoder", drivetrain.getRightEncoder());
     SmartDashboard.putNumber("Arm Encoder", arm.getAngle());
-    SmartDashboard.putNumber("Arm Raw Encoder", arm.getRawEncoder());
     SmartDashboard.putBoolean("Limit Switch", arm.getLimit());
     SmartDashboard.putNumber("Heading", gyro.getYaw());
-    SmartDashboard.putNumber("Drivetrain Heading", drivetrain.getHeading());
     SmartDashboard.putNumber("tx", limelight.getX());
-    SmartDashboard.putNumber("ty", limelight.getY());
     SmartDashboard.putBoolean("tv", limelight.targetExists());
-    SmartDashboard.putNumber("Limelight Distance", limelight.getDistance());
     SmartDashboard.putNumber("Ultrasonic", box.getUltrasonic());
     SmartDashboard.putNumber("ClimberL Enc", climber.getLeftRotations());
     SmartDashboard.putNumber("ClimberR Enc", climber.getRightRotations());
-    SmartDashboard.putNumber("Pitch", gyro.getPitch());
     
 
     // if(RobotMap.enableCameras) {
@@ -131,6 +131,8 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     if(arm != null) arm.set(0);
     if(intake != null) intake.raise();
+
+    limelight.lightOff();
   }
 
   @Override
@@ -144,8 +146,31 @@ public class Robot extends TimedRobot {
 
     gyro.zero(180);  // facing backwards
 
+    int switch1 = 1;  //     Side: L, M, R
+    int switch2 = 1;  //      Pos: L1, -, L2
+    int switch3 = 1;  //  Hatch 1: CargoMid, -, Rocket
+    int switch4 = 1;  //  Hatch 2: CargoMid, -, Rocket
+    if(oi.autoBox.getRawButton(1)) switch1 = 1;
+    else if(oi.autoBox.getRawButton(2)) switch1 = 2;
+    else if(oi.autoBox.getRawButton(3)) switch1 = 3;
+    if(oi.autoBox.getRawButton(4)) switch2 = 1;
+    else if(oi.autoBox.getRawButton(5)) switch2 = 2;
+    else if(oi.autoBox.getRawButton(6)) switch2 = 3;
+    if(oi.autoBox.getRawButton(7)) switch3 = 1;
+    else if(oi.autoBox.getRawButton(8)) switch3 = 2;
+    else if(oi.autoBox.getRawButton(9)) switch3 = 3;
+    if(oi.autoBox.getRawButton(10)) switch4 = 1;
+    else if(oi.autoBox.getRawButton(11)) switch4 = 2;
+    else if(oi.autoBox.getRawButton(12)) switch4 = 3;
+
+    if(switch1 == 3 && switch2 == 1 && switch3 == 1 && switch4 == 1)
+      autonomousCommand = new AutonomousRtoCMRtoCML(1, false);
+    else if(switch1 == 3 && switch2 == 1 && switch3 == 1 && switch4 == 2)
+      autonomousCommand = new AutonomousRtoCMRtoRR(1, false);
+    else autonomousCommand = new AutonomousDefault();
+
     // autonomousCommand = new AutonomousTest();
-    autonomousCommand = new AutonomousRtoCMRtoCML(1, false);
+    // autonomousCommand = new AutonomousRtoCMRtoCML(1, false);
     // autonomousCommand = new AutonomousRtoCMRtoRR(1, false);
     // autonomousCommand = new AutoVisionDrive(1.5, -0.4, -.25);
 

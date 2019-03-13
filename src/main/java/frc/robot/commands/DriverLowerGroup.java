@@ -11,10 +11,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class DriverLowerGroup extends CommandGroup {
   
-  public DriverLowerGroup() {
-    addSequential(new IntakeLower());
-    addSequential(new Delay(1.5));
+  public DriverLowerGroup(boolean sensorStop) {
+    addSequential(new IntakeLower(1.5));
     addSequential(new ArmGoLow());
-    addSequential(new IntakeBoth(true));
+    addSequential(new IntakeBoth(sensorStop));
   }
 }
