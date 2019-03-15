@@ -22,7 +22,7 @@ public class ArmZeroReset extends Command {
 
   @Override
   protected void execute() {
-    Robot.arm.setRawSpeed(-.1);
+    Robot.arm.setRawSpeed(-.07);
   }
 
   @Override
@@ -38,6 +38,7 @@ public class ArmZeroReset extends Command {
   @Override
   protected void end() {
     Robot.arm.set(0);
+    Robot.arm.zero();
   }
 
   @Override

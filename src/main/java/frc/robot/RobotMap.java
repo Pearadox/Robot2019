@@ -8,10 +8,18 @@
 package frc.robot;
 
 /**
- * The RobotMap is a mapping from the ports sensors and actuators are wired into
- * to a variable name. This provides flexibility changing wiring, makes checking
- * the wiring easier and significantly reduces the number of magic numbers
- * floating around.
+ * Navx Passthrough: https://pdocs.kauailabs.com/navx-mxp/installation/io-expansion/
+ * Navx Port : RoboRio Channel Address
+ * 0 : 10
+ * 1 : 11
+ * 2 : 12
+ * 3 : 13
+ * 4 : 18
+ * 5 : 19
+ * 6 : 20
+ * 7 : 21
+ * 8 : 22
+ * 9 : 23
  */
 public class RobotMap {
   
@@ -24,14 +32,10 @@ public class RobotMap {
 
   public static double feetPerTick = Math.PI * wheelDiameter / ticksPerRev;
 
-  // public static int leftEncoderA = 9;
-  // public static int leftEncoderB = 8;
-  // public static int rightEncoderA = 7;
-  // public static int rightEncoderB = 6;
-  public static int leftEncoderA = 7;
-  public static int leftEncoderB = 6;
-  public static int rightEncoderA = 9;
-  public static int rightEncoderB = 8;
+  public static int leftEncoderA = 6;
+  public static int leftEncoderB = 7;
+  public static int rightEncoderA = 8;
+  public static int rightEncoderB = 9;
 
   public static int ultrasonicTrig = 10;
   public static int ultrasonicEcho = 11;
@@ -52,8 +56,8 @@ public class RobotMap {
   public static int CANClimberLeftSparkMax = 40;
   public static int CANClimberRightSparkMax = 41;
 
-  public static int IntakeSolenoid1 = 2;
-  public static int IntakeSolenoid2 = 1;
-  public static int MothDoubleSolenoidForward = 0;
-  public static int MothDoubleSolenoidReverse = 3;
+  public static int IntakeSolenoid1 = 0;
+  public static int IntakeSolenoid2 = 4;
+  public static int MothDoubleSolenoidForward = 3;
+  public static int MothDoubleSolenoidReverse = 2;
 }

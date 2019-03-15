@@ -70,8 +70,7 @@ public class OI {
 		===== OPERATOR CONTROLS ======
 		==============================*/
 
-		// opbtn1.whenPressed(new MothToggle());
-		opbtn2.whenPressed(new ArmZeroReset());
+		opbtn2.whileHeld(new ArmZeroReset());
 
 		opbtn3.whenPressed(new ArmGoLow());
 		opbtn4.whenPressed(new ArmGoCargo());
@@ -83,13 +82,13 @@ public class OI {
 		opbtn7.whileHeld(new ArmManualDown());
 		opbtn8.whileHeld(new ArmManualUp());
 
-		opbtn9.whileHeld(new IntakeLower());
-		opbtn10.whileHeld(new IntakeRaise());
+		opbtn9.whileHeld(new OuttakeBoth());
+		opbtn10.whileHeld(new IntakeToggle());
 
 		// opbtn11.whileHeld(new OuttakeBoth());
 		// opbtn12.whileHeld(new IntakeBoth(false));
 		opbtn11.whenPressed(new ClimberSet(0.5,.3));  //expand
-		// opbtn11.whenPressed(new ClimbGroup());
+		opbtn11.whenPressed(new ClimbGroup());
 		opbtn12.whileHeld(new ClimberSet(-0.5,0));
 	}
 }

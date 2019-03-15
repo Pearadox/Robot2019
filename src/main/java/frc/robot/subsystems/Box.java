@@ -33,7 +33,7 @@ public class Box extends Subsystem {
     }
 
     public void setHold() {
-        set(0.05);
+        set(0.1);
     }
 
     public double getUltrasonic() {
@@ -47,7 +47,7 @@ public class Box extends Subsystem {
     }
 
     public void initDefaultCommand() {
-        setDefaultCommand(new BoxStop());
+        setDefaultCommand(new BoxIntakeHold());
     }
 
 }

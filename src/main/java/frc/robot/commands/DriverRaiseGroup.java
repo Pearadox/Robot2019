@@ -9,8 +9,8 @@ public class DriverRaiseGroup extends CommandGroup {
     
     addSequential(new IntakeStop());
     addSequential(new BoxStop());
-
-    addSequential(new IntakeLower(1.5));
+    
+    addSequential(new IntakeLower(2));
     addSequential(new ArmGoCargo());
     addSequential(new IntakeRaise());
   }

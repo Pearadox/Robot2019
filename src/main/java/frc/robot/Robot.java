@@ -169,6 +169,7 @@ public class Robot extends TimedRobot {
       autonomousCommand = new AutonomousRtoCMRtoRR(1, false);
     else autonomousCommand = new AutonomousDefault();
 
+    autonomousCommand = new AutonomousDefault();
     // autonomousCommand = new AutonomousTest();
     // autonomousCommand = new AutonomousRtoCMRtoCML(1, false);
     // autonomousCommand = new AutonomousRtoCMRtoRR(1, false);

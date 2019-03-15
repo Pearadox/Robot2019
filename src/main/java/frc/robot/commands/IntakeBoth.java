@@ -24,14 +24,14 @@ public class IntakeBoth extends Command {
 
   @Override
   protected void execute() {
-    Robot.box.set(.4);
-    Robot.intake.set(.3);
+    Robot.box.set(.5);
+    Robot.intake.set(.4);
   }
 
   @Override
   protected boolean isFinished() {
     if(stopTimerSet && isTimedOut()) {
-      (new DriverRaiseGroup()).start();
+      // (new DriverRaiseGroup()).start();
       return true;
     }
     else if(sensorStop && Robot.box.hasBall() && !stopTimerSet) {
