@@ -49,18 +49,20 @@ public class ClimberSet extends Command {
 
       if(speed > 0) {
 
-        // if(average >= 67) {
-          // Robot.climber.set(0, 0);
-        // } else {
+        if(average > 70) {
+          Robot.climber.set(0, 0);
+        }
+        else {
           double output = 1.0 * Math.sin(3.14*average/100-29.85) + .1;
-          output = Math.max(output, .5);
+          output = Math.max(output, .3);
           
           Robot.climber.set(output, output);
-        // }
-
+        }
       }
       else {
-        Robot.climber.set(speed, speed);
+        double output = -0.5 * Math.sin(average/25.-100.3);
+        output = Math.min(output, -0.3);
+        Robot.climber.set(output, output);
         Robot.arm.set(0);
       }
     }

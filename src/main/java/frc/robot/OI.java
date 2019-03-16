@@ -83,7 +83,7 @@ public class OI {
 		opbtn8.whileHeld(new ArmManualUp());
 
 		opbtn9.whileHeld(new OuttakeBoth());
-		opbtn10.whileHeld(new IntakeToggle());
+		opbtn10.whenPressed(new IntakeToggle());
 
 		// opbtn11.whileHeld(new OuttakeBoth());
 		// opbtn12.whileHeld(new IntakeBoth(false));

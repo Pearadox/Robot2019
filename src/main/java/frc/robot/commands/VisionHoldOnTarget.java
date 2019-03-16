@@ -29,7 +29,7 @@ public class VisionHoldOnTarget extends Command {
   public static double ki = 0.0;
   public static double kd = 0.1;
 
-  public static double offset = 0;  // degrees, positive is to right, negative to left
+  public static double offset = .8;  // degrees, positive is to right, negative to left
 
   boolean reachedTarget;
 
