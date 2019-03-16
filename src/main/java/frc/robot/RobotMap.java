@@ -34,8 +34,8 @@ public class RobotMap {
 
   public static int leftEncoderA = 6;
   public static int leftEncoderB = 7;
-  public static int rightEncoderA = 8;
-  public static int rightEncoderB = 9;
+  public static int rightEncoderA = 9;
+  public static int rightEncoderB = 8;
 
   public static int ultrasonicTrig = 10;
   public static int ultrasonicEcho = 11;
