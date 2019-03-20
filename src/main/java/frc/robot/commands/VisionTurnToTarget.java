@@ -35,15 +35,15 @@ public class VisionTurnToTarget extends Command {
 
   public VisionTurnToTarget() {
     requires(Robot.drivetrain);
-    if (!Preferences.getInstance().containsKey("Vision kp")){
-      Preferences.getInstance().putDouble("Vision kp", kp);
-    }
-    if (!Preferences.getInstance().containsKey("Vision ki")){
-      Preferences.getInstance().putDouble("Vision ki", ki);
-    }
-    if (!Preferences.getInstance().containsKey("Vision kd")){
-      Preferences.getInstance().putDouble("Vision kd", kd);
-    }
+    // if (!Preferences.getInstance().containsKey("Vision kp")){
+    //   Preferences.getInstance().putDouble("Vision kp", kp);
+    // }
+    // if (!Preferences.getInstance().containsKey("Vision ki")){
+    //   Preferences.getInstance().putDouble("Vision ki", ki);
+    // }
+    // if (!Preferences.getInstance().containsKey("Vision kd")){
+    //   Preferences.getInstance().putDouble("Vision kd", kd);
+    // }
   }
 
   @Override

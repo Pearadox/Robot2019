@@ -181,7 +181,7 @@ public class Follow extends Command {
       Robot.drivetrain.drive(leftOutput, rightOutput);
 
       // SmartDashboard.putNumber("V", vel_targetL);
-      SmartDashboard.putNumber("A"  , ka*accel_targetL);
+      // SmartDashboard.putNumber("A"  , ka*accel_targetL);
       SmartDashboard.putNumber("P",  kp*pos_error_l);
       // SmartDashboard.putNumber("D", kd * ((pos_error_l - lastError_l) / 
       // (currentTime - lastTime) - vel_targetL));

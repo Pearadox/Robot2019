@@ -38,9 +38,9 @@ public class VisionHoldOnTarget extends Command {
     if (!Preferences.getInstance().containsKey("VisionHold kp")){
       Preferences.getInstance().putDouble("VisionHold kp", kp);
     }
-    if (!Preferences.getInstance().containsKey("VisionHold ki")){
-      Preferences.getInstance().putDouble("VisionHold ki", ki);
-    }
+    // if (!Preferences.getInstance().containsKey("VisionHold ki")){
+    //   Preferences.getInstance().putDouble("VisionHold ki", ki);
+    // }
     if (!Preferences.getInstance().containsKey("VisionHold kd")){
       Preferences.getInstance().putDouble("VisionHold kd", kd);
     }

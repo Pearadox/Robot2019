@@ -39,10 +39,14 @@ public class Follower{
             readPath("R2toCMR");
             readPath("R1toCMR");
             readPath("R1toRR1");
+            readPath("L1toCML");
+            readPath("CMLtoLSL1of2");
+            readPath("CMLtoLSL2of2");
             readPath("R1toRR21of2");
             readPath("R1toRR22of2");
             readPath("RR2toLSR1of2");
             readPath("RR2toLSR2of2");
+            readPath("LSRBackout");
 
             readPath("distanceCalibration");
             readPath("turnCalibration");

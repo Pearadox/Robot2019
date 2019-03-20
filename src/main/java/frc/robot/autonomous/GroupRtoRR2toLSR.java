@@ -22,7 +22,7 @@ public class GroupRtoRR2toLSR extends CommandGroup {
     addSequential(new MothOpen());
     
     addSequential(new PathRRtoLSR(2, mirror));
-    // addSequential(new AutoVisionDrive(1.5, -0.4, -.25));
-    // addSequential(new MothClose());
+    addSequential(new AutoVisionDrive(2, -0.3, -.2));
+    addSequential(new MothClose());
   }
 }

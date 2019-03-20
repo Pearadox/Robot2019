@@ -29,12 +29,12 @@ public class PPFollow extends Command {
     requires(Robot.drivetrain);
     trajectory = Robot.pp.generatePath(x, y, headingCorrection);
 
-    if (!Preferences.getInstance().containsKey("PP ka")){
-      Preferences.getInstance().putDouble("PP ka", ka);
-    }
-    if (!Preferences.getInstance().containsKey("PP kp")){
-      Preferences.getInstance().putDouble("PP kp", kp);
-    }
+    // if (!Preferences.getInstance().containsKey("PP ka")){
+    //   Preferences.getInstance().putDouble("PP ka", ka);
+    // }
+    // if (!Preferences.getInstance().containsKey("PP kp")){
+    //   Preferences.getInstance().putDouble("PP kp", kp);
+    // }
   }
 
   @Override

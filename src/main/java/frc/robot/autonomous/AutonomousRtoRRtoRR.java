@@ -18,6 +18,7 @@ public class AutonomousRtoRRtoRR extends CommandGroup {
 
     addSequential(new Delay(delay));
     addSequential(new GroupRtoRR2toLSR(startingLevel, mirror));
-    // addSequential(new GroupLSRtoRR2(mirror));
+    addSequential(new Follow("LSRBackout", false, mirror));
+    // addSequential(new GroupLSRtoRR1(mirror));
   }
 }

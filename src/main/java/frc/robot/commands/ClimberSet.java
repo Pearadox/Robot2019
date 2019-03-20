@@ -22,12 +22,12 @@ public class ClimberSet extends Command {
 
     this.speed = speed;
 
-    if (!Preferences.getInstance().containsKey("Climb kp")) Preferences.getInstance().putDouble("Climb kp", kp);
+    // if (!Preferences.getInstance().containsKey("Climb kp")) Preferences.getInstance().putDouble("Climb kp", kp);
   }
 
   @Override
   protected void initialize() {
-    kp = Robot.prefs.getDouble("Climb kp", kp);
+    // kp = Robot.prefs.getDouble("Climb kp", kp);
   }
 
   @Override

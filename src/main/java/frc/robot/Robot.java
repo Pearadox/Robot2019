@@ -55,6 +55,7 @@ public class Robot extends TimedRobot {
   CvSink cvsink2 = new CvSink("cam2cv");
   boolean prevReverse = false;
 
+  SendableChooser autonomousChooser;
   Command autonomousCommand;
 
   @Override
@@ -102,11 +103,11 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Left Encoder", drivetrain.getLeftEncoder());
     SmartDashboard.putNumber("Right Encoder", drivetrain.getRightEncoder());
     SmartDashboard.putNumber("Arm Encoder", arm.getAngle());
-    SmartDashboard.putBoolean("Limit Switch", arm.getLimit());
+    // SmartDashboard.putBoolean("Limit Switch", arm.getLimit());
     SmartDashboard.putNumber("Heading", gyro.getYaw());
     SmartDashboard.putNumber("tx", limelight.getX());
     SmartDashboard.putBoolean("tv", limelight.targetExists());
-    SmartDashboard.putNumber("Ultrasonic", box.getUltrasonic());
+    // SmartDashboard.putNumber("Ultrasonic", box.getUltrasonic());
     SmartDashboard.putNumber("ClimberL Enc", climber.getLeftRotations());
     SmartDashboard.putNumber("ClimberR Enc", climber.getRightRotations());
 
@@ -157,10 +158,11 @@ public class Robot extends TimedRobot {
     //   autonomousCommand = new AutonomousRtoCMRtoRR(1, false);
     // else autonomousCommand = new AutonomousDefault();
 
-    autonomousCommand = new AutonomousDefault(delay);
+    // autonomousCommand = new AutonomousDefault(delay);
     // autonomousCommand = new AutonomousTest();
     autonomousCommand = new AutonomousRtoCMRtoCML(1, false, delay);
-    autonomousCommand = new AutonomousRtoRRtoRR(1, false, delay);
+    // autonomousCommand = new AutonomousLtoCML(1, false, delay);
+    // autonomousCommand = new AutonomousRtoRRtoRR(1, false, delay);
 
     if (autonomousCommand != null) {
       autonomousCommand.start();
@@ -170,6 +172,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+    limelight.lightOn();
     if(oi.joystick.getRawButton(2)) stopAutonomous();
   }
 
@@ -189,6 +192,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+
+    limelight.lightOn();
 
     boolean reverseBtn = oi.joystick.getRawButton(2);
     if(reverseBtn && !prevReverse) {
