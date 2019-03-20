@@ -17,6 +17,7 @@ import edu.wpi.cscore.VideoSink;
 import edu.wpi.cscore.VideoMode.PixelFormat;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.*;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.Intake;
@@ -78,12 +79,6 @@ public class Robot extends TimedRobot {
     if(RobotMap.enableCameras) {
 	    camera1 = edu.wpi.first.cameraserver.CameraServer.getInstance().startAutomaticCapture(1);
       camera2 = edu.wpi.first.cameraserver.CameraServer.getInstance().startAutomaticCapture(0);
-      // server = edu.wpi.first.cameraserver.CameraServer.getInstance().getServer();      
-      // cvsink1.setSource(camera1);
-      // cvsink1.setEnabled(true);
-      
-      // cvsink2.setSource(camera2);
-      // cvsink2.setEnabled(true);
     }
 
     if(arm != null) arm.zero();
@@ -93,16 +88,14 @@ public class Robot extends TimedRobot {
     if(intake != null) intake.raise();
     if(moth != null) moth.open();
 
-    SmartDashboard.putData("L1Test", new TestIndividualMotor(1, false, 3));
-    SmartDashboard.putData("L2Test", new TestIndividualMotor(2, false, 3));
-    SmartDashboard.putData("L3Test", new TestIndividualMotor(3, false, 3));
-    SmartDashboard.putData("R1Test", new TestIndividualMotor(1, true, 3));
-    SmartDashboard.putData("R2Test", new TestIndividualMotor(2, true, 3));
-    SmartDashboard.putData("R3Test", new TestIndividualMotor(3, true, 3));
+    SmartDashboard.putData("Test Motors", new TestMotors(1));
+    SmartDashboard.putData("Gyro", gyro.navx);
+    Preferences.getInstance().putDouble("AutonomousDelay", 0);
   }
 
   
   double start = 0;
+  int brownoutCounter = 0;
   @Override
   public void robotPeriodic() {
     drivetrain.updateTrajectory();
@@ -116,15 +109,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Ultrasonic", box.getUltrasonic());
     SmartDashboard.putNumber("ClimberL Enc", climber.getLeftRotations());
     SmartDashboard.putNumber("ClimberR Enc", climber.getRightRotations());
-    
 
-    // if(RobotMap.enableCameras) {
-    //   if(!reverseDrivetrain) {
-    //     server.setSource(camera2);
-    //   } else {
-    //     server.setSource(camera1);
-    //   }
-    // }
+    if(DriverStation.getInstance().isBrownedOut()) brownoutCounter++;
+    SmartDashboard.putNumber("Brownouts", brownoutCounter);
   }
   
   @Override
@@ -138,42 +125,42 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
-    limelight.lightOn();
   }
   
   @Override
   public void autonomousInit() {
 
+    double delay = Preferences.getInstance().getDouble("AutonomousDelay", 0);
+
     gyro.zero(180);  // facing backwards
 
-    int switch1 = 1;  //     Side: L, M, R
-    int switch2 = 1;  //      Pos: L1, -, L2
-    int switch3 = 1;  //  Hatch 1: CargoMid, -, Rocket
-    int switch4 = 1;  //  Hatch 2: CargoMid, -, Rocket
-    if(oi.autoBox.getRawButton(1)) switch1 = 1;
-    else if(oi.autoBox.getRawButton(2)) switch1 = 2;
-    else if(oi.autoBox.getRawButton(3)) switch1 = 3;
-    if(oi.autoBox.getRawButton(4)) switch2 = 1;
-    else if(oi.autoBox.getRawButton(5)) switch2 = 2;
-    else if(oi.autoBox.getRawButton(6)) switch2 = 3;
-    if(oi.autoBox.getRawButton(7)) switch3 = 1;
-    else if(oi.autoBox.getRawButton(8)) switch3 = 2;
-    else if(oi.autoBox.getRawButton(9)) switch3 = 3;
-    if(oi.autoBox.getRawButton(10)) switch4 = 1;
-    else if(oi.autoBox.getRawButton(11)) switch4 = 2;
-    else if(oi.autoBox.getRawButton(12)) switch4 = 3;
+    // int switch1 = 1;  //     Side: L, M, R
+    // int switch2 = 1;  //      Pos: L1, -, L2
+    // int switch3 = 1;  //  Hatch 1: CargoMid, -, Rocket
+    // int switch4 = 1;  //  Hatch 2: CargoMid, -, Rocket
+    // if(oi.autoBox.getRawButton(1)) switch1 = 1;
+    // else if(oi.autoBox.getRawButton(2)) switch1 = 2;
+    // else if(oi.autoBox.getRawButton(3)) switch1 = 3;
+    // if(oi.autoBox.getRawButton(4)) switch2 = 1;
+    // else if(oi.autoBox.getRawButton(5)) switch2 = 2;
+    // else if(oi.autoBox.getRawButton(6)) switch2 = 3;
+    // if(oi.autoBox.getRawButton(7)) switch3 = 1;
+    // else if(oi.autoBox.getRawButton(8)) switch3 = 2;
+    // else if(oi.autoBox.getRawButton(9)) switch3 = 3;
+    // if(oi.autoBox.getRawButton(10)) switch4 = 1;
+    // else if(oi.autoBox.getRawButton(11)) switch4 = 2;
+    // else if(oi.autoBox.getRawButton(12)) switch4 = 3;
 
-    if(switch1 == 3 && switch2 == 1 && switch3 == 1 && switch4 == 1)
-      autonomousCommand = new AutonomousRtoCMRtoCML(1, false);
-    else if(switch1 == 3 && switch2 == 1 && switch3 == 1 && switch4 == 2)
-      autonomousCommand = new AutonomousRtoCMRtoRR(1, false);
-    else autonomousCommand = new AutonomousDefault();
+    // if(switch1 == 3 && switch2 == 1 && switch3 == 1 && switch4 == 1)
+    //   autonomousCommand = new AutonomousRtoCMRtoCML(1, false);
+    // else if(switch1 == 3 && switch2 == 1 && switch3 == 1 && switch4 == 2)
+    //   autonomousCommand = new AutonomousRtoCMRtoRR(1, false);
+    // else autonomousCommand = new AutonomousDefault();
 
-    autonomousCommand = new AutonomousDefault();
+    autonomousCommand = new AutonomousDefault(delay);
     // autonomousCommand = new AutonomousTest();
-    // autonomousCommand = new AutonomousRtoCMRtoCML(1, false);
-    // autonomousCommand = new AutonomousRtoCMRtoRR(1, false);
-    // autonomousCommand = new AutoVisionDrive(1.5, -0.4, -.25);
+    autonomousCommand = new AutonomousRtoCMRtoCML(1, false, delay);
+    autonomousCommand = new AutonomousRtoRRtoRR(1, false, delay);
 
     if (autonomousCommand != null) {
       autonomousCommand.start();
@@ -183,6 +170,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+    if(oi.joystick.getRawButton(2)) stopAutonomous();
   }
 
   public void stopAutonomous() {
@@ -207,9 +195,6 @@ public class Robot extends TimedRobot {
       // reverseDrivetrain = !reverseDrivetrain;
     }
     prevReverse = reverseBtn;
-
-
-    // if(arm.getLimit()) arm.zero();
   }
 
   @Override

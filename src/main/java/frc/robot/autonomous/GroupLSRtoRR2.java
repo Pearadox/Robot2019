@@ -15,6 +15,8 @@ public class GroupLSRtoRR2 extends CommandGroup {
    * Add your docs here.
    */
   public GroupLSRtoRR2(boolean mirror) {
-    addSequential(new PathLSRtoRR(2, mirror));
+    addSequential(new PathLSRtoRR(2, mirror, .7));
+    addSequential(new AutoVisionDrive(2, -0.55, -.2));
+    addSequential(new MothClose());
   }
 }

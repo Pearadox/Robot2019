@@ -16,12 +16,12 @@ import frc.robot.pathfollowing.*;
 public class Follow extends Command {
 
   double ka = 0.035; 
-  double kp = 0.01;
+  double kp = 0.007;
   double kd = 0.0;
   double kh = .7;
   double ka_reverse = 0.035;
   double kp_reverse = 0.1; 
-  double kh_reverse = 0.8;
+  double kh_reverse = 0.95;
   double ka_rotate = 0.03;
   double kp_rotate = 0.035;
   double kh_rotate = 0.05;

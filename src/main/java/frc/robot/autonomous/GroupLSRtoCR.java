@@ -15,6 +15,8 @@ public class GroupLSRtoCR extends CommandGroup {
    * Add your docs here.
    */
   public GroupLSRtoCR(int cargoTarget, boolean mirror) {
-    addSequential(new PathLSRtoCR(cargoTarget, mirror));
+    addSequential(new PathLSRtoCR(cargoTarget, mirror, 0));
+    addSequential(new AutoVisionDrive(2, -0.55, -.2));
+    addSequential(new MothClose());
   }
 }

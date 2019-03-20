@@ -14,8 +14,10 @@ public class AutonomousRtoRRtoRR extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public AutonomousRtoRRtoRR(int startingLevel, boolean mirror) {
-    addSequential(new GroupRtoRR1toLSR(startingLevel, mirror));
-    addSequential(new GroupLSRtoRR2(mirror));
+  public AutonomousRtoRRtoRR(int startingLevel, boolean mirror, double delay) {
+
+    addSequential(new Delay(delay));
+    addSequential(new GroupRtoRR2toLSR(startingLevel, mirror));
+    // addSequential(new GroupLSRtoRR2(mirror));
   }
 }

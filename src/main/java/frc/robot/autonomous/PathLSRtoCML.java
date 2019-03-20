@@ -14,9 +14,8 @@ public class PathLSRtoCML extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public PathLSRtoCML(boolean mirror) {
+  public PathLSRtoCML(boolean mirror, double cutoffPercentage) {
     addSequential(new Follow("LSRtoCML1of2", false, mirror));
-    // addSequential(new Follow("LSRtoCML2of2", true, mirror));
-    addSequential(new AutoVisionDrive(2, -0.55, -.2));
+    // addSequential(new Follow("LSRtoCML2of2", true, mirror, cutoffPercentage));
   }
 }

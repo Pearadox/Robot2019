@@ -7,6 +7,22 @@ PathPlanner Configuration:
     Wheelbase Width: 2.14
     Robot Length: 2.73
 
+Essential Paths:
+
+R1toCMR
+R2toCMR
+CMRtoLSR1of2
+CMRtoLSR1of2
+LSRtoCML1of2
+LSRtoCML2of2
+LSRtoRR21of2
+LSRtoRR22of2
+R1toRR1
+R2toRR1
+RR1toLSR1of2
+RR1toLSR2of2
+
+All Paths:
 
 R2toCMR
 R2toRR1

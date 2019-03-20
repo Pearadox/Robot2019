@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class IMU extends Subsystem {
 
-	AHRS navx;
+	public static AHRS navx;
 	double yawOffset = 0, pitchOffset = 0;
 	
 	public IMU () {

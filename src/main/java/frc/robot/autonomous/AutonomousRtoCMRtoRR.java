@@ -17,6 +17,5 @@ public class AutonomousRtoCMRtoRR extends CommandGroup {
   public AutonomousRtoCMRtoRR(int startingLevel, boolean mirror) {
     addSequential(new GroupRtoCMRtoLSR(startingLevel, mirror));
     addSequential(new GroupLSRtoRR2(mirror));
-    
   }
 }

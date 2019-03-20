@@ -12,7 +12,7 @@ public class Follower{
     LtoML: Starts from left side, goes to mid-left hatch
     */
 
-    public double maxVelocity = 10;
+    public double maxVelocity = 13;
     public double kv = 1/maxVelocity;
 
     public double WHEEL_BASE_WIDTH = 2.3;
@@ -30,9 +30,19 @@ public class Follower{
         try {
             readPath("CMRtoLSR1of2");
             readPath("CMRtoLSR2of2");
+            readPath("LSRtoRR11of2");
+            readPath("LSRtoRR21of2");
             readPath("LSRtoCML1of2");
             readPath("LSRtoCML2of2");
+            readPath("LSRtoRR21of2");
+            readPath("LSRtoRR22of2");
+            readPath("R2toCMR");
             readPath("R1toCMR");
+            readPath("R1toRR1");
+            readPath("R1toRR21of2");
+            readPath("R1toRR22of2");
+            readPath("RR2toLSR1of2");
+            readPath("RR2toLSR2of2");
 
             readPath("distanceCalibration");
             readPath("turnCalibration");

@@ -15,6 +15,7 @@ public class GroupLSRtoCML extends CommandGroup {
    * Add your docs here.
    */
   public GroupLSRtoCML(boolean mirror) {
-    addSequential(new PathLSRtoCML(mirror));
+    addSequential(new PathLSRtoCML(mirror, .7));
+    addSequential(new AutoVisionDrive(1.5, -0.45, -.2));
   }
 }

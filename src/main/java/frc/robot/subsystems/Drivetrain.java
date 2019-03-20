@@ -88,39 +88,27 @@ public class Drivetrain extends Subsystem {
 	}
 	
 	public void setLeft(double leftSpeed) {
-		setLeftMaster(leftSpeed);
-		setLeftSlave1(leftSpeed);
-		setLeftSlave2(leftSpeed);
+		setLeftMotor(1, leftSpeed);
+		setLeftMotor(2, leftSpeed);
+		setLeftMotor(3, leftSpeed);
 	}
 	
 	public void setRight(double rightSpeed) {
-		setRightMaster(rightSpeed);
-		setRightSlave1(rightSpeed);
-		setRightSlave2(rightSpeed);
+		setRightMotor(1, rightSpeed);
+		setRightMotor(2, rightSpeed);
+		setRightMotor(3, rightSpeed);
 	}
 
-	public void setRightMaster(double speed) {
-		rightMaster.set(ControlMode.PercentOutput, speed);
+	public void setRightMotor(int motor, double speed) {
+		if(motor == 1) rightMaster.set(ControlMode.PercentOutput, speed);
+		else if(motor == 2) rightSlave1.set(ControlMode.PercentOutput, speed);
+		else if(motor == 3) rightSlave2.set(ControlMode.PercentOutput, speed);
 	}
 
-	public void setRightSlave1(double speed) {
-		rightSlave1.set(ControlMode.PercentOutput, speed);
-	}
-
-	public void setRightSlave2(double speed) {
-		rightSlave2.set(ControlMode.PercentOutput, speed);
-	}
-
-	public void setLeftMaster(double speed) {
-		leftMaster.set(ControlMode.PercentOutput, speed);
-	}
-
-	public void setLeftSlave1(double speed) {
-		leftSlave1.set(ControlMode.PercentOutput, speed);
-	}
-
-	public void setLeftSlave2(double speed) {
-		leftSlave2.set(ControlMode.PercentOutput, speed);
+	public void setLeftMotor(int motor, double speed) {
+		if(motor == 1) leftMaster.set(ControlMode.PercentOutput, speed);
+		else if(motor == 2) leftSlave1.set(ControlMode.PercentOutput, speed);
+		else if(motor == 3) leftSlave2.set(ControlMode.PercentOutput, speed);
 	}
 
 	public void stop() {

@@ -14,7 +14,8 @@ public class AutonomousRtoCMRtoCML extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public AutonomousRtoCMRtoCML(int startingLevel, boolean mirror) {
+  public AutonomousRtoCMRtoCML(int startingLevel, boolean mirror, double delay) {
+    addSequential(new Delay(delay));
     addSequential(new GroupRtoCMRtoLSR(startingLevel, mirror));
     addSequential(new GroupLSRtoCML(mirror));
   }

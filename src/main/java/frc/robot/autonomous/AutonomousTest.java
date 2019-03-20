@@ -10,8 +10,7 @@ import frc.robot.pathfollowing.*;
 public class AutonomousTest extends CommandGroup{
 
     public AutonomousTest() {
-        
-        // addSequential(new Follow("distanceCalibration", true, false));
+        // addSequential(new Follow("distanceCalibration", false, false));
         // addSequential(new Follow("turnCalibration", true, false));
     }  
 

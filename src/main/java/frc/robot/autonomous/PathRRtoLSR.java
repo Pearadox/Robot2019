@@ -15,8 +15,7 @@ public class PathRRtoLSR extends CommandGroup {
    * Add your docs here.
    */
   public PathRRtoLSR(int rocketTarget, boolean mirror) {
-    addSequential(new Follow("RR" + rocketTarget + "toLSR", false, mirror));
-    addSequential(new TurnAbsolute(180));
-    addSequential(new DriveForward(-1));
+    addSequential(new Follow("RR" + rocketTarget + "toLSR1of2", false, mirror));
+    addSequential(new Follow("RR" + rocketTarget + "toLSR2of2", true, mirror, .7));
   }
 }

@@ -95,7 +95,7 @@ public class VisionHoldOnTarget extends Command {
   @Override
   protected void end() {
     Robot.drivetrain.stop();
-    // Robot.limelight.lightOff();
+    Robot.limelight.lightOff();
   }
 
   // Called when another command which requires one or more of the same
