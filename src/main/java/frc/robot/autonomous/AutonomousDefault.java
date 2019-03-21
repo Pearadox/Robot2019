@@ -8,8 +8,8 @@ import frc.robot.pathfollowing.*;
 
 public class AutonomousDefault extends CommandGroup{
 
-    public AutonomousDefault(double delay) {
-        addSequential(new Delay(delay));
+    public AutonomousDefault() {
+        // addSequential(new AutoDelay());
         addSequential(new MothClose());
     }  
 

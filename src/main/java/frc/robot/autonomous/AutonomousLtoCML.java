@@ -14,8 +14,8 @@ public class AutonomousLtoCML extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public AutonomousLtoCML(int startingLevel, boolean mirror, double delay) {
-    addSequential(new Delay(delay));
+  public AutonomousLtoCML(int startingLevel, boolean mirror) {
+    addSequential(new AutoDelay());
     
     addSequential(new MothClose());
     addSequential(new Follow("R"+startingLevel+"toCMR", true, mirror, startingLevel==1 ? .6 : .8));

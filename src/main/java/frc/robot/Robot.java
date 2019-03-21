@@ -55,7 +55,7 @@ public class Robot extends TimedRobot {
   CvSink cvsink2 = new CvSink("cam2cv");
   boolean prevReverse = false;
 
-  SendableChooser autonomousChooser;
+  SendableChooser autoChooser;
   Command autonomousCommand;
 
   @Override
@@ -92,6 +92,14 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Test Motors", new TestMotors(1));
     SmartDashboard.putData("Gyro", gyro.navx);
     Preferences.getInstance().putDouble("AutonomousDelay", 0);
+
+    autoChooser = new SendableChooser();
+    autoChooser.addDefault("Default", new AutonomousDefault());
+    autoChooser.addObject("Right L1 --> CMR --> CML", new AutonomousRtoCMRtoCML(1, false));
+    autoChooser.addObject("Right L1 --> Back Rocket", new AutonomousRtoRRtoRR(1, false));
+    // autoChooser.addObject("Right L2 --> CMR --> CML", new AutonomousRtoCMRtoCML(2, false));
+    // autoChooser.addObject("Left L1  --> CML", new AutonomousLtoCML(1, false));
+    SmartDashboard.putData("Autonomous Chooser", autoChooser);
   }
 
   
@@ -131,26 +139,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
 
-    double delay = Preferences.getInstance().getDouble("AutonomousDelay", 0);
-
     gyro.zero(180);  // facing backwards
-
-    // int switch1 = 1;  //     Side: L, M, R
-    // int switch2 = 1;  //      Pos: L1, -, L2
-    // int switch3 = 1;  //  Hatch 1: CargoMid, -, Rocket
-    // int switch4 = 1;  //  Hatch 2: CargoMid, -, Rocket
-    // if(oi.autoBox.getRawButton(1)) switch1 = 1;
-    // else if(oi.autoBox.getRawButton(2)) switch1 = 2;
-    // else if(oi.autoBox.getRawButton(3)) switch1 = 3;
-    // if(oi.autoBox.getRawButton(4)) switch2 = 1;
-    // else if(oi.autoBox.getRawButton(5)) switch2 = 2;
-    // else if(oi.autoBox.getRawButton(6)) switch2 = 3;
-    // if(oi.autoBox.getRawButton(7)) switch3 = 1;
-    // else if(oi.autoBox.getRawButton(8)) switch3 = 2;
-    // else if(oi.autoBox.getRawButton(9)) switch3 = 3;
-    // if(oi.autoBox.getRawButton(10)) switch4 = 1;
-    // else if(oi.autoBox.getRawButton(11)) switch4 = 2;
-    // else if(oi.autoBox.getRawButton(12)) switch4 = 3;
 
     // if(switch1 == 3 && switch2 == 1 && switch3 == 1 && switch4 == 1)
     //   autonomousCommand = new AutonomousRtoCMRtoCML(1, false);
@@ -160,9 +149,11 @@ public class Robot extends TimedRobot {
 
     // autonomousCommand = new AutonomousDefault(delay);
     // autonomousCommand = new AutonomousTest();
-    autonomousCommand = new AutonomousRtoCMRtoCML(1, false, delay);
+    // autonomousCommand = new AutonomousRtoCMRtoCML(1, false, delay);
     // autonomousCommand = new AutonomousLtoCML(1, false, delay);
     // autonomousCommand = new AutonomousRtoRRtoRR(1, false, delay);
+
+    autonomousCommand = (Command) autoChooser.getSelected();
 
     if (autonomousCommand != null) {
       autonomousCommand.start();
@@ -172,7 +163,9 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+
     limelight.lightOn();
+    
     if(oi.joystick.getRawButton(2)) stopAutonomous();
   }
 

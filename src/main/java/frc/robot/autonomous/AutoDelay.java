@@ -7,18 +7,34 @@
 
 package frc.robot.autonomous;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.commands.*;
+import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
 
-public class AutonomousRtoRRtoRR extends CommandGroup {
-  /**
-   * Add your docs here.
-   */
-  public AutonomousRtoRRtoRR(int startingLevel, boolean mirror) {
-    addSequential(new AutoDelay());
+public class AutoDelay extends Command {
 
-    addSequential(new GroupRtoRR2toLSR(startingLevel, mirror));
-    addSequential(new Follow("LSRBackout", false, mirror));
-    // addSequential(new GroupLSRtoRR1(mirror));
+  public AutoDelay() {
+  }
+
+  @Override
+  protected void initialize() {
+    double time = Robot.prefs.getDouble("AutonomousDelay", 0);
+    setTimeout(time);
+  }
+
+  @Override
+  protected void execute() {
+  }
+
+  @Override
+  protected boolean isFinished() {
+    return isTimedOut();
+  }
+
+  @Override
+  protected void end() {
+  }
+
+  @Override
+  protected void interrupted() {
   }
 }

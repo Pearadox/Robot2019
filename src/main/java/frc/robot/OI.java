@@ -91,4 +91,32 @@ public class OI {
 		opbtn11.whenPressed(new ClimbGroup());
 		opbtn12.whileHeld(new ClimberSet(-0.5,0));
 	}
+
+	public int getKnob1() {
+		if(autoBox.getRawButton(1)) return 1;
+		else if(autoBox.getRawButton(2)) return 2;
+		else if(autoBox.getRawButton(3)) return 3;
+		else return -1;
+	}
+
+	public int getKnob2() {
+		if(autoBox.getRawButton(4)) return 1;
+		else if(autoBox.getRawButton(5)) return 2;
+		else if(autoBox.getRawButton(6)) return 3;
+		else return -1;
+	}
+
+	public int getKnob3() {
+		if(autoBox.getRawButton(7)) return 1;
+		else if(autoBox.getRawButton(8)) return 2;
+		else if(autoBox.getRawButton(9)) return 3;
+		else return -1;
+	}
+
+	public int getKnob4() {
+		if(autoBox.getRawButton(10)) return 1;
+		else if(autoBox.getRawButton(11)) return 2;
+		else if(autoBox.getRawButton(12)) return 3;
+		else return -1;
+	}
 }
