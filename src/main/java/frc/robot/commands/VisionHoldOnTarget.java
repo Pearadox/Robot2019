@@ -25,7 +25,7 @@ public class VisionHoldOnTarget extends Command {
   
   double lastError = 0;
   double error_sum = 0;
-  public static double kp = 0.08;
+  public static double kp = 0.02;
   public static double ki = 0.0;
   public static double kd = 0.1;
 
@@ -49,6 +49,7 @@ public class VisionHoldOnTarget extends Command {
   @Override
   protected void initialize() {
     Robot.limelight.lightOn();
+
     error_sum = 0;
     kp = Robot.prefs.getDouble("VisionHold kp", kp);
     ki = Robot.prefs.getDouble("VisionHold ki", ki);

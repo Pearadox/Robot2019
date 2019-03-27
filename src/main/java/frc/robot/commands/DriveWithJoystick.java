@@ -71,7 +71,7 @@ public class DriveWithJoystick extends Command {
     }
     if(reduce) {
       throttle *= 0.6;
-      twist *= 0.25;
+      twist *= 0.26;
     }
 
     if(RobotMap.gyroDrive) {
