@@ -60,7 +60,7 @@ public class ClimberSet extends Command {
         }
       }
       else {
-        double output = -0.5 * Math.sin(average/25.-100.3);
+        double output = -0.65 * Math.sin(average/25.-100.3);
         output = Math.min(output, -0.3);
         Robot.climber.set(output, output);
         Robot.arm.set(0);

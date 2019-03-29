@@ -5,17 +5,17 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.autonomous;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.commands.*;
 
-public class PathRRtoLSR extends CommandGroup {
-  /**
-   * Add your docs here.
-   */
-  public PathRRtoLSR(int rocketTarget, boolean mirror) {
-    addSequential(new Follow("RR" + rocketTarget + "toLSR1of2", false, mirror));
-    addSequential(new Follow("RR" + rocketTarget + "toLSR2of2", true, mirror, .85));
+public class VisionHatchPlacer extends CommandGroup {
+
+  public VisionHatchPlacer() {
+
+    // addSequential(new VisionTurnToTarget());
+    addSequential(new AutoVisionDrive(999,.3,.3));
+    
   }
+
 }

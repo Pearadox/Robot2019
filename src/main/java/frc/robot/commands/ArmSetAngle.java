@@ -15,9 +15,9 @@ import frc.robot.Robot;
 
 public class ArmSetAngle extends Command {
     double targetAngle;
-    double kp = 0.005;
-    double ki = 0.0001;
-    double kd = 0.04;
+    double kp = 0.01;
+    double ki = 0.00013;
+    double kd = 0.05;
     double error, errorSum, lastError;
     boolean climbingMode;
 

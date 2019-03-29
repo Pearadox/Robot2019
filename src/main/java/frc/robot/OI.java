@@ -50,6 +50,8 @@ public class OI {
 	
 	public OI() {
 		
+		// btn2.whileHeld(new VisionHatchPlacer());
+
 		btn3.whenPressed(new ArmGoLow());
 		btn4.whenPressed(new ArmGoRocket());
 		btn5.whenPressed(new ArmGoCargo());

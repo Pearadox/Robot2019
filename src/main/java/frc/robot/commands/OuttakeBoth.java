@@ -17,7 +17,7 @@ public class OuttakeBoth extends Command {
 
   @Override
   protected void execute() {
-    Robot.box.set(-0.8);
+    Robot.box.set(-1);
     Robot.intake.set(-1);
   }
 

@@ -20,8 +20,8 @@ public class GroupRtoCMRtoLSR extends CommandGroup {
     addSequential(new AutoVisionDrive(1.5, -0.4, -.25));
     addSequential(new MothOpen());
     
-    addSequential(new PathCMRtoLSR(mirror, .5));
-    addSequential(new AutoVisionDrive(1.5, -.3, -.2));
+    addSequential(new PathCMRtoLSR(mirror, .6));
+    addSequential(new AutoVisionDrive(1.5, -.22, -.25));
     addSequential(new MothClose());
     addSequential(new Delay(.3));
   }
