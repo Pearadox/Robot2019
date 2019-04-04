@@ -32,6 +32,7 @@ public class VisionTurnToTarget extends Command {
   double kd = 0.15;
 
   boolean reachedTarget;
+  boolean inTeleop;
 
   public VisionTurnToTarget() {
     requires(Robot.drivetrain);
@@ -55,13 +56,20 @@ public class VisionTurnToTarget extends Command {
     kd = Robot.prefs.getDouble("Vision kd", kd);
 
     reachedTarget = false;
+    inTeleop = true;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-      if(!Robot.limelight.targetExists()) return;
 
+    if(Robot.limelight.targetExists()) inTeleop = false;
+    if(inTeleop) {
+      double joystickForward = Math.min(Robot.oi.joystick.getRawAxis(1), .4);
+      double joystickRotate = Math.min(Robot.oi.joystick.getRawAxis(2), .6);
+      Robot.drivetrain.arcadeDrive(joystickForward, joystickRotate);
+    }
+    else {
       double changeInError = lastError - Robot.limelight.getX();
       error_sum += Robot.limelight.getX();
 
@@ -75,11 +83,13 @@ public class VisionTurnToTarget extends Command {
       else output -= 0.1;
 
       Robot.drivetrain.drive(output, -output);
+    }
   }
   
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    if(inTeleop) return false;
     if(!Robot.limelight.targetExists()) return true;
 
     if(Math.abs(Robot.limelight.getX()) < 1 && !reachedTarget) {
@@ -89,8 +99,6 @@ public class VisionTurnToTarget extends Command {
     }
     else if(reachedTarget && isTimedOut()) {
       Robot.drivetrain.stop();
-      ArrayList<ArrayList<TPoint>> trajectory = Robot.limelight.getTrajectory();
-      Scheduler.getInstance().add(new Follow(trajectory, false, false));
       return true;
     }
     return isTimedOut();

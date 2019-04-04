@@ -33,19 +33,17 @@ public class AutoVisionDrive extends Command {
 
   double offset = VisionHoldOnTarget.offset;  // degrees, positive is to right, negative to left
   double finishTime, speed, finishSpeed;
+  boolean stopIfNoTarget;
 
   boolean sawTarget;
   boolean lostTarget;
   boolean timeoutSet;
 
-  public AutoVisionDrive(double finishTime, double speed, double finishSpeed) {
+  public AutoVisionDrive(double finishTime, double speed, double finishSpeed, boolean stopIfNoTarget) {
     requires(Robot.drivetrain);
     if (!Preferences.getInstance().containsKey("VisionHold kp")){
       Preferences.getInstance().putDouble("VisionHold kp", kp);
     }
-    // if (!Preferences.getInstance().containsKey("VisionHold ki")){
-    //   Preferences.getInstance().putDouble("VisionHold ki", ki);
-    // }
     if (!Preferences.getInstance().containsKey("VisionHold kd")){
       Preferences.getInstance().putDouble("VisionHold kd", kd);
     }
@@ -54,6 +52,11 @@ public class AutoVisionDrive extends Command {
     this.speed = speed;
     this.finishSpeed = finishSpeed;
     this.timeoutSet = false;
+    this.stopIfNoTarget = stopIfNoTarget;
+  }
+
+  public AutoVisionDrive(double finishTime, double speed, double finishSpeed) {
+    this(finishTime, speed, finishSpeed, false);
   }
 
   @Override
@@ -61,7 +64,6 @@ public class AutoVisionDrive extends Command {
     Robot.limelight.lightOn();
     error_sum = 0;
     kp = Robot.prefs.getDouble("VisionHold kp", kp);
-    ki = Robot.prefs.getDouble("VisionHold ki", ki);
     kd = Robot.prefs.getDouble("VisionHold kd", kd);
 
     sawTarget = false;

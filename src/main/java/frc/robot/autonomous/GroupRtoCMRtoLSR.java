@@ -17,11 +17,11 @@ public class GroupRtoCMRtoLSR extends CommandGroup {
   public GroupRtoCMRtoLSR(int startingLevel, boolean mirror) {
     addSequential(new MothClose());
     addSequential(new Follow("R"+startingLevel+"toCMR", true, mirror, startingLevel==1 ? .6 : .8));
-    addSequential(new AutoVisionDrive(1.5, -0.4, -.25));
+    addSequential(new AutoVisionDrive(2.0, -0.4, -.25));
     addSequential(new MothOpen());
     
-    addSequential(new PathCMRtoLSR(mirror, .6));
-    addSequential(new AutoVisionDrive(1.5, -.22, -.25));
+    addSequential(new PathCMRtoLSR(mirror, .5));
+    addSequential(new AutoVisionDrive(1.5, -.3, -.2));
     addSequential(new MothClose());
     addSequential(new Delay(.3));
   }

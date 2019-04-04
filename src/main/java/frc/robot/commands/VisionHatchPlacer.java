@@ -13,9 +13,10 @@ public class VisionHatchPlacer extends CommandGroup {
 
   public VisionHatchPlacer() {
 
-    // addSequential(new VisionTurnToTarget());
-    addSequential(new AutoVisionDrive(999,.3,.3));
-    
+
+    addSequential(new VisionTurnToTarget()); 
+    addSequential(new AutoVisionDrive(0,-.4,-.2, true));
+    addSequential(new DriveTimed(-.2,-.2,5));
   }
 
 }
