@@ -149,7 +149,7 @@ public class Robot extends TimedRobot {
 
     // autonomousCommand = new AutonomousDefault(delay);
     // autonomousCommand = new AutonomousTest();
-    // autonomousCommand = new AutonomousRtoCMRtoCML(1, false, delay);
+    // autonomousCommand = new AutonomousRtoCMRtoCML(1, false);
     // autonomousCommand = new AutonomousLtoCML(1, false, delay);
     // autonomousCommand = new AutonomousRtoRRtoRR(1, false, delay);
 

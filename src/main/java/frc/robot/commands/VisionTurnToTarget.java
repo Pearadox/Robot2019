@@ -49,7 +49,7 @@ public class VisionTurnToTarget extends Command {
 
   @Override
   protected void initialize() {
-    setTimeout(1.5);
+    setTimeout(.5);
     error_sum = 0;
     kp = Robot.prefs.getDouble("Vision kp", kp);
     ki = Robot.prefs.getDouble("Vision ki", ki);
@@ -90,6 +90,7 @@ public class VisionTurnToTarget extends Command {
   @Override
   protected boolean isFinished() {
     if(inTeleop) return false;
+    if(isTimedOut()) return true;
     if(!Robot.limelight.targetExists()) return true;
 
     if(Math.abs(Robot.limelight.getX()) < 1 && !reachedTarget) {
