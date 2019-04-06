@@ -49,7 +49,7 @@ public class ClimberSet extends Command {
 
       if(speed > 0) {
 
-        if(average > 67) {
+        if(average > 70) {
           Robot.climber.set(0, 0);
         }
         else {
