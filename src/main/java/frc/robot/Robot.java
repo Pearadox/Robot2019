@@ -111,7 +111,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Left Encoder", drivetrain.getLeftEncoder());
     SmartDashboard.putNumber("Right Encoder", drivetrain.getRightEncoder());
     SmartDashboard.putNumber("Arm Encoder", arm.getAngle());
-    // SmartDashboard.putBoolean("Limit Switch", arm.getLimit());
     SmartDashboard.putNumber("Heading", gyro.getYaw());
     SmartDashboard.putNumber("tx", limelight.getX());
     SmartDashboard.putBoolean("tv", limelight.targetExists());
@@ -140,12 +139,6 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
 
     gyro.zero(180);  // facing backwards
-
-    // if(switch1 == 3 && switch2 == 1 && switch3 == 1 && switch4 == 1)
-    //   autonomousCommand = new AutonomousRtoCMRtoCML(1, false);
-    // else if(switch1 == 3 && switch2 == 1 && switch3 == 1 && switch4 == 2)
-    //   autonomousCommand = new AutonomousRtoCMRtoRR(1, false);
-    // else autonomousCommand = new AutonomousDefault();
 
     // autonomousCommand = new AutonomousDefault(delay);
     // autonomousCommand = new AutonomousTest();

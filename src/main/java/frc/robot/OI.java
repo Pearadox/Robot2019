@@ -20,7 +20,6 @@ public class OI {
 	
 	public Joystick joystick = new Joystick(0);
 	public Joystick operator = new Joystick(1);
-	public Joystick autoBox = new Joystick(3);
 
 	JoystickButton btn1 = new JoystickButton(joystick, 1);
 	JoystickButton btn2 = new JoystickButton(joystick, 2);
@@ -58,7 +57,7 @@ public class OI {
 
 		btn6.whenPressed(new IntakeToggle());
 
-		btn7.whenPressed(new DriverLowerGroup(true));
+		btn7.whenPressed(new DriverLowerGroup(false));
 		btn8.whenPressed(new DriverRaiseGroup());
 
 		btn9.whileHeld(new OuttakeBoth());
@@ -77,7 +76,6 @@ public class OI {
 		opbtn3.whenPressed(new ArmGoLow());
 		opbtn4.whenPressed(new ArmGoCargo());
 		
-
 		opbtn5.whenPressed(new DriverLowerGroup(false));
 		opbtn6.whenPressed(new DriverRaiseGroup());
 
@@ -87,38 +85,8 @@ public class OI {
 		opbtn9.whileHeld(new OuttakeBoth());
 		opbtn10.whenPressed(new IntakeToggle());
 
-		// opbtn11.whileHeld(new OuttakeBoth());
-		// opbtn12.whileHeld(new IntakeBoth(false));
 		opbtn11.whenPressed(new ClimberSet(0.5,.3));  //expand
 		opbtn11.whenPressed(new ClimbGroup());
 		opbtn12.whileHeld(new ClimberSet(-0.5,0));
-	}
-
-	public int getKnob1() {
-		if(autoBox.getRawButton(1)) return 1;
-		else if(autoBox.getRawButton(2)) return 2;
-		else if(autoBox.getRawButton(3)) return 3;
-		else return -1;
-	}
-
-	public int getKnob2() {
-		if(autoBox.getRawButton(4)) return 1;
-		else if(autoBox.getRawButton(5)) return 2;
-		else if(autoBox.getRawButton(6)) return 3;
-		else return -1;
-	}
-
-	public int getKnob3() {
-		if(autoBox.getRawButton(7)) return 1;
-		else if(autoBox.getRawButton(8)) return 2;
-		else if(autoBox.getRawButton(9)) return 3;
-		else return -1;
-	}
-
-	public int getKnob4() {
-		if(autoBox.getRawButton(10)) return 1;
-		else if(autoBox.getRawButton(11)) return 2;
-		else if(autoBox.getRawButton(12)) return 3;
-		else return -1;
 	}
 }
