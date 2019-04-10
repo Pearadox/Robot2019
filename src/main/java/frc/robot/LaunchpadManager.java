@@ -1,38 +1,18 @@
 package frc.robot;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.ArmGoCargo;
-import frc.robot.commands.ArmGoLow;
-import frc.robot.commands.ArmGoRocket;
-import frc.robot.commands.ArmManualDown;
-import frc.robot.commands.ArmManualUp;
-import frc.robot.commands.ArmSetAngle;
-import frc.robot.commands.ArmZeroReset;
-import frc.robot.commands.ClimberSet;
-import frc.robot.commands.ClimberSetOverride;
-import frc.robot.commands.DriverLowerGroup;
-import frc.robot.commands.DriverRaiseGroup;
-import frc.robot.commands.IntakeBoth;
-import frc.robot.commands.IntakeLower;
-import frc.robot.commands.IntakeRaise;
-import frc.robot.commands.IntakeToggle;
-import frc.robot.commands.MothClose;
-import frc.robot.commands.MothOpen;
-import frc.robot.commands.MothToggle;
-import frc.robot.commands.OuttakeBoth;
-import frc.robot.commands.VisionHatchPlacer;
-import frc.robot.commands.VisionHoldOnTarget;
+import frc.robot.commands.*;
 
 public class LaunchpadManager {
 
-    double watchdogTimerSeconds = 0.1;
+    double watchdogTimerSeconds = 0.5;
     final String tableName = "Launchpad";
     boolean btns[][] = new boolean[9][9];
+    boolean presses[][] = new boolean[9][9];
+    boolean lastBtns[][] = new boolean[9][9];
 
     boolean isConnected = false;
     double lastReceivedPing = 0;
@@ -64,6 +44,7 @@ public class LaunchpadManager {
         if(Timer.getFPGATimestamp() - lastReceivedPing > watchdogTimerSeconds) {
             isConnected = false;
         }
+        else isConnected = true;
         SmartDashboard.putBoolean("Launchpad Connection", isConnected);
 
         // send ping
@@ -73,7 +54,10 @@ public class LaunchpadManager {
         for(int r = 0; r < 9; r++) {
             for(int c = 0; c < 9; c++) {
                 String key = r + ":" + c;
+                lastBtns[r][c] = btns[r][c];
                 btns[r][c] = isConnected ? table.getEntry(key).getBoolean(false) : false;
+                presses[r][c] = false;
+                if(btns[r][c] && !lastBtns[r][c]) presses[r][c] = true;
             }
         }
 
@@ -87,63 +71,60 @@ public class LaunchpadManager {
     }
 
     public void teleopLoop() {
-        if(btns[0][0]) climberOpenOverride.start();
-        else climberOpenOverride.cancel();
+        // if(btns[0][0] && !climberOpenOverride.isRunning()) climberOpenOverride.start();
+        // else if(!btns[0][0]) climberOpenOverride.cancel();
 
-        if(btns[0][1]) climberCloseOverride.start();
-        else climberCloseOverride.cancel();
+        // if(btns[0][1] && !climberCloseOverride.isRunning()) climberCloseOverride.start();
+        // else if(!btns[0][1]) climberCloseOverride.cancel();
 
-        if(btns[0][2]) armResetZero.start();
-        else armResetZero.cancel();
+        if(btns[0][2] && !armResetZero.isRunning()) armResetZero.start();
+        else if(!btns[0][2]) armResetZero.cancel();
 
-        if(btns[0][6]) armDownGroup.start();
+        if(presses[0][6]) armDownGroup.start();
 
-        if(btns[0][7]) armUpGroup.start();
+        if(presses[0][7]) armUpGroup.start();
 
-        if(btns[1][0]) climberOpen.start();
-        else climberOpen.cancel();
+        // if(btns[1][0] && !climberOpen.isRunning()) climberOpen.start();
+        // else if(!btns[1][0]) climberOpen.cancel();
 
-        if(btns[1][1]) climberClose.start();
-        else climberClose.cancel();
+        // if(btns[1][1] && !climberClose.isRunning()) climberClose.start();
+        // else if(!btns[1][1]) climberClose.cancel();
 
-        if(btns[1][4]) limelightAuto.start();
-        else limelightAuto.cancel();
+        if(btns[1][4] && !limelightAuto.isRunning()) limelightAuto.start();
+        else if(!btns[1][4]) limelightAuto.cancel();
 
-        if(btns[1][5]) limelightHold.start();
-        else limelightHold.cancel();
+        if(btns[1][5] && !limelightHold.isRunning()) limelightHold.start();
+        else if(!btns[1][5]) limelightHold.cancel();
 
-        if(btns[1][6]) mothClose.start();
+        if(presses[1][6]) mothClose.start();
 
-        if(btns[1][7]) mothOpen.start();
+        if(presses[1][7]) mothOpen.start();
 
-        if(btns[1][8]) mothToggle.start();
+        if(presses[1][8]) mothToggle.start();
 
-        if(btns[2][4]) outtakeBoth.start();
-        else outtakeBoth.cancel();
+        if(btns[2][4] && !outtakeBoth.isRunning()) outtakeBoth.start();
+        else if(!btns[2][4]) outtakeBoth.cancel();
 
-        if(btns[2][5]) intakeBoth.start();
-        else intakeBoth.cancel();
+        if(btns[2][5] && !intakeBoth.isRunning()) intakeBoth.start();
+        else if(!btns[2][5]) intakeBoth.cancel();
 
-        if(btns[2][6]) intakeDown.start();
+        if(presses[2][6]) intakeDown.start();
 
-        if(btns[2][7]) intakeUp.start();
+        if(presses[2][7]) intakeUp.start();
 
-        if(btns[2][8]) intakeToggle.start();
+        if(presses[2][8]) intakeToggle.start();
 
-        if(btns[3][6]) armManualDown.start();
-        else armManualDown.cancel();
+        if(btns[3][6] && !armManualDown.isRunning()) armManualDown.start();
+        else if(!btns[3][6]) armManualDown.cancel();
 
-        if(btns[3][7]) armManualUp.start();
-        else armManualUp.cancel();
+        if(btns[3][7] && !armManualUp.isRunning()) armManualUp.start();
+        else if(!btns[3][7]) armManualUp.cancel();
 
-        if(btns[3][8]) armSetCargo.start();
-        else armSetCargo.cancel();
+        if(presses[3][8]) armSetCargo.start();
 
-        if(btns[4][8]) armSetRocket.start();
-        else armSetRocket.cancel();
+        if(presses[4][8]) armSetRocket.start();
 
-        if(btns[5][8]) armSetLow.start();
-        else armSetLow.cancel();
+        if(presses[5][8]) armSetLow.start();
     }
 
     /*

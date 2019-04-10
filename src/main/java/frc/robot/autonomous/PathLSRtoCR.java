@@ -13,7 +13,7 @@ import frc.robot.commands.*;
 public class PathLSRtoCR extends CommandGroup {
 
   public PathLSRtoCR(int cargoTarget, boolean mirror, double cutoffPercentage) {
-    addSequential(new Follow("LSRtoCR" + cargoTarget + "1of2", false, mirror));
-    addSequential(new Follow("LSRtoCR" + cargoTarget + "2of2", false, mirror, cutoffPercentage));
+    addSequential(new Follow("LSRtoCR1of2", false, mirror));
+    addSequential(new Follow("LSRtoCR2of2", false, mirror, cutoffPercentage));
   }
 }

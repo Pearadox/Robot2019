@@ -117,7 +117,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Heading", gyro.getYaw());
     SmartDashboard.putNumber("tx", limelight.getX());
     SmartDashboard.putBoolean("tv", limelight.targetExists());
-    // SmartDashboard.putNumber("Ultrasonic", box.getUltrasonic());
     SmartDashboard.putNumber("ClimberL Enc", climber.getLeftRotations());
     SmartDashboard.putNumber("ClimberR Enc", climber.getRightRotations());
 
