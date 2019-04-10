@@ -10,19 +10,22 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class ArmZeroReset extends Command {
-  public ArmZeroReset() {
-    requires(Robot.arm);
+public class ClimberSetOverride extends Command {
+
+  double speed;
+
+  public ClimberSetOverride(double speed) {
+    requires(Robot.climber);
+    this.speed = speed;
   }
 
   @Override
   protected void initialize() {
-    
   }
 
   @Override
   protected void execute() {
-    Robot.arm.setRawSpeed(-.07);
+    Robot.climber.set(speed, speed);
   }
 
   @Override
@@ -32,8 +35,7 @@ public class ArmZeroReset extends Command {
 
   @Override
   protected void end() {
-    Robot.arm.set(0);
-    Robot.arm.zero();
+    Robot.climber.set(0, 0);
   }
 
   @Override

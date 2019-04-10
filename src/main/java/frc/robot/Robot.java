@@ -42,6 +42,7 @@ public class Robot extends TimedRobot {
   public static Climber climber;
   public static Arm arm;
   public static Box box;
+  public static LaunchpadManager launchpad;
 
   Compressor compressor = new Compressor();
 
@@ -73,9 +74,11 @@ public class Robot extends TimedRobot {
     climber = new Climber();
     arm = new Arm();
     box = new Box();
-    compressor.start();
+    launchpad = new LaunchpadManager();
 
     oi = new OI();
+
+    compressor.start();
 
     if(RobotMap.enableCameras) {
 	    camera1 = edu.wpi.first.cameraserver.CameraServer.getInstance().startAutomaticCapture(1);
@@ -120,6 +123,8 @@ public class Robot extends TimedRobot {
 
     if(DriverStation.getInstance().isBrownedOut()) brownoutCounter++;
     SmartDashboard.putNumber("Brownouts", brownoutCounter);
+
+    launchpad.periodicLoop();
   }
   
   @Override
@@ -133,6 +138,8 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
+    
+    launchpad.disabledLoop();
   }
   
   @Override
@@ -159,7 +166,9 @@ public class Robot extends TimedRobot {
 
     limelight.lightOn();
     
-    if(oi.joystick.getRawButton(2)) stopAutonomous();
+    if(oi.joystick.getRawButton(2) || launchpad.btns[0][4]) stopAutonomous();
+
+    launchpad.teleopLoop();
   }
 
   public void stopAutonomous() {
@@ -186,6 +195,8 @@ public class Robot extends TimedRobot {
       // reverseDrivetrain = !reverseDrivetrain;
     }
     prevReverse = reverseBtn;
+
+    launchpad.teleopLoop();
   }
 
   @Override

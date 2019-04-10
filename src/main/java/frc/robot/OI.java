@@ -85,8 +85,8 @@ public class OI {
 		opbtn9.whileHeld(new OuttakeBoth());
 		opbtn10.whenPressed(new IntakeToggle());
 
-		opbtn11.whenPressed(new ClimberSet(0.5,.3));  //expand
+		opbtn11.whenPressed(new ClimberSet(0.5,.3));  // open
 		opbtn11.whenPressed(new ClimbGroup());
-		opbtn12.whileHeld(new ClimberSet(-0.5,0));
+		opbtn12.whileHeld(new ClimberSet(-0.5,0));  // close
 	}
 }
