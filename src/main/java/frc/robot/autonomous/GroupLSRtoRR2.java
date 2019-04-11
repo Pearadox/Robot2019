@@ -10,12 +10,13 @@ package frc.robot.autonomous;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.*;
 
-public class AutonomousRtoCMRtoRR extends CommandGroup {
+public class GroupLSRtoRR2 extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public AutonomousRtoCMRtoRR(int startingLevel, boolean mirror) {
-    // addSequential(new GroupRtoCMRtoLSR(startingLevel, mirror));
-    addSequential(new GroupLSRtoRR2(mirror));
+  public GroupLSRtoRR2(boolean mirror) {
+    addSequential(new PathLSRtoRR(2, mirror, 1));
+    addSequential(new AutoVisionDrive(1.5, -0.3, -.1));
+    addSequential(new MothOpen());
   }
 }

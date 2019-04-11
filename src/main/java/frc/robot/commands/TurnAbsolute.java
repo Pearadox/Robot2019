@@ -27,8 +27,8 @@ public class TurnAbsolute extends Command {
     if(toTurn > 180) toTurn -= 360;
     else if(toTurn < -180) toTurn += 360;
     
-    if(toTurn > 0) Scheduler.getInstance().add(new TurnRight(Math.abs(toTurn)));
-    else Scheduler.getInstance().add(new TurnLeft(Math.abs(toTurn)));
+    if(toTurn < 0) Scheduler.getInstance().add(new TurnRelative(Math.abs(toTurn)));
+    else Scheduler.getInstance().add(new TurnRelative(-Math.abs(toTurn)));
   }
 
   @Override

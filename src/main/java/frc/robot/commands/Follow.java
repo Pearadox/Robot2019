@@ -15,13 +15,15 @@ import frc.robot.pathfollowing.*;
 
 public class Follow extends Command {
 
+  public static boolean practicebot = false;
+
   double ka = 0.035; 
-  double kp = 0.007;
+  double kp = !practicebot ? 0.01 : 0.007;
   double kd = 0.0;
   double kh = .7;
   double ka_reverse = 0.035;
   double kp_reverse = 0.1; 
-  double kh_reverse = 0.95;
+  double kh_reverse = !practicebot ? 0.8 : 0.95;
   double ka_rotate = 0.03;
   double kp_rotate = 0.035;
   double kh_rotate = 0.05;

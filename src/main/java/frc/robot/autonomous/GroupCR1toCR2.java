@@ -10,10 +10,13 @@ package frc.robot.autonomous;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.*;
 
-public class PathLSRtoCR extends CommandGroup {
-
-  public PathLSRtoCR(int cargoTarget, boolean mirror, double cutoffPercentage) {
-    addSequential(new Follow("LSRtoCR1of2", false, mirror));
-    addSequential(new Follow("LSRtoCR2of2", false, mirror, cutoffPercentage));
+public class GroupCR1toCR2 extends CommandGroup {
+  /**
+   * Add your docs here.
+   */
+  public GroupCR1toCR2(boolean mirror) {
+    addSequential(new PathCR1toCR2(mirror, 1));
+    addParallel(new DriverLowerGroup(false));
+    addSequential(new TurnAbsolute(-30));
   }
 }

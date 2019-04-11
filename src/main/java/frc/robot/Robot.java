@@ -99,9 +99,12 @@ public class Robot extends TimedRobot {
     autoChooser = new SendableChooser();
     autoChooser.addDefault("Default", new AutonomousDefault());
     autoChooser.addObject("Right L1 --> CMR --> CML", new AutonomousRtoCMRtoCML(1, false));
+    autoChooser.addObject("Right L1 --> CMR --> CR", new AutonomousRtoCMRtoCR(1, false));
+    autoChooser.addObject("Right L1 --> CMR --> RR", new AutonomousRtoCMRtoRR(1, false));
     autoChooser.addObject("Right L1 --> Back Rocket", new AutonomousRtoRRtoRR(1, false));
     autoChooser.addObject("Right L2 --> CMR --> CML", new AutonomousRtoCMRtoCML(2, false));
     autoChooser.addObject("Left L1  --> CML", new AutonomousLtoCML(1, false));
+    autoChooser.addObject("Test", new AutonomousTest());
     SmartDashboard.putData("Autonomous Chooser", autoChooser);
   }
 

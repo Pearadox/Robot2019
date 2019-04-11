@@ -17,7 +17,6 @@ public class PathLSRtoRR extends CommandGroup {
    * Add your docs here.
    */
   public PathLSRtoRR(int rocketTarget, boolean mirror, double cutoffPercentage) {
-    addSequential(new Follow("LSRtoRR" + rocketTarget + "1of2", false, mirror));
-    addSequential(new Follow("LSRtoRR" + rocketTarget + "2of2", false, mirror, cutoffPercentage));
+    addSequential(new Follow("LSRtoRR" + rocketTarget, false, mirror, cutoffPercentage));
   }
 }

@@ -125,6 +125,10 @@ public class LaunchpadManager {
         if(presses[4][8]) armSetRocket.start();
 
         if(presses[5][8]) armSetLow.start();
+
+        
+
+        
     }
 
     /*

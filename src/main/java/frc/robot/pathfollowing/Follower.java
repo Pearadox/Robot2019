@@ -4,6 +4,7 @@ package frc.robot.pathfollowing;
 import java.io.*;
 import java.util.*;
 import frc.robot.*;
+import frc.robot.commands.Follow;
 
 public class Follower{
 
@@ -12,7 +13,7 @@ public class Follower{
     LtoML: Starts from left side, goes to mid-left hatch
     */
 
-    public double maxVelocity = 13;
+    public double maxVelocity = Follow.practicebot ? 12.6 : 13;
     public double kv = 1/maxVelocity;
 
     public double WHEEL_BASE_WIDTH = 2.3;
@@ -36,6 +37,9 @@ public class Follower{
             readPath("LSRtoCML2of2");
             readPath("LSRtoRR21of2");
             readPath("LSRtoRR22of2");
+            readPath("LSRtoRR2");
+            readPath("CR1toCR2");
+            readPath("LSRtoCR1");
             readPath("R2toCMR");
             readPath("R1toCMR");
             readPath("R1toRR1");
