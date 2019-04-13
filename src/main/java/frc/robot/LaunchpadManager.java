@@ -114,6 +114,8 @@ public class LaunchpadManager {
 
         if(presses[2][8]) intakeToggle.start();
 
+        if(presses[3][5]) armSetCamera.start();
+
         if(btns[3][6] && !armManualDown.isRunning()) armManualDown.start();
         else if(!btns[3][6]) armManualDown.cancel();
 
@@ -152,6 +154,7 @@ public class LaunchpadManager {
     2:6 intake down  --  when
     2:7 intake up  --  when
     2:8 intake toggle  --  when
+    3:5 arm set camera -- when
     3:6 arm manual down  --  while
     3:7 arm manual up  --  while
     3:8 arm set cargo  --  when
@@ -183,5 +186,6 @@ public class LaunchpadManager {
     Command armSetCargo = new ArmGoCargo();
     Command armSetRocket = new ArmGoRocket();
     Command armSetLow = new ArmGoLow();
+    Command armSetCamera = new ArmGoCamera();
 
 }

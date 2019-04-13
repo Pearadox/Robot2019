@@ -78,10 +78,17 @@ public class VisionHoldOnTarget extends Command {
 
       if(!Robot.limelight.targetExists()) output = 0;
 
-      double joystickOutput = -Robot.oi.joystick.getRawAxis(1);
+      double joystickDriverOutput = -Robot.oi.joystick.getRawAxis(1);
+      double joystickOperatorOutput = -Robot.oi.operator.getRawAxis(1);
 
       boolean reduce = Robot.oi.joystick.getRawButton(1);
-      if(reduce) joystickOutput *= 0.5;
+      boolean opOverride = Robot.oi.operator.getRawButton(1);
+
+      double joystickOutput = joystickDriverOutput;
+      if(opOverride) joystickOutput = joystickOperatorOutput * 0.5;
+      else {
+        joystickOutput = joystickDriverOutput * (reduce ? 0.5 : 1);
+      }
 
       Robot.drivetrain.drive(output+joystickOutput, -output+joystickOutput);
   }
