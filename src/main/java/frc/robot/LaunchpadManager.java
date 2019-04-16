@@ -3,12 +3,14 @@ package frc.robot;
 import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.autonomous.*;
 import frc.robot.commands.*;
 
 public class LaunchpadManager {
 
-    double watchdogTimerSeconds = 0.5;
+    double watchdogTimerSeconds = 1.0;
     final String tableName = "Launchpad";
     boolean btns[][] = new boolean[9][9];
     boolean presses[][] = new boolean[9][9];
@@ -71,11 +73,11 @@ public class LaunchpadManager {
     }
 
     public void teleopLoop() {
-        // if(btns[0][0] && !climberOpenOverride.isRunning()) climberOpenOverride.start();
-        // else if(!btns[0][0]) climberOpenOverride.cancel();
+        if(btns[0][0] && !climberOpenOverride.isRunning()) climberOpenOverride.start();
+        else if(!btns[0][0]) climberOpenOverride.cancel();
 
-        // if(btns[0][1] && !climberCloseOverride.isRunning()) climberCloseOverride.start();
-        // else if(!btns[0][1]) climberCloseOverride.cancel();
+        if(btns[0][1] && !climberCloseOverride.isRunning()) climberCloseOverride.start();
+        else if(!btns[0][1]) climberCloseOverride.cancel();
 
         if(btns[0][2] && !armResetZero.isRunning()) armResetZero.start();
         else if(!btns[0][2]) armResetZero.cancel();
@@ -84,11 +86,11 @@ public class LaunchpadManager {
 
         if(presses[0][7]) armUpGroup.start();
 
-        // if(btns[1][0] && !climberOpen.isRunning()) climberOpen.start();
-        // else if(!btns[1][0]) climberOpen.cancel();
+        if(btns[1][0] && !climberOpen.isRunning()) climberOpen.start();
+        else if(!btns[1][0]) climberOpen.cancel();
 
-        // if(btns[1][1] && !climberClose.isRunning()) climberClose.start();
-        // else if(!btns[1][1]) climberClose.cancel();
+        if(btns[1][1] && !climberClose.isRunning()) climberClose.start();
+        else if(!btns[1][1]) climberClose.cancel();
 
         if(btns[1][4] && !limelightAuto.isRunning()) limelightAuto.start();
         else if(!btns[1][4]) limelightAuto.cancel();
@@ -128,8 +130,20 @@ public class LaunchpadManager {
 
         if(presses[5][8]) armSetLow.start();
 
-        
+        if(btns[5][5] && !rightRocketBack.isRunning()) rightRocketBack.start();
+        else if(!btns[5][5]) rightRocketBack.cancel();
 
+        if(btns[6][5] && !rightRocketFront.isRunning()) rightRocketFront.start();
+        else if(!btns[6][5]) rightRocketFront.cancel();
+
+        if(btns[5][2] && !leftRocketBack.isRunning()) leftRocketBack.start();
+        else if(!btns[5][2]) leftRocketBack.cancel();
+
+        if(btns[6][2] && !leftRocketFront.isRunning()) leftRocketFront.start();
+        else if(!btns[6][2]) leftRocketFront.cancel();
+
+        // if(presses[6][8]) mothToggle2.start();
+        //make open and close buttons
         
     }
 
@@ -187,5 +201,10 @@ public class LaunchpadManager {
     Command armSetRocket = new ArmGoRocket();
     Command armSetLow = new ArmGoLow();
     Command armSetCamera = new ArmGoCamera();
+    Command mothToggle2 = new MothToggle2();
 
+    Command rightRocketBack= new PathLSRtoRR(2, false, 1);
+    Command rightRocketFront = new PathLSRtoRR(1, false, 1);
+    Command leftRocketBack = new PathLSRtoLR(2, false, 1);
+    Command leftRocketFront = new PathLSRtoLR(1, false, 1);
 }

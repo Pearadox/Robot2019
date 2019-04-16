@@ -14,9 +14,11 @@ public class VisionHatchPlacer extends CommandGroup {
   public VisionHatchPlacer() {
 
 
-    addSequential(new VisionTurnToTarget()); 
-    addSequential(new AutoVisionDrive(0,-.4,-.2, true));
-    addSequential(new DriveTimed(-.2,-.2,5));
+    // addSequential(new VisionTurnToTarget()); 
+    addSequential(new AutoVisionDrive(0,-.45,-.2, true));
+    addSequential(new DriveTimed_Hatch(-.35,-.35,.5));
+    addSequential(new DriveTimed(-.2,-.2,.18));
+    addSequential(new MothToggle());
   }
 
 }

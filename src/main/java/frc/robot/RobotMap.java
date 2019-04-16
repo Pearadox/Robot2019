@@ -60,4 +60,6 @@ public class RobotMap {
   public static int IntakeSolenoid2 = 4;
   public static int MothDoubleSolenoidForward = 3;
   public static int MothDoubleSolenoidReverse = 2;
+  public static int MothDoubleSolenoidForward2 = 6 ;
+  public static int MothDoubleSolenoidReverse2 = 7;
 }

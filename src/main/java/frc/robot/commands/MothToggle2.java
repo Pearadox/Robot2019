@@ -5,19 +5,34 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.autonomous;
+package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.commands.*;
+import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
 
-public class GroupLSRtoCR1 extends CommandGroup {
-  /**
-   * Add your docs here.
-   */
-  public GroupLSRtoCR1(boolean mirror) {
-    addSequential(new PathLSRtoCR1(mirror, 0));
-    addSequential(new AutoVisionDrive(0, -0.4, -.2));
-    addSequential(new DriveTimed(-.2,-.2,.18));
-    addSequential(new MothOpen());
+public class MothToggle2 extends Command {
+  public MothToggle2() {
+  }
+
+  @Override
+  protected void initialize() {
+    Robot.moth.toggle2();
+  }
+
+  @Override
+  protected void execute() {
+  }
+
+  @Override
+  protected boolean isFinished() {
+    return true;
+  }
+
+  @Override
+  protected void end() {
+  }
+
+  @Override
+  protected void interrupted() {
   }
 }

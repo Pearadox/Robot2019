@@ -19,18 +19,22 @@ import frc.robot.RobotMap;
  */
 public class Moth extends Subsystem {
   DoubleSolenoid dSolenoid07;
+  DoubleSolenoid dSolenoid08;
 
   public Moth(){
     dSolenoid07 = new DoubleSolenoid(RobotMap.MothDoubleSolenoidForward,RobotMap.MothDoubleSolenoidReverse);
+    dSolenoid08 = new DoubleSolenoid(RobotMap.MothDoubleSolenoidForward2,RobotMap.MothDoubleSolenoidReverse2);
   }
 
   public void open(){
     dSolenoid07.set(DoubleSolenoid.Value.kForward);
+    dSolenoid08.set(DoubleSolenoid.Value.kForward);
     
   }
 
   public void close(){
     dSolenoid07.set(DoubleSolenoid.Value.kReverse);
+    dSolenoid08.set(DoubleSolenoid.Value.kReverse);
     
   }
   public void toggle(){
@@ -38,8 +42,14 @@ public class Moth extends Subsystem {
       dSolenoid07.set(Value.kReverse);
     }
     else dSolenoid07.set(Value.kForward);
+ 
   }
-
+    public void toggle2(){
+  if (dSolenoid08.get()== Value.kForward ){
+    dSolenoid08.set(Value.kReverse);
+  }
+  else dSolenoid08.set(Value.kForward);
+ }
   @Override
   public void initDefaultCommand() {
   }

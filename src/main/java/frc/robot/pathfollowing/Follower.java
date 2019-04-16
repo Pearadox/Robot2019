@@ -31,13 +31,15 @@ public class Follower{
         try {
             readPath("CMRtoLSR1of2");
             readPath("CMRtoLSR2of2");
-            readPath("LSRtoRR11of2");
-            readPath("LSRtoRR21of2");
             readPath("LSRtoCML1of2");
             readPath("LSRtoCML2of2");
+            readPath("LSRtoRR1");
+            readPath("LSRtoRR11of2");
+            readPath("LSRtoRR2");
             readPath("LSRtoRR21of2");
             readPath("LSRtoRR22of2");
-            readPath("LSRtoRR2");
+            readPath("LSRtoLR1");
+            readPath("LSRtoLR2");
             readPath("CR1toCR2");
             readPath("LSRtoCR1");
             readPath("R2toCMR");
