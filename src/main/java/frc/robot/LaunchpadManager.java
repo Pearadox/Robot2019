@@ -130,6 +130,9 @@ public class LaunchpadManager {
 
         if(presses[5][8]) armSetLow.start();
 
+        if(btns[6][4] && !rightCargo1.isRunning()) rightCargo1.start();
+        else if(!btns[6][4]) rightCargo1.cancel();
+
         if(btns[5][5] && !rightRocketBack.isRunning()) rightRocketBack.start();
         else if(!btns[5][5]) rightRocketBack.cancel();
 
@@ -141,10 +144,6 @@ public class LaunchpadManager {
 
         if(btns[6][2] && !leftRocketFront.isRunning()) leftRocketFront.start();
         else if(!btns[6][2]) leftRocketFront.cancel();
-
-        // if(presses[6][8]) mothToggle2.start();
-        //make open and close buttons
-        
     }
 
     /*
@@ -203,6 +202,7 @@ public class LaunchpadManager {
     Command armSetCamera = new ArmGoCamera();
     Command mothToggle2 = new MothToggle2();
 
+    Command rightCargo1 = new PathLSRtoCR1(false, 0);
     Command rightRocketBack= new PathLSRtoRR(2, false, 1);
     Command rightRocketFront = new PathLSRtoRR(1, false, 1);
     Command leftRocketBack = new PathLSRtoLR(2, false, 1);

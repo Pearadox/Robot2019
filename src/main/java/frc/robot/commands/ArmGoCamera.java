@@ -12,6 +12,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class ArmGoCamera extends CommandGroup {
   
   public ArmGoCamera() {
-    addSequential(new ArmSetAngle(79));
+    addSequential(new ArmSetAngle(82.5));
   }
 }
