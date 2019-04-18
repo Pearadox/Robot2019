@@ -19,12 +19,16 @@ public class AutonomousLtoCML extends CommandGroup {
     
     addSequential(new MothClose());
     addSequential(new Follow("R"+startingLevel+"toCMR", true, mirror, startingLevel==1 ? .6 : .8));
-    addSequential(new AutoVisionDrive(1.5, -0.45, -.25));
+    addSequential(new AutoVisionDrive(0, -0.35, -.2));
+    addSequential(new DriveTimed(-.2,-.2,.18));
     addSequential(new MothOpen());
     
     addSequential(new PathCMLtoLSL(mirror, .5));
-    addSequential(new AutoVisionDrive(1.5, -.4, -.2));
-    addSequential(new MothClose());
+    addSequential(new AutoVisionDrive(0, -0.35, -.2));
+    addSequential(new DriveTimed(-.2,-.2,.18));
+    addSequential(new MothOpen());
     addSequential(new Delay(.3));
+
+    addSequential(new GroupLSRtoCML(true));
   }
 }
