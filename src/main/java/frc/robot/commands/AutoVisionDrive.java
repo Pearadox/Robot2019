@@ -33,13 +33,13 @@ public class AutoVisionDrive extends Command {
 
   double offset = VisionHoldOnTarget.offset;  // degrees, positive is to right, negative to left
   double finishTime, speed, finishSpeed;
-  boolean stopIfNoTarget;
 
   boolean sawTarget;
   boolean lostTarget;
   boolean timeoutSet;
+  boolean useY;
 
-  public AutoVisionDrive(double finishTime, double speed, double finishSpeed, boolean stopIfNoTarget) {
+  public AutoVisionDrive(double finishTime, double speed, double finishSpeed, boolean useY) {
     requires(Robot.drivetrain);
     if (!Preferences.getInstance().containsKey("VisionHold kp")){
       Preferences.getInstance().putDouble("VisionHold kp", kp);
@@ -52,11 +52,11 @@ public class AutoVisionDrive extends Command {
     this.speed = speed;
     this.finishSpeed = finishSpeed;
     this.timeoutSet = false;
-    this.stopIfNoTarget = stopIfNoTarget;
+    this.useY = useY;
   }
 
   public AutoVisionDrive(double finishTime, double speed, double finishSpeed) {
-    this(finishTime, speed, finishSpeed, false);
+    this(finishTime,speed, finishSpeed, false);
   }
 
   @Override
@@ -74,7 +74,7 @@ public class AutoVisionDrive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
+    Robot.limelight.lightOn();
     if(Robot.limelight.targetExists())  sawTarget = true;
     else if(sawTarget && !Robot.limelight.targetExists()) lostTarget = true;
 
@@ -108,9 +108,9 @@ public class AutoVisionDrive extends Command {
     }
   }
   
-  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    if (useY && Robot.limelight.getY() > 0) return true;
     if(timeoutSet && isTimedOut()) return true;
     else return false;
   }
@@ -119,7 +119,6 @@ public class AutoVisionDrive extends Command {
   @Override
   protected void end() {
     Robot.drivetrain.stop();
-    Robot.limelight.lightOff();
   }
 
   // Called when another command which requires one or more of the same

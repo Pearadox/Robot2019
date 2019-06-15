@@ -61,6 +61,7 @@ public class VisionHoldOnTarget extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+      Robot.limelight.lightOn();
 
       double getX = Robot.limelight.getX() - offset;
 
@@ -103,7 +104,6 @@ public class VisionHoldOnTarget extends Command {
   @Override
   protected void end() {
     Robot.drivetrain.stop();
-    Robot.limelight.lightOff();
   }
 
   // Called when another command which requires one or more of the same

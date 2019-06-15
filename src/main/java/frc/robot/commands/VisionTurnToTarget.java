@@ -57,6 +57,8 @@ public class VisionTurnToTarget extends Command {
 
     reachedTarget = false;
     inTeleop = true;
+
+    Robot.limelight.lightOn();
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -115,6 +117,6 @@ public class VisionTurnToTarget extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.drivetrain.stop();
+    end();
   }
 }

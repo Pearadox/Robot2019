@@ -7,14 +7,33 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
 
-public class VisionHatchPlacer extends CommandGroup {
-
-  public VisionHatchPlacer() {
-    addSequential(new AutoVisionDrive(0,-.35,-.2));
-    addSequential(new DriveTimed(-.2,-.2,.1));
-    addSequential(new MothToggle());
+public class LimelightToggleLight extends Command {
+  public LimelightToggleLight() {
   }
 
+  @Override
+  protected void initialize() {
+    Robot.limelight.lightToggle();
+  }
+
+  @Override
+  protected void execute() {
+  }
+
+  @Override
+  protected boolean isFinished() {
+    return true;
+  }
+
+  @Override
+  protected void end() {
+  }
+
+  @Override
+  protected void interrupted() {
+    end();
+  }
 }

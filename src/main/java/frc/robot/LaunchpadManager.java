@@ -144,6 +144,18 @@ public class LaunchpadManager {
 
         if(btns[6][2] && !leftRocketFront.isRunning()) leftRocketFront.start();
         else if(!btns[6][2]) leftRocketFront.cancel();
+
+        if(presses[7][1]) LimelightToggleLED.start();
+
+        // if(presses[8][0]) AutonomousRtoCMRtoCR.start();
+
+        // if(presses[8][1]) AutonomousRtoCMRtoCML.start();
+
+        // if(presses[8][2]) AutonomousRtoCMRtoRR.start();
+
+        // if(presses[8][3]) GroupLSRtoCR1.start();
+
+        // if(presses[8][4]) GroupLSRtoRR2.start();
     }
 
     /*
@@ -165,7 +177,7 @@ public class LaunchpadManager {
     2:4 outtake both  --  while
     2:5 intake both  --  while
     2:6 intake down  --  when
-    2:7 intake up  --  when
+    2:7 intake up  --  when[]
     2:8 intake toggle  --  when
     3:5 arm set camera -- when
     3:6 arm manual down  --  while
@@ -207,4 +219,13 @@ public class LaunchpadManager {
     Command rightRocketFront = new PathLSRtoRR(1, false, 1);
     Command leftRocketBack = new PathLSRtoLR(2, false, 1);
     Command leftRocketFront = new PathLSRtoLR(1, false, 1);
+
+    Command LimelightToggleLED = new LimelightToggleLight();
+
+    Command AutonomousRtoCMRtoCR = new AutonomousRtoCMRtoCR(1, false);
+    Command AutonomousRtoCMRtoCML = new AutonomousRtoCMRtoCML(1, false);
+    Command AutonomousRtoCMRtoRR = new AutonomousRtoCMRtoRR(1, false);
+
+    Command GroupLSRtoCR1 = new GroupLSRtoCR1(false);
+    Command GroupLSRtoRR2 = new GroupLSRtoRR2(false);
 }

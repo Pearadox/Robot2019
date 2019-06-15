@@ -93,6 +93,7 @@ public class Robot extends TimedRobot {
     if(moth != null) moth.open();
 
     SmartDashboard.putData("Test Motors", new TestMotors(1));
+    SmartDashboard.putData("Limelight toggle LEDs", new LimelightToggleLight());
     SmartDashboard.putData("Gyro", gyro.navx);
     Preferences.getInstance().putDouble("AutonomousDelay", 0);
 
@@ -189,8 +190,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-
-    limelight.lightOn();
 
     boolean reverseBtn = oi.joystick.getRawButton(2);
     if(reverseBtn && !prevReverse) {

@@ -72,6 +72,22 @@ public class Limelight extends Subsystem {
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
   }
 
+  public void lightToggle() {
+    double currentLEDMode = NetworkTableInstance.getDefault()
+                              .getTable("limelight").getEntry("ledMode").getDouble(-1);
+    if(currentLEDMode == -1) {
+      // lol ur bad
+    }
+    else if(currentLEDMode == 1) {
+      // is currently off
+      lightOn();
+    }
+    else if(currentLEDMode == 3) {
+      // is currently on
+      lightOff();
+    }
+  }
+
   public ArrayList<ArrayList<TPoint>> getTrajectory() {
 
     double theta = 90 - getAngle() - 2 * getX();
