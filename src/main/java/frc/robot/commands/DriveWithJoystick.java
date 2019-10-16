@@ -9,8 +9,11 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.*;
+import frc.robot.Controllers;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
@@ -50,10 +53,12 @@ public class DriveWithJoystick extends Command {
     
     boolean operatorOverride = Robot.oi.operator.getRawButton(1);
 
-    double throttle = operatorOverride ? Robot.oi.operator.getRawAxis(1) : Robot.oi.joystick.getRawAxis(1);
-    double twist = operatorOverride ? Robot.oi.operator.getRawAxis(2) : Robot.oi.joystick.getRawAxis(2);
+    double throttle = operatorOverride ? Robot.oi.operator.getRawAxis(1) : Robot.oi.driveControllerType == Controllers.JOYSTICK 
+    ? Robot.oi.driver.getRawAxis(1) : ((XboxController) Robot.oi.driver).getTriggerAxis(Hand.kRight);
+    double twist = operatorOverride ? Robot.oi.operator.getRawAxis(2) : Robot.oi.driveControllerType == Controllers.JOYSTICK
+    ? Robot.oi.driver.getRawAxis(2) : -Robot.oi.driver.getRawAxis(1);
     boolean reverse = Robot.reverseDrivetrain;
-    boolean reduceDriver = Robot.oi.joystick.getRawButton(1);
+    boolean reduceDriver = Robot.oi.driver.getRawButton(1);
     boolean reduceOperator = Robot.oi.operator.getRawButton(1);
 
     if(Math.abs(throttle)<.15) 

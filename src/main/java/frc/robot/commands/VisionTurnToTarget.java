@@ -67,8 +67,8 @@ public class VisionTurnToTarget extends Command {
 
     if(Robot.limelight.targetExists()) inTeleop = false;
     if(inTeleop) {
-      double joystickForward = Math.min(Robot.oi.joystick.getRawAxis(1), .4);
-      double joystickRotate = Math.min(Robot.oi.joystick.getRawAxis(2), .6);
+      double joystickForward = Math.min(Robot.oi.driver.getRawAxis(1), .4);
+      double joystickRotate = Math.min(Robot.oi.driver.getRawAxis(2), .6);
       Robot.drivetrain.arcadeDrive(joystickForward, joystickRotate);
     }
     else {

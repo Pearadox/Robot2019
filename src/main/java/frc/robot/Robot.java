@@ -30,7 +30,10 @@ import frc.robot.commands.*;
 public class Robot extends TimedRobot {
   public static Drivetrain drivetrain;
   public static IMU gyro;
+
+  SendableChooser<Controllers> controllerChooser;
   public static OI oi;
+
   public static Follower follower;
   public static JaciPathfinder pathfinder;
   public static Preferences prefs;
@@ -56,7 +59,7 @@ public class Robot extends TimedRobot {
   CvSink cvsink2 = new CvSink("cam2cv");
   boolean prevReverse = false;
 
-  SendableChooser autoChooser;
+  SendableChooser<Command> autoChooser;
   Command autonomousCommand;
 
   @Override
@@ -76,7 +79,11 @@ public class Robot extends TimedRobot {
     box = new Box();
     launchpad = new LaunchpadManager();
 
-    oi = new OI();
+    controllerChooser = new SendableChooser<>();
+    controllerChooser.setDefaultOption("Joystick", Controllers.JOYSTICK);
+    controllerChooser.addOption("XBox Controller", Controllers.XBOX);
+
+    oi = new OI(controllerChooser.getSelected());
 
     compressor.start();
 
@@ -97,15 +104,15 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Gyro", gyro.navx);
     Preferences.getInstance().putDouble("AutonomousDelay", 0);
 
-    autoChooser = new SendableChooser();
-    autoChooser.addDefault("Default", new AutonomousDefault());
-    autoChooser.addObject("Right L1 --> CMR --> CML", new AutonomousRtoCMRtoCML(1, false));
-    autoChooser.addObject("Right L1 --> CMR --> CR", new AutonomousRtoCMRtoCR(1, false));
-    autoChooser.addObject("Right L1 --> CMR --> RR", new AutonomousRtoCMRtoRR(1, false));
-    autoChooser.addObject("Far Right L1 --> Back Rocket", new AutonomousRtoRRtoRR(1, false));
-    autoChooser.addObject("Right L2 --> CMR --> CML", new AutonomousRtoCMRtoCML(2, false));
-    autoChooser.addObject("Left L1  --> CML", new AutonomousLtoCML(1, false));
-    autoChooser.addObject("Test", new AutonomousTest());
+    autoChooser = new SendableChooser<>();
+    autoChooser.setDefaultOption("Default", new AutonomousDefault());
+    autoChooser.addOption("Right L1 --> CMR --> CML", new AutonomousRtoCMRtoCML(1, false));
+    autoChooser.addOption("Right L1 --> CMR --> CR", new AutonomousRtoCMRtoCR(1, false));
+    autoChooser.addOption("Right L1 --> CMR --> RR", new AutonomousRtoCMRtoRR(1, false));
+    autoChooser.addOption("Far Right L1 --> Back Rocket", new AutonomousRtoRRtoRR(1, false));
+    autoChooser.addOption("Right L2 --> CMR --> CML", new AutonomousRtoCMRtoCML(2, false));
+    autoChooser.addOption("Left L1  --> CML", new AutonomousLtoCML(1, false));
+    autoChooser.addOption("Test", new AutonomousTest());
     SmartDashboard.putData("Autonomous Chooser", autoChooser);
   }
 
@@ -169,7 +176,7 @@ public class Robot extends TimedRobot {
 
     limelight.lightOn();
     
-    if(oi.joystick.getRawButton(2) || launchpad.btns[0][4]) stopAutonomous();
+    if(oi.driver.getRawButton(2) || launchpad.btns[0][4]) stopAutonomous();
 
     launchpad.teleopLoop();
   }
@@ -191,7 +198,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
 
-    boolean reverseBtn = oi.joystick.getRawButton(2);
+    boolean reverseBtn = oi.driver.getRawButton(2);
     if(reverseBtn && !prevReverse) {
       // reverseDrivetrain = !reverseDrivetrain;
     }

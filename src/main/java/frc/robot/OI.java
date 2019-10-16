@@ -9,84 +9,106 @@ package frc.robot;
 
 import frc.robot.commands.*;
 import frc.robot.subsystems.Arm;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.buttons.Trigger;;
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-	
-	public Joystick joystick = new Joystick(0);
+	enum ControllerMode {
+		CARGO,
+		HATCH
+	}
+
+	public final Controllers driveControllerType;
+
+	public GenericHID driver = new Joystick(0);
 	public Joystick operator = new Joystick(1);
 
-	JoystickButton btn1 = new JoystickButton(joystick, 1);
-	JoystickButton btn2 = new JoystickButton(joystick, 2);
-	JoystickButton btn3 = new JoystickButton(joystick, 3);
-	JoystickButton btn4 = new JoystickButton(joystick, 4);
-	JoystickButton btn5 = new JoystickButton(joystick, 5);
-	JoystickButton btn6 = new JoystickButton(joystick, 6);
-	JoystickButton btn7 = new JoystickButton(joystick, 7);
-	JoystickButton btn8 = new JoystickButton(joystick, 8);
-	JoystickButton btn9 = new JoystickButton(joystick, 9);
-	JoystickButton btn10 = new JoystickButton(joystick, 10);
-	JoystickButton btn11 = new JoystickButton(joystick, 11);
-	JoystickButton btn12 = new JoystickButton(joystick, 12);
+	Trigger drvbtn1 = new JoystickButton(driver, 1);
+	Trigger drvbtn2 = new JoystickButton(driver, 2);
+	Trigger drvbtn3 = new JoystickButton(driver, 3);
+	Trigger drvbtn4 = new JoystickButton(driver, 4);
+	Trigger drvbtn5 = new JoystickButton(driver, 5);
+	Trigger drvbtn6 = new JoystickButton(driver, 6);
+	Trigger drvbtn7 = new JoystickButton(driver, 7);
+	Trigger drvbtn8 = new JoystickButton(driver, 8);
+	Trigger drvbtn9 = new JoystickButton(driver, 9);
+	Trigger drvbtn10 = new JoystickButton(driver, 10);
+	Trigger drvbtn11 = new JoystickButton(driver, 11);
+	Trigger drvbtn12 = new JoystickButton(driver, 12);
 
-	JoystickButton opbtn1 = new JoystickButton(operator, 1);
-	JoystickButton opbtn2 = new JoystickButton(operator, 2);
-	JoystickButton opbtn3 = new JoystickButton(operator, 3);
-	JoystickButton opbtn4 = new JoystickButton(operator, 4);
-	JoystickButton opbtn5 = new JoystickButton(operator, 5);
-	JoystickButton opbtn6 = new JoystickButton(operator, 6);
-	JoystickButton opbtn7 = new JoystickButton(operator, 7);
-	JoystickButton opbtn8 = new JoystickButton(operator, 8);
-	JoystickButton opbtn9 = new JoystickButton(operator, 9);
-	JoystickButton opbtn10 = new JoystickButton(operator, 10);
-	JoystickButton opbtn11 = new JoystickButton(operator, 11);
-	JoystickButton opbtn12 = new JoystickButton(operator, 12);
+	Trigger opbtn1 = new JoystickButton(operator, 1);
+	Trigger opbtn2 = new JoystickButton(operator, 2);
+	Trigger opbtn3 = new JoystickButton(operator, 3);
+	Trigger opbtn4 = new JoystickButton(operator, 4);
+	Trigger opbtn5 = new JoystickButton(operator, 5);
+	Trigger opbtn6 = new JoystickButton(operator, 6);
+	Trigger opbtn7 = new JoystickButton(operator, 7);
+	Trigger opbtn8 = new JoystickButton(operator, 8);
+	Trigger opbtn9 = new JoystickButton(operator, 9);
+	Trigger opbtn10 = new JoystickButton(operator, 10);
+	Trigger opbtn11 = new JoystickButton(operator, 11);
+	Trigger opbtn12 = new JoystickButton(operator, 12);
 	
-	public OI() {
+	public OI(Controllers driverType) {
+
+		this.driveControllerType = driverType;
+
+		if (driverType == Controllers.JOYSTICK) {
+			driver = new Joystick(0);
+
+			drvbtn1 = new JoystickButton(driver, 1);
+			drvbtn2 = new JoystickButton(driver, 2);
+			drvbtn3 = new JoystickButton(driver, 3);
+			drvbtn4 = new JoystickButton(driver, 4);
+			drvbtn5 = new JoystickButton(driver, 5);
+			drvbtn6 = new JoystickButton(driver, 6);
+			drvbtn7 = new JoystickButton(driver, 7);
+			drvbtn8 = new JoystickButton(driver, 8);
+			drvbtn9 = new JoystickButton(driver, 9);
+			drvbtn10 = new JoystickButton(driver, 10);
+			drvbtn11 = new JoystickButton(driver, 11);
+			drvbtn12 = new JoystickButton(driver, 12);
+		}
+		if (driverType == Controllers.XBOX) {
+			driver = new XboxController(0);
+
+			drvbtn1 = new JoystickButton(driver, 1);
+		}
 		
-		btn2.whileHeld(new VisionHatchPlacer());
-
-		btn3.whenPressed(new ArmGoLow());
-		btn4.whenPressed(new ArmGoRocket());
-		btn5.whenPressed(new ArmGoCargo());
-
-		btn6.whenPressed(new IntakeToggle());
-
-		btn7.whenPressed(new DriverLowerGroup(false));
-		btn8.whenPressed(new DriverRaiseGroup());
-
-		btn9.whileHeld(new OuttakeBoth());
-		btn10.whileHeld(new IntakeBoth(false));
-		
-		btn11.whenPressed(new MothToggle());
-		
-		btn12.whileHeld(new VisionHoldOnTarget());
+		drvbtn2.whileActive(new VisionHatchPlacer());
+		drvbtn3.whenActive(new ArmGoLow());
+		drvbtn4.whenActive(new ArmGoRocket());
+		drvbtn5.whenActive(new ArmGoCargo());
+		drvbtn6.whenActive(new IntakeToggle());
+		drvbtn7.whenActive(new DriverLowerGroup(false));
+		drvbtn8.whenActive(new DriverRaiseGroup());
+		drvbtn9.whileActive(new OuttakeBoth());
+		drvbtn10.whileActive(new IntakeBoth(false));
+		drvbtn11.whenActive(new MothToggle());
+		drvbtn12.whileActive(new VisionHoldOnTarget());
 
 		/*============================
 		===== OPERATOR CONTROLS ======
 		==============================*/
 
-		opbtn2.whileHeld(new ArmZeroReset());
-
-		opbtn3.whenPressed(new ArmGoLow());
-		opbtn4.whenPressed(new ArmGoCargo());
-		
-		opbtn5.whenPressed(new DriverLowerGroup(false));
-		opbtn6.whenPressed(new DriverRaiseGroup());
-
-		opbtn7.whileHeld(new ArmManualDown());
-		opbtn8.whileHeld(new ArmManualUp());
-
-		opbtn9.whileHeld(new OuttakeBoth());
-		opbtn10.whenPressed(new IntakeToggle());
-
-		opbtn11.whenPressed(new ClimberSet(0.5,.3));  // open
-		opbtn11.whenPressed(new ClimbGroup());
-		opbtn12.whileHeld(new ClimberSet(-0.5,0));  // close
+		opbtn2.whileActive(new ArmZeroReset());
+		opbtn3.whenActive(new ArmGoLow());
+		opbtn4.whenActive(new ArmGoCargo());
+		opbtn5.whenActive(new DriverLowerGroup(false));
+		opbtn6.whenActive(new DriverRaiseGroup());
+		opbtn7.whileActive(new ArmManualDown());
+		opbtn8.whileActive(new ArmManualUp());
+		opbtn9.whileActive(new OuttakeBoth());
+		opbtn10.whenActive(new IntakeToggle());
+		opbtn11.whenActive(new ClimberSet(0.5,.3));  // open
+		opbtn11.whenActive(new ClimbGroup());
+		opbtn12.whileActive(new ClimberSet(-0.5,0));  // close
 	}
 }
