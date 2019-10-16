@@ -9,6 +9,7 @@ package frc.robot;
 
 import frc.robot.commands.*;
 import frc.robot.subsystems.Arm;
+import frc.robot.utilities.ConditionalTrigger;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -26,6 +27,7 @@ public class OI {
 	}
 
 	public final Controllers driveControllerType;
+	private ControllerMode currentMode;
 
 	public GenericHID driver = new Joystick(0);
 	public Joystick operator = new Joystick(1);
@@ -55,6 +57,8 @@ public class OI {
 	Trigger opbtn10 = new JoystickButton(operator, 10);
 	Trigger opbtn11 = new JoystickButton(operator, 11);
 	Trigger opbtn12 = new JoystickButton(operator, 12);
+
+	Trigger xboxDPad;
 	
 	public OI(Controllers driverType) {
 
@@ -75,24 +79,44 @@ public class OI {
 			drvbtn10 = new JoystickButton(driver, 10);
 			drvbtn11 = new JoystickButton(driver, 11);
 			drvbtn12 = new JoystickButton(driver, 12);
+
+			drvbtn2.whileActive(new VisionHatchPlacer());
+			drvbtn3.whenActive(new ArmGoLow());
+			drvbtn4.whenActive(new ArmGoRocket());
+			drvbtn5.whenActive(new ArmGoCargo());
+			drvbtn6.whenActive(new IntakeToggle());
+			drvbtn7.whenActive(new DriverLowerGroup(false));
+			drvbtn8.whenActive(new DriverRaiseGroup());
+			drvbtn9.whileActive(new OuttakeBoth());
+			drvbtn10.whileActive(new IntakeBoth(false));
+			drvbtn11.whenActive(new MothToggle());
+			drvbtn12.whileActive(new VisionHoldOnTarget());
 		}
 		if (driverType == Controllers.XBOX) {
+			this.currentMode = ControllerMode.HATCH;
 			driver = new XboxController(0);
 
-			drvbtn1 = new JoystickButton(driver, 1);
+			drvbtn1 = new JoystickButton(driver, 1); // A
+			drvbtn2 = new JoystickButton(driver, 2); // B
+			drvbtn3 = new JoystickButton(driver, 3); // X
+			drvbtn4 = new JoystickButton(driver, 4); // Y
+			drvbtn5 = new JoystickButton(driver, 5); // LB
+			drvbtn6 = new JoystickButton(driver, 6); // RB
+			drvbtn7 = new JoystickButton(driver, 7); // Back
+			drvbtn8 = new JoystickButton(driver, 8); // Start
+			drvbtn9 = new ConditionalTrigger(driver, 2, () -> currentMode == ControllerMode.HATCH); // LT
+			drvbtn10 = new ConditionalTrigger(driver, 3, () -> currentMode == ControllerMode.HATCH); // RT
+			drvbtn11 = new ConditionalTrigger(driver, 2, () -> currentMode == ControllerMode.CARGO); // LT
+			drvbtn12 = new ConditionalTrigger(driver, 3, () -> currentMode == ControllerMode.CARGO); // RT
+			xboxDPad = new Trigger() {
+				@Override
+				public boolean get() {
+					return driver.getPOV() != -1;
+				}
+			};
 		}
 		
-		drvbtn2.whileActive(new VisionHatchPlacer());
-		drvbtn3.whenActive(new ArmGoLow());
-		drvbtn4.whenActive(new ArmGoRocket());
-		drvbtn5.whenActive(new ArmGoCargo());
-		drvbtn6.whenActive(new IntakeToggle());
-		drvbtn7.whenActive(new DriverLowerGroup(false));
-		drvbtn8.whenActive(new DriverRaiseGroup());
-		drvbtn9.whileActive(new OuttakeBoth());
-		drvbtn10.whileActive(new IntakeBoth(false));
-		drvbtn11.whenActive(new MothToggle());
-		drvbtn12.whileActive(new VisionHoldOnTarget());
+		
 
 		/*============================
 		===== OPERATOR CONTROLS ======
