@@ -8,13 +8,15 @@
 package frc.robot;
 
 import frc.robot.commands.*;
-import frc.robot.subsystems.Arm;
+import frc.robot.utilities.ConditionalButton;
 import frc.robot.utilities.ConditionalTrigger;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.buttons.Trigger;;
+import edu.wpi.first.wpilibj.buttons.Trigger;
+import edu.wpi.first.wpilibj.command.ConditionalCommand;
+import edu.wpi.first.wpilibj.command.InstantCommand;;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -100,10 +102,10 @@ public class OI {
 			drvbtn2 = new JoystickButton(driver, 2); // B
 			drvbtn3 = new JoystickButton(driver, 3); // X
 			drvbtn4 = new JoystickButton(driver, 4); // Y
-			drvbtn5 = new JoystickButton(driver, 5); // LB
-			drvbtn6 = new JoystickButton(driver, 6); // RB
-			drvbtn7 = new JoystickButton(driver, 7); // Back
-			drvbtn8 = new JoystickButton(driver, 8); // Start
+			drvbtn5 = new ConditionalButton(driver, 5, () -> currentMode == ControllerMode.HATCH); // LB
+			drvbtn6 = new ConditionalButton(driver, 6, () -> currentMode == ControllerMode.HATCH); // RB
+			drvbtn7 = new ConditionalButton(driver, 5, () -> currentMode == ControllerMode.CARGO); // LB
+			drvbtn8 = new ConditionalButton(driver, 6, () -> currentMode == ControllerMode.CARGO); // RB
 			drvbtn9 = new ConditionalTrigger(driver, 2, () -> currentMode == ControllerMode.HATCH); // LT
 			drvbtn10 = new ConditionalTrigger(driver, 3, () -> currentMode == ControllerMode.HATCH); // RT
 			drvbtn11 = new ConditionalTrigger(driver, 2, () -> currentMode == ControllerMode.CARGO); // LT
@@ -114,6 +116,26 @@ public class OI {
 					return driver.getPOV() != -1;
 				}
 			};
+			xboxDPad.whenActive(new ConditionalCommand(
+				new InstantCommand(() -> currentMode = ControllerMode.CARGO),
+				new InstantCommand(() -> currentMode = ControllerMode.HATCH)
+				) {
+			
+				@Override
+				protected boolean condition() {
+					return currentMode == ControllerMode.HATCH;
+				}
+			});
+			drvbtn1.whenActive(new ArmGoLow());
+			drvbtn2.whenActive(new ArmGoRocket());
+			drvbtn3.whenActive(new IntakeToggle());
+			drvbtn4.whenActive(new ArmGoCargo());
+			drvbtn5.whileActive(new VisionHatchPlacer());
+			drvbtn7.whileActive(new IntakeBoth(false));
+			drvbtn8.whenActive(new DriverLowerGroup(false));
+			drvbtn10.whenActive(new MothToggle());
+			drvbtn11.whenActive(new OuttakeBoth());
+			drvbtn12.whenActive(new DriverRaiseGroup());
 		}
 		
 		

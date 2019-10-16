@@ -54,11 +54,13 @@ public class DriveWithJoystick extends Command {
     boolean operatorOverride = Robot.oi.operator.getRawButton(1);
 
     double throttle = operatorOverride ? Robot.oi.operator.getRawAxis(1) : Robot.oi.driveControllerType == Controllers.JOYSTICK 
-    ? Robot.oi.driver.getRawAxis(1) : ((XboxController) Robot.oi.driver).getTriggerAxis(Hand.kRight);
+    ? Robot.oi.driver.getRawAxis(1) : -Robot.oi.driver.getRawAxis(1);
     double twist = operatorOverride ? Robot.oi.operator.getRawAxis(2) : Robot.oi.driveControllerType == Controllers.JOYSTICK
-    ? Robot.oi.driver.getRawAxis(2) : -Robot.oi.driver.getRawAxis(1);
+    ? Robot.oi.driver.getRawAxis(2) : -Robot.oi.driver.getRawAxis(4);
     boolean reverse = Robot.reverseDrivetrain;
-    boolean reduceDriver = Robot.oi.driver.getRawButton(1);
+    boolean reduceDriver;
+    if (Robot.oi.driveControllerType == Controllers.JOYSTICK) { reduceDriver = Robot.oi.driver.getRawButton(1); }
+    else { reduceDriver = false; }
     boolean reduceOperator = Robot.oi.operator.getRawButton(1);
 
     if(Math.abs(throttle)<.15) 
