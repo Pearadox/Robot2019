@@ -125,17 +125,18 @@ public class OI {
 				protected boolean condition() {
 					return currentMode == ControllerMode.HATCH;
 				}
-			});
-			drvbtn1.whenActive(new ArmGoLow());
-			drvbtn2.whenActive(new ArmGoRocket());
-			drvbtn3.whenActive(new IntakeToggle());
-			drvbtn4.whenActive(new ArmGoCargo());
-			drvbtn5.whileActive(new VisionHatchPlacer());
-			drvbtn7.whileActive(new IntakeBoth(false));
-			drvbtn8.whenActive(new DriverLowerGroup(false));
-			drvbtn10.whenActive(new MothToggle());
-			drvbtn11.whenActive(new OuttakeBoth());
-			drvbtn12.whenActive(new DriverRaiseGroup());
+			}); // DPad (Any Button) - Switches Mode
+			drvbtn1.whenActive(new ArmGoLow()); // A - Arm to low Height
+			drvbtn2.whenActive(new ArmGoRocket()); // B - Arm to Rocket Height
+			drvbtn3.whenActive(new IntakeToggle()); // X - Toggle Intake Raise/Lower
+			drvbtn4.whenActive(new ArmGoCargo()); // Y - Arm to Cargo Height
+			drvbtn5.whileActive(new VisionHatchPlacer()); // LB (Hatch Mode) - Auto Hatch Placer using vision
+			drvbtn7.whileActive(new IntakeBoth(false)); // LB (Cargo Mode) - Intake Cargo
+			drvbtn8.whenActive(new DriverLowerGroup(false)); // RB (Cargo Mode) - Lower Arm/Intake
+			drvbtn9.whileActive(new VisionHoldOnTarget()); // LT (Hatch Mode) - Limelight Thing?
+			drvbtn10.whenActive(new MothToggle()); // RT (Hatch Mode) - Toggle Moth Open/Closed
+			drvbtn11.whenActive(new OuttakeBoth()); // LT (Cargo Mode) - Outtake Cargo
+			drvbtn12.whenActive(new DriverRaiseGroup()); // RT (Cargo Mode) - Raise Arm/Intake
 		}
 		
 		

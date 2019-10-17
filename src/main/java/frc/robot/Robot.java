@@ -115,7 +115,6 @@ public class Robot extends TimedRobot {
     autoChooser.addOption("Test", new AutonomousTest());
     SmartDashboard.putData("Autonomous Chooser", autoChooser);
   }
-
   
   double start = 0;
   int brownoutCounter = 0;
