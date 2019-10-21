@@ -8,19 +8,14 @@
 package frc.robot.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.commands.DriveTimed;
-import frc.robot.commands.DriveForward;
-import frc.robot.commands.Follow;
-import frc.robot.commands.TurnAbsolute;
+import frc.robot.commands.*;
 
-public class PathCMRtoLSR extends CommandGroup {
+public class PathR1toCMR extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public PathCMRtoLSR(boolean mirror, double cutoffPercentage) {
-    addSequential(new Follow("CMRtoLSR1of2", false, mirror));
-    addSequential(new Follow("CMRtoLSR2of2", true, mirror, cutoffPercentage));
-    //addSequential(new Follow("2019CMRtoM", false, mirror));
-    //addSequential(new Follow("2019MtoLSR", true, mirror, cutoffPercentage));
+  public PathR1toCMR(boolean mirror, double cutoffPercentage) {
+    addSequential(new Follow("R1toCMR", false, mirror));
+    //addSequential(new Follow("LSRtoCML2of2", true, mirror, cutoffPercentage));
   }
 }

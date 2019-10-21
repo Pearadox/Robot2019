@@ -1,6 +1,6 @@
 package frc.robot.autonomous;
 
-import com.team319.follower.*;
+// import com.team319.follower.*;
 import edu.wpi.first.wpilibj.command.*;
 import frc.robot.*;
 import frc.robot.commands.*;
@@ -10,6 +10,6 @@ public class AutonomousDefault extends CommandGroup{
 
     public AutonomousDefault() {
         addSequential(new MothClose());
-    }  
+    }   
 
 }

@@ -53,6 +53,12 @@ public class Follower{
             readPath("RR2toLSR1of2");
             readPath("RR2toLSR2of2");
             readPath("LSRBackout");
+            readPath("2019RtoCMR");
+            readPath("2019CMRtoM");
+            readPath("2019MtoLSR");
+            readPath("LSRtoCML");
+            readPath("RtoCMR");
+            
 
             readPath("distanceCalibration");
             readPath("turnCalibration");

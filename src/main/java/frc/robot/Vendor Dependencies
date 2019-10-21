@@ -1,2 +1,2 @@
 Pathfinder: https://dev.imjac.in/maven/jaci/pathfinder/PathfinderOLD-latest.json
-    Note: add "compile pathfinder()" to dependencies in build.gradle
+Note: add "compile pathfinder()" to dependencies in build.gradle
