@@ -7,16 +7,31 @@
 
 package frc.robot;
 
-import frc.robot.commands.*;
-import frc.robot.utilities.ConditionalButton;
-import frc.robot.utilities.ConditionalTrigger;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
-import edu.wpi.first.wpilibj.command.InstantCommand;;
+import edu.wpi.first.wpilibj.command.InstantCommand;
+import frc.robot.commands.ArmGoCargo;
+import frc.robot.commands.ArmGoLow;
+import frc.robot.commands.ArmGoRocket;
+import frc.robot.commands.ArmManualDown;
+import frc.robot.commands.ArmManualUp;
+import frc.robot.commands.ArmZeroReset;
+import frc.robot.commands.ClimbGroup;
+import frc.robot.commands.ClimberSet;
+import frc.robot.commands.DriverLowerGroup;
+import frc.robot.commands.DriverRaiseGroup;
+import frc.robot.commands.IntakeBoth;
+import frc.robot.commands.IntakeToggle;
+import frc.robot.commands.MothToggle;
+import frc.robot.commands.OuttakeBoth;
+import frc.robot.commands.VisionHatchPlacer;
+import frc.robot.commands.VisionHoldOnTarget;
+import frc.robot.utilities.ConditionalButton;
+import frc.robot.utilities.ConditionalTrigger;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -132,11 +147,11 @@ public class OI {
 			drvbtn4.whenActive(new ArmGoCargo()); // Y - Arm to Cargo Height
 			drvbtn5.whileActive(new VisionHatchPlacer()); // LB (Hatch Mode) - Auto Hatch Placer using vision
 			drvbtn7.whileActive(new IntakeBoth(false)); // LB (Cargo Mode) - Intake Cargo
-			drvbtn8.whenActive(new DriverLowerGroup(false)); // RB (Cargo Mode) - Lower Arm/Intake
+			drvbtn8.whenActive(new DriverRaiseGroup()); // RB (Cargo Mode) - Lower Arm/Intake
 			drvbtn9.whileActive(new VisionHoldOnTarget()); // LT (Hatch Mode) - Limelight Thing?
 			drvbtn10.whenActive(new MothToggle()); // RT (Hatch Mode) - Toggle Moth Open/Closed
-			drvbtn11.whenActive(new OuttakeBoth()); // LT (Cargo Mode) - Outtake Cargo
-			drvbtn12.whenActive(new DriverRaiseGroup()); // RT (Cargo Mode) - Raise Arm/Intake
+			drvbtn11.whileActive(new OuttakeBoth()); // LT (Cargo Mode) - Outtake Cargo
+			drvbtn12.whenActive(new DriverLowerGroup(false)); // RT (Cargo Mode) - Raise Arm/Intake
 		}
 		
 		
